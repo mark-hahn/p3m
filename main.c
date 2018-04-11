@@ -36,23 +36,28 @@
 #include "lcd.h"
 #include "smot.h"
 #include "logotable.h"
+#include "font708.h"
+#include "font813.h"
 
 void main(void) {
     ANSELA = 0; // no analog inputs
     ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
     ANSELC = 0; // they should not default to on and override everything else
        
-    initLogotable();
-    
+    dbgInit();
     i2cInit();
-    
-//    expInit();
-    
-//    smotInit();
-//    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
-    
-    lcdInit(); 
+    lcdInit();    
+    initLogotable();
+    initFont708();
+    initFont813();
+    expInit();
+    smotInit();
+        
     lcdClrBuf();
-    lcdShowLogo();
+//    lcdShowLogo();
+    
+//    lcdClrBuf();
     while(1);
+
+//    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
 }

@@ -3,6 +3,11 @@
 #include "lcd.h"
 #include "i2c.h"
 #include "logotable.h"
+#include "font708.h"
+#include "font813.h"
+
+uint8 lcdPageBuf[128];
+uint8 lcdPageBufIdx;
 
 void lcdSendCmdByte(uint8 cmd) {
     i2cSendByte(lcdCmdCtrl);
@@ -66,28 +71,41 @@ void lcdSendData(uint8 data) {
     i2cStopSending();   
 }
 
+void lcdSendPageBuf(uint8 len) {
+    dbg();
+    i2cStartSending(i2cLcdAddr);
+    i2cSendByte(lcdContDataCtrl);
+    for(uint8 i=0; i < len; i++) {
+        i2cSendByte(lcdPageBuf[i]);
+    }
+    i2cStopSending();       
+}
 void lcdClrBuf() {
+    for(uint8 i=0; i<128; i++) lcdPageBuf[i] = 0;
     for(uint8 page=0; page<8; page++) {
         lcdSendCmd(0xb0 + page);
         lcdSendCmd(0x00); // col idx<3:0> -> 0
         lcdSendCmd(0x10); // col idx<7:4> -> 0
-        for(uint8 col=0; col < 132; col++) {
-            lcdSendData(0); 
-        }
+        lcdSendPageBuf(128);
     }
 }
 
 uint8 page, colIdx, word, wordIdx, pixel;
 
 void addBitsToWord(uint16 len) {
-    for(int i = 0; i < len;  i++) {
+    for(uint8 i = 0; i < len;  i++) {
         word >>= 1;
         word |= (pixel << 7);
         if(++wordIdx == 8) {
             lcdSendData(word);
             if(++colIdx == 128) {
-               colIdx = 0;
+                lcdSendData(0);
+                lcdSendData(0);
+                lcdSendData(0);
+                lcdSendData(0);
+                
                 if(++page == 8) return;
+                colIdx = 0;
                 lcdSendCmd(0xb0 + page);
                 lcdSendCmd(0x00); // col idx<3:0> -> 0
                 lcdSendCmd(0x10); // col idx<7:4> -> 0
@@ -109,25 +127,18 @@ void lcdShowLogo() {
     }
 }
 
-void lcdTest() {
-//        lcdSendCmd(0xa5); // Set Entire Display On
-//        delayMs(1000);
-//        lcdSendCmd(0xa4); // display graphics buffer
-//        delayMs(1000);
-    
-    // set col start address to 0
-    lcdSendCmd(0x00);
-    lcdSendCmd(0x10);
-    for(uint8 row8 = 0; row8 < 8; row8++) {
-        lcdSendCmd(0xb0 + row8);
-        for(uint8 col=0; col < 128; col++) {
-            lcdSendData(row8+col);
+void lcdWriteStr(uint16 font, uint8 page, uint8 col, char *str, Boolean page2) {
+    lcdClrBuf();
+    lcdPageBufIdx = 0;
+    uint8 len = 0;
+    for(char* p = str; *p; p++) {
+        switch(font) {
+            case 708: len += font708Chr2pageBuf(*p); break;           
+            case 813: len += font813Chr2pageBuf(*p, page2); break;
         }
-        // right 4 invisible pixels (1106 chip only)
-        // SHOULD BE CONDITIONAL ON SETTINGS BIT     TODO
-        for(uint8 col=0; col < 4; col++) {
-            lcdSendData(0);
-        }
-    }    
-    while(1);
+    }
+    lcdSendCmd(0xb0 + page);
+    lcdSendCmd(0x00 + (col & 0x0f));
+    lcdSendCmd(0x10 + (col >> 4)); 
+    lcdSendPageBuf(len);
 }

@@ -29,7 +29,7 @@ void i2cHardReset() {
     CLK = 0;
     dly();
     SDA = 1;
-    for(int i=0; i<9; i++) {
+    for(uint8 i=0; i<9; i++) {
         CLK = 1;
         dly();
         CLK = 0;

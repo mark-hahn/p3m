@@ -92,7 +92,7 @@ void smotTest(uint16 pps, int dir){
     while(1) {
         if(speed > tgtSpeed) speed--;
         for(uint16 i=0; i < speed; i++) {
-            for(int j=0; j<100; j++) {}
+            for(uint8 j=0; j<100; j++) {}
         }
         smotStep(smote, dir);
     }
