@@ -27,7 +27,8 @@ void lcdInit() {
 	lcdSendCmdByte(0x14);//--set(0x14) enable
     
 	lcdSendCmdByte(0x40);//--set start line address
-	lcdSendCmdByte(0xa6);//--set normal display
+    
+	lcdSendCmdByte(0xa6);//--set normal display (not inverted black/white))
     
 	lcdSendCmdByte(0xa4);//  Disable Entire Display On
     
@@ -36,10 +37,10 @@ void lcdInit() {
 	lcdSendCmdByte(0xC8);//--Set COM Output Scan Direction 64 to 0
     
 	lcdSendCmdByte(0xda);//--set com pins hardware configuration
-	lcdSendCmdByte(0x02); // 0x12 ?
+	lcdSendCmdByte(0x12); // 0x12 for 1106?  0x02 for 1306?  --  TODO
     
-	lcdSendCmdByte(0xff);//--set contrast control register -- BRIGHTNESS
-	lcdSendCmdByte(0x8F);
+	lcdSendCmdByte(0x81);//--set contrast control register -- BRIGHTNESS
+	lcdSendCmdByte(0xff);
     
 	lcdSendCmdByte(0xd9);//--set pre-charge period
 	lcdSendCmdByte(0xf1);
@@ -65,33 +66,45 @@ void lcdSendData(uint8 data) {
     i2cStopSending();   
 }
 
-uint8 page, word, wordIdx, colIdx, pixel;
+void lcdClrBuf() {
+    for(uint8 page=0; page<8; page++) {
+        lcdSendCmd(0xb0 + page);
+        lcdSendCmd(0x00); // col idx<3:0> -> 0
+        lcdSendCmd(0x10); // col idx<7:4> -> 0
+        for(uint8 col=0; col < 132; col++) {
+            lcdSendData(0); 
+        }
+    }
+}
 
+uint8 page, colIdx, word, wordIdx, pixel;
 
-void addBitsToWord(uint16 len, uint8 pix) {
+void addBitsToWord(uint16 len) {
     for(int i = 0; i < len;  i++) {
-        word << 1;
-        word |= pix;
+        word >>= 1;
+        word |= (pixel << 7);
         if(++wordIdx == 8) {
             lcdSendData(word);
             if(++colIdx == 128) {
-                colIdx = 0;
+               colIdx = 0;
                 if(++page == 8) return;
-                lcdSendCmd(0xb0 + + page);
+                lcdSendCmd(0xb0 + page);
+                lcdSendCmd(0x00); // col idx<3:0> -> 0
+                lcdSendCmd(0x10); // col idx<7:4> -> 0
             }
             word = wordIdx = 0;
         }
     }
-    
 }
 
 void lcdShowLogo() {
-    page = word = wordIdx = colIdx = pixel = 0;
+    initLogotable();
+    page = colIdx = word = wordIdx = pixel = 0;
     lcdSendCmd(0xb0 + page);
     lcdSendCmd(0x00); // col idx<3:0> -> 0
     lcdSendCmd(0x10); // col idx<7:4> -> 0
     while(page < 8) {
-      addBitsToWord(getNextLogoRunlen(), pixel);
+      addBitsToWord(getNextLogoRunlen());
       pixel = 1 - pixel;
     }
 }

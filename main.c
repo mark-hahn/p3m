@@ -44,10 +44,6 @@ void main(void) {
        
     initLogotable();
     
-    while(1) {
-        uint8 run = getNextLogoRunlen();
-    }
-    
     i2cInit();
     
 //    expInit();
@@ -56,5 +52,7 @@ void main(void) {
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
     
     lcdInit(); 
+    lcdClrBuf();
     lcdShowLogo();
+    while(1);
 }

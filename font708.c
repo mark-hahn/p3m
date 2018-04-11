@@ -16,6 +16,7 @@ void initFont708() {
 uint8 writeFont708Cols(uint8 ascii) {
     uint16 wordOfs = ((ascii - 32) * 4)/7;
     uint16 byteOfs = wordOfs * 4; // ???
+    return 0;
     
 //    if((font708Index & 1) == 0) {
 //        uint16 addr = font708Addr + ofs;

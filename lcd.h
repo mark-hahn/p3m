@@ -14,6 +14,7 @@ void lcdInit();
 void lcdSendCmdByte(uint8 cmd);
 void lcdSendCmd(uint8 cmd);
 void lcdSendData(uint8 data);
+void lcdClrBuf();
 void lcdShowLogo();
 void lcdTest();
 
