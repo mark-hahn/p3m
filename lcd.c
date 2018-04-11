@@ -72,7 +72,6 @@ void lcdSendData(uint8 data) {
 }
 
 void lcdSendPageBuf(uint8 len) {
-    dbg();
     i2cStartSending(i2cLcdAddr);
     i2cSendByte(lcdContDataCtrl);
     for(uint8 i=0; i < len; i++) {
@@ -90,34 +89,30 @@ void lcdClrBuf() {
     }
 }
 
-uint8 page, colIdx, word, wordIdx, pixel;
+uint8 page, word, wordIdx, pixel;
 
 void addBitsToWord(uint16 len) {
-    for(uint8 i = 0; i < len;  i++) {
+    for(uint16 i = 0; i < len;  i++) {
         word >>= 1;
         word |= (pixel << 7);
         if(++wordIdx == 8) {
-            lcdSendData(word);
-            if(++colIdx == 128) {
-                lcdSendData(0);
-                lcdSendData(0);
-                lcdSendData(0);
-                lcdSendData(0);
-                
+            lcdPageBuf[lcdPageBufIdx++] = word;
+            word = wordIdx = 0;
+            if(lcdPageBufIdx == 128) {
+                lcdSendPageBuf(128);
                 if(++page == 8) return;
-                colIdx = 0;
+                lcdPageBufIdx = 0;
                 lcdSendCmd(0xb0 + page);
                 lcdSendCmd(0x00); // col idx<3:0> -> 0
                 lcdSendCmd(0x10); // col idx<7:4> -> 0
             }
-            word = wordIdx = 0;
         }
     }
 }
 
 void lcdShowLogo() {
     initLogotable();
-    page = colIdx = word = wordIdx = pixel = 0;
+    lcdPageBufIdx = page = word = wordIdx = pixel = 0;
     lcdSendCmd(0xb0 + page);
     lcdSendCmd(0x00); // col idx<3:0> -> 0
     lcdSendCmd(0x10); // col idx<7:4> -> 0

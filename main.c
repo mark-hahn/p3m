@@ -47,16 +47,14 @@ void main(void) {
     dbgInit();
     i2cInit();
     lcdInit();    
-    initLogotable();
     initFont708();
     initFont813();
     expInit();
     smotInit();
         
     lcdClrBuf();
-//    lcdShowLogo();
-    
-//    lcdClrBuf();
+    lcdShowLogo();
+
     while(1);
 
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
