@@ -55,6 +55,6 @@ void main(void) {
 //    smotInit();
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
     
-    lcdInit();
-    lcdTest();
+    lcdInit(); 
+    lcdShowLogo();
 }

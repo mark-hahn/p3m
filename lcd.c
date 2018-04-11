@@ -2,6 +2,7 @@
 #include "util.h"
 #include "lcd.h"
 #include "i2c.h"
+#include "logotable.h"
 
 void lcdSendCmdByte(uint8 cmd) {
     i2cSendByte(lcdCmdCtrl);
@@ -62,6 +63,37 @@ void lcdSendData(uint8 data) {
     i2cSendByte(lcdDataCtrl);
     i2cSendByte(data);
     i2cStopSending();   
+}
+
+uint8 page, word, wordIdx, colIdx, pixel;
+
+
+void addBitsToWord(uint16 len, uint8 pix) {
+    for(int i = 0; i < len;  i++) {
+        word << 1;
+        word |= pix;
+        if(++wordIdx == 8) {
+            lcdSendData(word);
+            if(++colIdx == 128) {
+                colIdx = 0;
+                if(++page == 8) return;
+                lcdSendCmd(0xb0 + + page);
+            }
+            word = wordIdx = 0;
+        }
+    }
+    
+}
+
+void lcdShowLogo() {
+    page = word = wordIdx = colIdx = pixel = 0;
+    lcdSendCmd(0xb0 + page);
+    lcdSendCmd(0x00); // col idx<3:0> -> 0
+    lcdSendCmd(0x10); // col idx<7:4> -> 0
+    while(page < 8) {
+      addBitsToWord(getNextLogoRunlen(), pixel);
+      pixel = 1 - pixel;
+    }
 }
 
 void lcdTest() {
