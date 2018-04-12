@@ -20,7 +20,7 @@ void lcdSendData(uint8 data);
 void lcdClrAll();
 void lcdSendPageBuf(uint8 count);
 void lcdShowLogo();
-void lcdWriteStr(uint16 font, uint8 page, uint8 col, const char *str, Boolean page2);
+void lcdWriteStr(uint16 font, uint8 row, uint8 col, const char *str, Boolean page2);
 void lcdTest();
 
 #endif	/* LCD_H */

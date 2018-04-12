@@ -14,8 +14,8 @@ void initFont708() {
   font708Addr = (uint16) &font708;
 }
 char font708chrShrink2[]  = {' ', 'i', 'l'};
-char font708chrShrink[]   = {'j', 'H'};
-char font708chrExpand[]   = {};
+char font708chrShrink1[]   = {'j', 'H'};
+//char font708chrExpand1[]   = {};
 char font708chrExpand2[]  = {'M', 'W'};
 
 
@@ -23,21 +23,19 @@ uint8 font708Chr2pageBuf(char ascii) {
     uint8 wid = 7;
     for(uint8 i=0; i < sizeof(font708chrShrink2); i++)
         if (ascii == font708chrShrink2[i]) wid = 5;
-    for(uint8 i=0; i < sizeof(font708chrShrink); i++)
-        if (ascii == font708chrShrink[i]) wid = 6;
-    for(uint8 i=0; i<sizeof(font708chrExpand); i++)
-        if (ascii == font708chrExpand[i]) wid = 8;
-    for(uint8 i=0; i<sizeof(font708chrExpand2); i++)
+    for(uint8 i=0; i < sizeof(font708chrShrink1); i++)
+        if (ascii == font708chrShrink1[i]) wid = 6;
+//    for(uint8 i=0; i < sizeof(font708chrExpand1); i++)
+//        if (ascii == font708chrExpand1[i]) wid = 8;
+    for(uint8 i=0; i < sizeof(font708chrExpand2); i++)
         if (ascii == font708chrExpand2[i]) wid = 9;
-    if(lcdPageBufIdx + wid > 128) return;
+    if(lcdPageBufIdx + wid > 128) return 0;
     
     uint16 romOfs = (uint16) (ascii - 32) * 4;
     uint16 word0 = getRomWord(font708Addr + romOfs);
     uint16 word1 = getRomWord(font708Addr + romOfs+1);
     uint16 word2 = getRomWord(font708Addr + romOfs+2);
     uint16 word3 = getRomWord(font708Addr + romOfs+3);
-//  word0: 00000000111111 word1: 11222222223333 
-//  word2: 33334444444455 word3: 55555566666666
     lcdPageBuf[lcdPageBufIdx++] = ((word0 & 0x3fc0) >> 6);
     lcdPageBuf[lcdPageBufIdx++] = ((word0 & 0x003f) << 2) | (word1 >> 12);
     lcdPageBuf[lcdPageBufIdx++] = ((word1 & 0x0ff0) >> 4);
