@@ -32,7 +32,7 @@ uint8 font708Chr2pageBuf(uint8 ascii) {
     return 7;
 }
 
-void font708WriteStr(uint8 page, uint8 col, char *str){
+void font708WriteStr(uint8 page, uint8 col, const char *str){
     lcdWriteStr(708, page,  col, str, false);
 }
 

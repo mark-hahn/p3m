@@ -52,9 +52,11 @@ void main(void) {
     expInit();
     smotInit();
         
-    lcdClrBuf();
-    lcdShowLogo();
-
+    lcdClrAll();
+//    lcdShowLogo();
+    
+    font813WriteStr(4, 10, "Hello World");
+            
     while(1);
 
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));

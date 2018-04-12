@@ -10,6 +10,7 @@
 
 void initFont813();
 uint8 font813Chr2pageBuf(uint8 ascii, Boolean page2);
+void font813WriteStr(uint8 page, uint8 col, const char *str);
 
 #endif	/* FONT813_H */
 

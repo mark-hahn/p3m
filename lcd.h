@@ -17,10 +17,10 @@ void lcdInit();
 void lcdSendCmdByte(uint8 cmd);
 void lcdSendCmd(uint8 cmd);
 void lcdSendData(uint8 data);
-void lcdClrBuf();
+void lcdClrAll();
 void lcdSendPageBuf(uint8 count);
 void lcdShowLogo();
-void lcdWriteStr(uint16 font, uint8 page, uint8 col, char *str, Boolean page2);
+void lcdWriteStr(uint16 font, uint8 page, uint8 col, const char *str, Boolean page2);
 void lcdTest();
 
 #endif	/* LCD_H */
