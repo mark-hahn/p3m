@@ -52,26 +52,12 @@ void main(void) {
     expInit();
     smotInit();
         
-    const char *Main      = "MAIN MENU";
-    const char *Calibrate = "> Calibrate";
-    const char *Paste     = "> Paste";
-    const char *Pick      = "> Pick / Place";
-    const char *Inspect   = "> Inspect";
-    const char *Settings  = "> Settings";
-    
-    lcdClrAll();
-    font813WriteStr(0,  0, 4, Main);
-    font813WriteStr(1, -8, 4, Main);
-    font708WriteStr(2,  0, 4, Calibrate);
-    font708WriteStr(3,  1, 4, Paste);
-    font708WriteStr(9, -6, 4, Paste);
-    font708WriteStr(4,  3, 4, Pick);
-    font708WriteStr(9, -4, 4, Pick);
-    font708WriteStr(5,  5, 4, Inspect);
-    font708WriteStr(9, -2, 4, Inspect);
-    font708WriteStr(6,  7, 4, Settings);
-    font708WriteStr(7,  0, 4, Settings);
-            
+    lcdShowMenuPage( "MAIN MENU", 
+                     "> Calibrate", 
+                     "> Paste", 
+                     "> Pick / Place", 
+                     "> Inspect", 
+                     "> Settings");
     while(1);
 
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));

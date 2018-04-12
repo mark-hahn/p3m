@@ -88,7 +88,7 @@ void lcdSendPageBuf() {
 void lcdClrAll() {
     for(uint8 page=0; page<8; page++) {
         lcdSendCmd(0xb0 + page);
-        lcdSendCmd(0x00); // col idx<3:0> -> 0
+        lcdSendCmd(0x04); // col idx<3:0> -> 0
         lcdSendCmd(0x10); // col idx<7:4> -> 0
         i2cStartSending(i2cLcdAddr);
         i2cSendByte(lcdContDataCtrl);
@@ -97,6 +97,25 @@ void lcdClrAll() {
         i2cStopSending();       
     }
     lcdClrPageBuf();
+}
+
+void lcdShowMenuPage(const char *heading, const char *line1, const char *line2, 
+                     const char *line3  , const char *line4, const char *line5) {
+    lcdClrAll();
+    font813WriteStr(0,  0, 0, heading);
+    font813WriteStr(1, -8, 0, heading);
+    font708WriteStr(2,  0, 0, line1);
+    font708WriteStr(3,  2, 0, line2);
+    
+    font708WriteStr(9, -6, 0, line2);
+    font708WriteStr(4,  3, 0, line3);
+    
+    font708WriteStr(9, -5, 0, line3);
+    font708WriteStr(5,  6, 0, line4);
+    
+    font708WriteStr(6, -2, 0, line4);
+    
+    font708WriteStr(7,  0, 0, line5);
 }
 
 uint8 page, word, wordIdx, pixel;
@@ -113,7 +132,7 @@ void addBitsToWord(uint16 len) {
                 if(++page == 8) return;
                 lcdPageBufIdx = 0;
                 lcdSendCmd(0xb0 + page);
-                lcdSendCmd(0x00); // col idx<3:0> -> 0
+                lcdSendCmd(0x04); // col idx<3:0> -> 0
                 lcdSendCmd(0x10); // col idx<7:4> -> 0
             }
         }
@@ -124,7 +143,7 @@ void lcdShowLogo() {
     initLogotable();
     lcdPageBufIdx = page = word = wordIdx = pixel = 0;
     lcdSendCmd(0xb0 + page);
-    lcdSendCmd(0x00); // col idx<3:0> -> 0
+    lcdSendCmd(0x04); // col idx<3:0> -> 0
     lcdSendCmd(0x10); // col idx<7:4> -> 0
     while(page < 8) {
       uint16 len = getNextLogoRunlen();
@@ -143,7 +162,7 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, const char *st
     }
     if(page != 9) {
         lcdSendCmd(0xb0 + page);
-        lcdSendCmd(0x00);
+        lcdSendCmd(0x04);
         lcdSendCmd(0x10); 
         lcdSendPageBuf();
         lcdClrPageBuf();
