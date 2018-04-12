@@ -1,7 +1,7 @@
 
 #include <xc.h>
 #include "util.h"
-#include "logotable.h"
+#include "logo.h"
 
 // logotable is defined in logotable.asm
 extern const uint16 logotable;

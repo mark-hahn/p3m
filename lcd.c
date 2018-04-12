@@ -2,7 +2,7 @@
 #include "util.h"
 #include "lcd.h"
 #include "i2c.h"
-#include "logotable.h"
+#include "logo.h"
 #include "font708.h"
 #include "font813.h"
 

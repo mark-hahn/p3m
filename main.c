@@ -35,7 +35,7 @@
 #include "exp.h"
 #include "lcd.h"
 #include "smot.h"
-#include "logotable.h"
+#include "logo.h"
 #include "font708.h"
 #include "font813.h"
 
@@ -52,12 +52,14 @@ void main(void) {
     expInit();
     smotInit();
         
-    lcdShowMenuPage( "MAIN MENU", 
-                     "> Calibrate", 
-                     "> Paste", 
-                     "> Pick / Place", 
-                     "> Inspect", 
-                     "> Settings");
+    lcdShowLogo();
+    
+//    lcdShowMenuPage( "MAIN MENU", 
+//                     "> Calibrate", 
+//                     "> Paste", 
+//                     "> Pick / Place", 
+//                     "> Inspect", 
+//                     "> Settings");
     while(1);
 
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
