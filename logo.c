@@ -6,19 +6,19 @@
 // logotable is defined in logotable.asm
 extern const uint16 logotable;
 
-uint16 logotableAddr;
+uint16 logoAddr;
 uint16 logoIndex;
 uint16 logoWord;
 
 void initLogotable() {
-  logotableAddr = (uint16) &logotable;
+  logoAddr = (uint16) &logotable;
   logoIndex = 0;
 }
 
 uint8 getNext7bitsRunlen() {
     uint16 ofs = logoIndex >> 1;
     if((logoIndex & 1) == 0) {
-        uint16 addr = logotableAddr + ofs;
+        uint16 addr = logoAddr + ofs;
         NVMCON1bits.NVMREGS = 0;
         NVMADRL = addr & 0xff;
         NVMADRH = addr >> 8;

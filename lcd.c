@@ -129,8 +129,9 @@ void addBitsToWord(uint16 len) {
             word = wordIdx = 0;
             if(lcdPageBufIdx == 128) {
                 lcdSendPageBuf();
-                if(++page == 8) return;
+                if(++page == 7) return;
                 lcdPageBufIdx = 0;
+                lcdClrPageBuf();
                 lcdSendCmd(0xb0 + page);
                 lcdSendCmd(0x04); // col idx<3:0> -> 0
                 lcdSendCmd(0x10); // col idx<7:4> -> 0
@@ -140,12 +141,13 @@ void addBitsToWord(uint16 len) {
 }
 
 void lcdShowLogo() {
+    lcdClrAll();
     initLogotable();
     lcdPageBufIdx = page = word = wordIdx = pixel = 0;
     lcdSendCmd(0xb0 + page);
-    lcdSendCmd(0x04); // col idx<3:0> -> 0
-    lcdSendCmd(0x10); // col idx<7:4> -> 0
-    while(page < 8) {
+    lcdSendCmd(0x04); // col (low  nibble) => 4
+    lcdSendCmd(0x10); // col (high nibble) => 0
+    while(page < 7) {
       uint16 len = getNextLogoRunlen();
       addBitsToWord(len);
       pixel = 1 - pixel;
