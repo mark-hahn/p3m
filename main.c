@@ -54,8 +54,8 @@ void main(void) {
         
     lcdClrAll();
 //    lcdShowLogo();
-    
-    font708WriteStr(4, 10, "Hello World");
+//    font813WriteStr(2, 10, "Main Menu");
+    font708WriteStr(6, 10, "Hello My jolly World");
             
     while(1);
 
