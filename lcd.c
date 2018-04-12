@@ -71,14 +71,20 @@ void lcdSendData(uint8 data) {
     i2cStopSending();   
 }
 
-void lcdSendPageBuf(uint8 len) {
+void lcdClrPageBuf() {
+    for(uint8 i=0; i < 128; i++)
+        lcdPageBuf[i] = 0;
+}
+
+void lcdSendPageBuf() {
     i2cStartSending(i2cLcdAddr);
     i2cSendByte(lcdContDataCtrl);
-    for(uint8 i=0; i < len; i++) {
+    for(uint8 i=0; i < 128; i++) {
         i2cSendByte(lcdPageBuf[i]);
     }
     i2cStopSending();       
 }
+
 void lcdClrAll() {
     for(uint8 page=0; page<8; page++) {
         lcdSendCmd(0xb0 + page);
@@ -90,6 +96,7 @@ void lcdClrAll() {
           i2cSendByte(0);
         i2cStopSending();       
     }
+    lcdClrPageBuf();
 }
 
 uint8 page, word, wordIdx, pixel;
@@ -102,7 +109,7 @@ void addBitsToWord(uint16 len) {
             lcdPageBuf[lcdPageBufIdx++] = word;
             word = wordIdx = 0;
             if(lcdPageBufIdx == 128) {
-                lcdSendPageBuf(128);
+                lcdSendPageBuf();
                 if(++page == 8) return;
                 lcdPageBufIdx = 0;
                 lcdSendCmd(0xb0 + page);
@@ -126,17 +133,19 @@ void lcdShowLogo() {
     }
 }
 
-void lcdWriteStr(uint16 font, uint8 page, uint8 col, const char *str, Boolean page2) {
-    lcdPageBufIdx = 0;
-    uint8 len = 0;
+void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, const char *str) {
+    lcdPageBufIdx = col;
     for(const char* p = str; *p; p++) {
         switch(font) {
-            case 708: len += font708Chr2pageBuf(*p); break;           
-            case 813: len += font813Chr2pageBuf(*p, page2); break;
+            case 708: font708Chr2pageBuf(*p, rowOfs); break;           
+            case 813: font813Chr2pageBuf(*p, rowOfs); break;
         }
     }
-    lcdSendCmd(0xb0 + page);
-    lcdSendCmd(0x00 + (col & 0x0f));
-    lcdSendCmd(0x10 + (col >> 4)); 
-    lcdSendPageBuf(len);
+    if(page != 9) {
+        lcdSendCmd(0xb0 + page);
+        lcdSendCmd(0x00);
+        lcdSendCmd(0x10); 
+        lcdSendPageBuf();
+        lcdClrPageBuf();
+    }
 }

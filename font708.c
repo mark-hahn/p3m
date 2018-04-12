@@ -7,19 +7,20 @@
 extern const uint16 font708;
 
 uint16 font708Addr;
-uint16 font708Index;
-uint16 font708Word;
 
 void initFont708() {
   font708Addr = (uint16) &font708;
 }
+
+uint8 chrBuf[9];
+
 char font708chrShrink2[]  = {' ', 'i', 'l'};
 char font708chrShrink1[]   = {'j', 'H'};
 //char font708chrExpand1[]   = {};
 char font708chrExpand2[]  = {'M', 'W'};
 
 
-uint8 font708Chr2pageBuf(char ascii) {
+void font708Chr2pageBuf(char ascii, int8 rowOfs) {
     uint8 wid = 7;
     for(uint8 i=0; i < sizeof(font708chrShrink2); i++)
         if (ascii == font708chrShrink2[i]) wid = 5;
@@ -29,30 +30,34 @@ uint8 font708Chr2pageBuf(char ascii) {
 //        if (ascii == font708chrExpand1[i]) wid = 8;
     for(uint8 i=0; i < sizeof(font708chrExpand2); i++)
         if (ascii == font708chrExpand2[i]) wid = 9;
-    if(lcdPageBufIdx + wid > 128) return 0;
+    if(lcdPageBufIdx + wid > 128) return;
     
     uint16 romOfs = (uint16) (ascii - 32) * 4;
     uint16 word0 = getRomWord(font708Addr + romOfs);
     uint16 word1 = getRomWord(font708Addr + romOfs+1);
     uint16 word2 = getRomWord(font708Addr + romOfs+2);
     uint16 word3 = getRomWord(font708Addr + romOfs+3);
-    lcdPageBuf[lcdPageBufIdx++] = ((word0 & 0x3fc0) >> 6);
-    lcdPageBuf[lcdPageBufIdx++] = ((word0 & 0x003f) << 2) | (word1 >> 12);
-    lcdPageBuf[lcdPageBufIdx++] = ((word1 & 0x0ff0) >> 4);
-    lcdPageBuf[lcdPageBufIdx++] = ((word1 & 0x000f) << 4) | ((word2 & 0x3c00) >> 10);
-    lcdPageBuf[lcdPageBufIdx++] = ((word2 & 0x03fc) >> 2);
-    if(wid > 5)
-      lcdPageBuf[lcdPageBufIdx++] = ((word2 & 0x0003) << 6) | ((word3 & 0x3f00) >> 8);
-    if(wid > 6)
-      lcdPageBuf[lcdPageBufIdx++] = word3 & 0x00ff;
-    if(wid > 7)
-      lcdPageBuf[lcdPageBufIdx++] = 0;
-    if(wid > 8)
-      lcdPageBuf[lcdPageBufIdx++] = 0;
-    return wid;
+    
+    chrBuf[0] = ((word0 & 0x3fc0) >> 6);
+    chrBuf[1] = ((word0 & 0x003f) << 2) | (word1 >> 12);
+    chrBuf[2] = ((word1 & 0x0ff0) >> 4);
+    chrBuf[3] = ((word1 & 0x000f) << 4) | ((word2 & 0x3c00) >> 10);
+    chrBuf[4] = ((word2 & 0x03fc) >> 2);
+    chrBuf[5] = ((word2 & 0x0003) << 6) | ((word3 & 0x3f00) >> 8);
+    chrBuf[6] = word3 & 0x00ff;
+    chrBuf[7] = 0;
+    chrBuf[8] = 0;
+    
+    for(uint8 i=0; i < wid; i++) {
+        uint8 byte = chrBuf[i];
+        if(rowOfs < 0) byte >>= -rowOfs;
+        if(rowOfs > 0) byte <<=  rowOfs;
+        lcdPageBuf[lcdPageBufIdx] |= byte;
+        lcdPageBufIdx++;
+    }
 }
 
-void font708WriteStr(uint8 page, uint8 col, const char *str){
-    lcdWriteStr(708, page,  col, str, false);
+void font708WriteStr(uint8 page, int8 rowOfs, uint8 col, const char *str){
+    lcdWriteStr(708, page, rowOfs, col, str);
 }
 
