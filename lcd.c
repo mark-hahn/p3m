@@ -80,12 +80,15 @@ void lcdSendPageBuf(uint8 len) {
     i2cStopSending();       
 }
 void lcdClrAll() {
-    for(uint8 i=0; i<128; i++) lcdPageBuf[i] = 0;
     for(uint8 page=0; page<8; page++) {
         lcdSendCmd(0xb0 + page);
         lcdSendCmd(0x00); // col idx<3:0> -> 0
         lcdSendCmd(0x10); // col idx<7:4> -> 0
-        lcdSendPageBuf(128);
+        i2cStartSending(i2cLcdAddr);
+        i2cSendByte(lcdContDataCtrl);
+        for(uint8 i=0; i < 132; i++)
+          i2cSendByte(0);
+        i2cStopSending();       
     }
 }
 

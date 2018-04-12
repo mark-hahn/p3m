@@ -54,8 +54,12 @@ void main(void) {
         
     lcdClrAll();
 //    lcdShowLogo();
-//    font813WriteStr(2, 10, "Main Menu");
-    font708WriteStr(6, 10, "Hello My jolly World");
+    font813WriteStr(0, 20, "Main Menu");
+    font708WriteStr(2, 4, "> Calibrate");
+    font708WriteStr(3, 4, "> Paste");
+    font708WriteStr(4, 4, "> Pick & Place");
+    font708WriteStr(5, 4, "> Inspect");
+    font708WriteStr(6, 4, "> Settings");
             
     while(1);
 
