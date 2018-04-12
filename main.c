@@ -52,14 +52,15 @@ void main(void) {
     expInit();
     smotInit();
         
-    lcdShowLogo();
+//    lcdShowLogo();
     
-//    lcdShowMenuPage( "MAIN MENU", 
-//                     "> Calibrate", 
-//                     "> Paste", 
-//                     "> Pick / Place", 
-//                     "> Inspect", 
-//                     "> Settings");
+    lcdShowMenuPage( "MAIN MENU", 
+                     "> Calibrate", 
+                     "> Paste", 
+                     "> Pick / Place", 
+                     "> Inspect", 
+                     "> Settings", 2);
+    
     while(1);
 
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
