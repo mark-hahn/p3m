@@ -156,7 +156,7 @@ void lcdShowLogo() {
 }
 
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
-                              const char *str, Boolean cursor) {
+                              const char *str, bool cursor) {
     lcdPageBufIdx = col;
     for(const char* p = str; *p; p++) {
         switch(font) {

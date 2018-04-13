@@ -12,7 +12,7 @@
 #define smotf 2
 
 void smotInit();
-void smotOnOff(uint8 motor, Boolean on);
+void smotOnOff(uint8 motor, bool on);
 void smotStep(uint8 motor, int dir);
 void smotTest(uint16 pps, int dir);
 

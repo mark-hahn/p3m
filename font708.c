@@ -20,7 +20,7 @@ char font708chrShrink1[]   = {'j', 'H'};
 char font708chrExpand2[]  = {'M', 'W'};
 
 
-void font708Chr2pageBuf(char ascii, int8 rowOfs, Boolean cursor) {
+void font708Chr2pageBuf(char ascii, int8 rowOfs, bool cursor) {
     uint8 wid = 7;
     for(uint8 i=0; i < sizeof(font708chrShrink2); i++)
         if (ascii == font708chrShrink2[i]) wid = 5;
@@ -59,7 +59,7 @@ void font708Chr2pageBuf(char ascii, int8 rowOfs, Boolean cursor) {
 }
 
 void font708WriteStr(uint8 page, int8 rowOfs, uint8 col, 
-                                 const char *str, Boolean cursor){
+                                 const char *str, bool cursor){
     lcdWriteStr(708, page, rowOfs, col, str, cursor);
 }
 

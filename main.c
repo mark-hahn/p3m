@@ -34,10 +34,11 @@
 #include "i2c.h"
 #include "exp.h"
 #include "lcd.h"
-#include "smot.h"
 #include "logo.h"
 #include "font708.h"
 #include "font813.h"
+#include "smot.h"
+#include "ints.h"
 
 void main(void) {
     ANSELA = 0; // no analog inputs
@@ -46,14 +47,13 @@ void main(void) {
        
     dbgInit();
     i2cInit();
+    expInit();
     lcdInit();    
     initFont708();
     initFont813();
-    expInit();
     smotInit();
+    initInts();
 
-//    lcdShowLogo();
-    
     lcdShowMenuPage( "MAIN MENU", 
                      "> Calibrate", 
                      "> Paste", 
@@ -61,9 +61,15 @@ void main(void) {
                      "> Inspect", 
                      "> Settings", 2);
     
+    // main event loop
     while(1) {
-        uint8 a = expReadA();
+      if(intPinChg) {
+        intPinChg = false;
+        
+        uint8 swPinIntFlags = expSwIntFlags();
+        uint8 swPinValues   = expSwPinValues();
+        
         volatile uint8 x = 1;
+      }
     }
-//    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
 }

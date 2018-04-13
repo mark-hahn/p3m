@@ -1,11 +1,21 @@
+
+#include <xc.h>
+
 #include "util.h"
 #include "exp.h"
 #include "i2c.h"
 
 void expInit() {
-    i2cSendTwoBytes(i2cExpAddr, IOCON,  0x80);  // bank bit = 1
-    i2cSendTwoBytes(i2cExpAddr, IODIRA, 0xff);  // A all input
-    i2cSendTwoBytes(i2cExpAddr, IODIRB, 0x00);  // B all output
+    i2cSendTwoBytes(i2cExpAddr, IOCON,  0x80);       // bank bit = 1
+    i2cSendTwoBytes(i2cExpAddr, IODIRA, swAll);      // all switches are input
+    i2cSendTwoBytes(i2cExpAddr, IODIRB, 0x00);       // B all output
+    i2cSendTwoBytes(i2cExpAddr, GPINTENA, swIntsEn); // enable sw pin ints
+    i2cSendTwoBytes(i2cExpAddr, INTCONA, 0);         // pin ints on any change
+    
+    // int pin mcu setup
+    intPinTRIS = 1;
+    intPinIOCN = 1; // int on neg edge
+    intPinIOCF = 0;
 }
 
 uint8 expReadA() {
@@ -18,6 +28,14 @@ uint8 expReadB() {
 
 void expWriteB(uint8 byt) {
     i2cSendTwoBytes(i2cExpAddr, GPIOB, byt);
+}
+
+uint8 expSwIntFlags() {
+  return i2cReadByte(i2cExpAddr, INTFA);
+}
+
+uint8 expSwPinValues() {
+  return i2cReadByte(i2cExpAddr, INTCAPA); 
 }
 
 void expTest() {

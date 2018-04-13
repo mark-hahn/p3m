@@ -2,7 +2,8 @@
 #ifndef UTIL_H
 #define	UTIL_H
 
-typedef enum {false=0, true} Boolean;
+#include <stdbool.h> 
+
 typedef signed char int8;
 typedef unsigned char uint8;
 typedef int int16;

@@ -50,7 +50,7 @@ void smotInit() {
     }        
 }
 
-void smotOnOff(uint8 motor, Boolean on) {
+void smotOnOff(uint8 motor, bool on) {
     uint8 tris;
      switch (motor) {
         case smote: tris = smoteTris; break;
