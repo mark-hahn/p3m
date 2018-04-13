@@ -38,24 +38,23 @@
 #include "font708.h"
 #include "font813.h"
 #include "smot.h"
-#include "ints.h"
 
 void main(void) {
     ANSELA = 0; // no analog inputs
     ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
     ANSELC = 0; // they should not default to on and override everything else
        
-    dbgInit();
+    utilInit();
     i2cInit();
     expInit();
-    lcdInit();    
+    lcdInit();   
+    initLogo();
     initFont708();
     initFont813();
     smotInit();
-    initInts();
 
     lcdShowMenuPage( "MAIN MENU", 
-                     "> Calibrate", 
+                     "> Calibrate",
                      "> Paste", 
                      "> Pick / Place", 
                      "> Inspect", 
@@ -63,13 +62,13 @@ void main(void) {
     
     // main event loop
     while(1) {
-      if(intPinChg) {
-        intPinChg = false;
+      if(IOCCF6) {
+        IOCCF6 = 0;
         
         uint8 swPinIntFlags = expSwIntFlags();
-        uint8 swPinValues   = expSwPinValues();
+        uint8 swPinValues   = expSwPinValues(); // also clrs flags
         
-        volatile uint8 x = 1;
+        volatile int x = 0;
       }
     }
 }

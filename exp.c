@@ -1,21 +1,25 @@
 
 #include <xc.h>
 
-#include "util.h"
+#include "util.h"s
 #include "exp.h"
 #include "i2c.h"
 
 void expInit() {
-    i2cSendTwoBytes(i2cExpAddr, IOCON,  0x80);       // bank bit = 1
-    i2cSendTwoBytes(i2cExpAddr, IODIRA, swAll);      // all switches are input
+    // expander chip setup
+    i2cSendTwoBytes(i2cExpAddr, IOCON,  0x82);       // bank bit = 1, mirror = 0, 
+                                                     // not open-drain, active-high
+    i2cSendTwoBytes(i2cExpAddr, IODIRA, swIntsEn);   // all A (switches) are input
     i2cSendTwoBytes(i2cExpAddr, IODIRB, 0x00);       // B all output
-    i2cSendTwoBytes(i2cExpAddr, GPINTENA, swIntsEn); // enable sw pin ints
+    i2cSendTwoBytes(i2cExpAddr, GPINTENA, swIntsEn); // enable switch pin ints
     i2cSendTwoBytes(i2cExpAddr, INTCONA, 0);         // pin ints on any change
+    expSwPinValues();  // read to clear all flags
     
     // int pin mcu setup
-    intPinTRIS = 1;
-    intPinIOCN = 1; // int on neg edge
-    intPinIOCF = 0;
+    TRISC6 = 1;
+    IOCIE  = 0;          // no actual interrupts
+    IOCCP6 = swIntsEn;   // int pin pos edge
+    IOCCF6 = 0;          // int flag
 }
 
 uint8 expReadA() {
@@ -38,11 +42,3 @@ uint8 expSwPinValues() {
   return i2cReadByte(i2cExpAddr, INTCAPA); 
 }
 
-void expTest() {
-    i2cSendTwoBytes(i2cExpAddr, IODIRA, 0x00);  // all outputs
-    while(1) {
-        i2cSendTwoBytes(i2cExpAddr, GPIOA, 0x00);  // pins = 0
-        i2cSendTwoBytes(i2cExpAddr, GPIOA, 0xff);  // pins = 1
-        int x = i2cReadByte(i2cExpAddr, 0x05);  // IOCON in bank=1 mode
-    }
-}

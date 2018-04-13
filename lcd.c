@@ -143,7 +143,7 @@ void addBitsToWord(uint16 len) {
 
 void lcdShowLogo() {
     lcdClrAll();
-    initLogotable();
+    initLogo();
     lcdPageBufIdx = page = word = wordIdx = pixel = 0;
     lcdSendCmd(0xb0 + page);
     lcdSendCmd(0x04); // col (low  nibble) => 4

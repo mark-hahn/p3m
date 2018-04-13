@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include "util.h"
 
-void initLogotable();
+void initLogo();
 uint16 getNextLogoRunlen();
 
 

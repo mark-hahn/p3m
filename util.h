@@ -13,7 +13,9 @@ typedef unsigned short long uint24;
 typedef long int32;
 typedef unsigned long uint32;
 
-void dbgInit();
+#define clkPeriod 64 // usecs
+
+void utilInit();
 void dbg();
 
 void delayMs(uint16 ms);

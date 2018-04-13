@@ -10,7 +10,7 @@ uint16 logoAddr;
 uint16 logoIndex;
 uint16 logoWord;
 
-void initLogotable() {
+void initLogo() {
   logoAddr = (uint16) &logotable;
   logoIndex = 0;
 }
