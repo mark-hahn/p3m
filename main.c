@@ -61,7 +61,9 @@ void main(void) {
                      "> Inspect", 
                      "> Settings", 2);
     
-    while(1);
-
+    while(1) {
+        uint8 a = expReadA();
+        volatile uint8 x = 1;
+    }
 //    smotTest(100, (expReadA() & 0x40 ? +1 : -1));
 }
