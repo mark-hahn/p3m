@@ -51,7 +51,7 @@ void main(void) {
     initFont813();
     expInit();
     smotInit();
-        
+
 //    lcdShowLogo();
     
     lcdShowMenuPage( "MAIN MENU", 
