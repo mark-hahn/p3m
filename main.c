@@ -60,37 +60,26 @@ void main(void) {
                    "> Inspect", 
                    "> Settings", 2);
 
-  uint8  swValues = expSwPinValues();
+  uint8  swValues = expReadA();
   uint8  swValChanged = 0;
-  uint8  swOldValues = swValues;
-  bool   swDebouncing[8];
-  uint16 swFirstBounceTime[8];
+  uint8  swChgCount[8];
   
   // main event loop
   while(1) {
-    uint8 swPinValues = expSwPinValues();
-    if(swPinValues != swOldValues) {
-      dbg();dbg();
-      for(uint8 i = 0; i < 8; i++) {
-        uint8   mask = 1 << i;
-        if((mask & swAllBits)== 0) continue;
-        uint8 oldval = swOldValues & mask;
-        uint8 newval = swPinValues & mask;
-        bool changed = (newval != oldval);
-        if(!changed) {
-          swDebouncing[i] = false;
-        } else if(!swDebouncing[i]) {
-          dbg();
-          swDebouncing[i] = true;
-          swFirstBounceTime[i] = timer;
-        } else if((timer- swFirstBounceTime[i]) > swDebounceTime) {
-          dbg();dbg();dbg();
-          swDebouncing[i] = false;
-          swValues = (swValues & ~mask) | newval;
-          swValChanged |= mask;
-        }
+    uint8 swPinValues = expReadA();
+    for(uint8 i = 0; i < 8; i++) {
+      uint8 mask = (1 << i);
+//      if(mask != 0x01) continue;
+      if((mask & swAllBits) == 0) continue;
+      uint8 newval = swPinValues & mask;
+//      LATC7 = (newval != 0);
+      if(newval == (swValues & mask)) 
+        swChgCount[i] = 0;
+      else if(++swChgCount[i] == 5) {
+        swValues = (swValues & ~mask) | newval;
+        swValChanged |= mask;
+        LATC7 = (newval != 0);
       }
-      swOldValues = swPinValues;
     }
   }
 }
