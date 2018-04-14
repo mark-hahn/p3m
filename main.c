@@ -40,35 +40,57 @@
 #include "smot.h"
 
 void main(void) {
-    ANSELA = 0; // no analog inputs
-    ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
-    ANSELC = 0; // they should not default to on and override everything else
-       
-    utilInit();
-    i2cInit();
-    expInit();
-    lcdInit();   
-    initLogo();
-    initFont708();
-    initFont813();
-    smotInit();
+  ANSELA = 0; // no analog inputs
+  ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
+  ANSELC = 0; // they should not default to on and override everything else
 
-    lcdShowMenuPage( "MAIN MENU", 
-                     "> Calibrate",
-                     "> Paste", 
-                     "> Pick / Place", 
-                     "> Inspect", 
-                     "> Settings", 2);
-    
-    // main event loop
-    while(1) {
-      if(IOCCF6) {
-        IOCCF6 = 0;
-        
-        uint8 swPinIntFlags = expSwIntFlags();
-        uint8 swPinValues   = expSwPinValues(); // also clrs flags
-        
-        volatile int x = 0;
+  utilInit();
+  i2cInit();
+  expInit();
+  lcdInit();   
+  initLogo();
+  initFont708();
+  initFont813();
+  smotInit();
+
+  lcdShowMenuPage( "MAIN MENU", 
+                   "> Calibrate",
+                   "> Paste", 
+                   "> Pick / Place", 
+                   "> Inspect", 
+                   "> Settings", 2);
+
+  uint8  swValues = expSwPinValues();
+  uint8  swValChanged = 0;
+  uint8  swOldValues = swValues;
+  bool   swDebouncing[8];
+  uint16 swFirstBounceTime[8];
+  
+  // main event loop
+  while(1) {
+    uint8 swPinValues = expSwPinValues();
+    if(swPinValues != swOldValues) {
+      dbg();dbg();
+      for(uint8 i = 0; i < 8; i++) {
+        uint8   mask = 1 << i;
+        if((mask & swAllBits)== 0) continue;
+        uint8 oldval = swOldValues & mask;
+        uint8 newval = swPinValues & mask;
+        bool changed = (newval != oldval);
+        if(!changed) {
+          swDebouncing[i] = false;
+        } else if(!swDebouncing[i]) {
+          dbg();
+          swDebouncing[i] = true;
+          swFirstBounceTime[i] = timer;
+        } else if((timer- swFirstBounceTime[i]) > swDebounceTime) {
+          dbg();dbg();dbg();
+          swDebouncing[i] = false;
+          swValues = (swValues & ~mask) | newval;
+          swValChanged |= mask;
+        }
       }
+      swOldValues = swPinValues;
     }
+  }
 }

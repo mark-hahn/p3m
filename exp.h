@@ -1,7 +1,9 @@
 #ifndef EXPANDER_H
 #define	EXPANDER_H
 
-#include "util.h"
+#include "util.h"   
+
+#define swDebounceTime 16  // 2 ms @ 127.2 usecs/tick
 
 #define i2cExpAddr 0x27
 
@@ -24,7 +26,7 @@
 #define swBotRgt   0x08
 #define swHomeUp   0x02
 #define swPwrOff   0x01
-#define swIntsEn   (swTopLft|swBotLft|swTopRgt|swBotRgt|swHomeUp|swPwrOff)
+#define swAllBits  (swTopLft|swBotLft|swTopRgt|swBotRgt|swHomeUp|swPwrOff)
 
 void  expInit();
 uint8 expReadA();
