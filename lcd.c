@@ -85,38 +85,92 @@ void lcdSendPageBuf() {
     i2cStopSending();       
 }
 
-void lcdClrAll() {
-    for(uint8 page=0; page<8; page++) {
-        lcdSendCmd(0xb0 + page);
-        lcdSendCmd(0x04); // col idx<3:0> -> 0
-        lcdSendCmd(0x10); // col idx<7:4> -> 0
-        i2cStartSending(i2cLcdAddr);
-        i2cSendByte(lcdContDataCtrl);
-        for(uint8 i=0; i < 132; i++)
-          i2cSendByte(0);
-        i2cStopSending();       
-    }
+void lcdClrPage(uint8 page) {
+    lcdSendCmd(0xb0 + page);
+    lcdSendCmd(0x04); // col idx<3:0> -> 0
+    lcdSendCmd(0x10); // col idx<7:4> -> 0
+    i2cStartSending(i2cLcdAddr);
+    i2cSendByte(lcdContDataCtrl);
+    for(uint8 i=0; i < 132; i++)
+      i2cSendByte(0);
+    i2cStopSending();       
     lcdClrPageBuf();
 }
 
+void lcdClrAll() {
+    for(uint8 page=0; page<8; page++) lcdClrPage(page);
+    lcdClrPageBuf();
+}
+
+uint8 cursor     = 1;
+uint8 lastCursor = 1;
+const char *lastLines[6];
+
 void lcdShowMenuPage(const char *heading, const char *line1, const char *line2, 
                      const char *line3  , const char *line4, const char *line5,
-                     uint8 cursor) {
-    lcdClrAll();
-    font813WriteStr(0,  0, 0, heading);
-    font813WriteStr(1, -8, 0, heading);
-    font708WriteStr(2,  0, 0, line1, cursor == 1);
-    font708WriteStr(3,  2, 0, line2, cursor == 2);
+                     bool cursorOnly) {
+    lastLines[0] = heading;
+    lastLines[1] = line1;
+    lastLines[2] = line2;
+    lastLines[3] = line3;
+    lastLines[4] = line4;
+    lastLines[5] = line5;
     
-    font708WriteStr(9, -6, 0, line2, cursor == 2);
-    font708WriteStr(4,  3, 0, line3, cursor == 3);
-    
-    font708WriteStr(9, -5, 0, line3, cursor == 3);
-    font708WriteStr(5,  6, 0, line4, cursor == 4);
-    
-    font708WriteStr(6, -2, 0, line4, cursor == 4);
-    
-    font708WriteStr(7,  0, 0, line5, cursor == 5);
+    if(!cursorOnly) {
+      lcdClrPage(0);
+      lcdClrPage(1);
+      font813WriteStr(0,  0, 0, heading);
+      font813WriteStr(1, -8, 0, heading);
+    }
+    if(!cursorOnly || cursor == 1 || lastCursor == 1) {
+      lcdClrPage(2);
+      font708WriteStr(2,  0, 0, line1, cursor == 1);
+    }
+    if(!cursorOnly || cursor == 2 || lastCursor == 2) {
+      lcdClrPage(3);
+      font708WriteStr(3,  2, 0, line2, cursor == 2);
+    }
+    if(!cursorOnly || cursor == 2 || lastCursor == 2
+                   || cursor == 3 || lastCursor == 3) {
+      lcdClrPage(4);
+      font708WriteStr(9, -6, 0, line2, cursor == 2);
+      font708WriteStr(4,  3, 0, line3, cursor == 3);
+    }
+    if(!cursorOnly || cursor == 3 || lastCursor == 3
+                   || cursor == 4 || lastCursor == 4) {
+      lcdClrPage(5);
+      font708WriteStr(9, -5, 0, line3, cursor == 3);
+      font708WriteStr(5,  6, 0, line4, cursor == 4);
+    }
+    if(!cursorOnly || cursor == 4 || lastCursor == 4) {
+      lcdClrPage(6);
+      font708WriteStr(6, -2, 0, line4, cursor == 4);
+    }
+    if(!cursorOnly || cursor == 5 || lastCursor == 5) {
+      lcdClrPage(7);
+      font708WriteStr(7,  0, 0, line5, cursor == 5);
+    }
+}
+
+void redrawMenu() {
+  lcdShowMenuPage(lastLines[0], lastLines[1], lastLines[2], 
+                  lastLines[3], lastLines[4], lastLines[5], true);
+}
+
+void lcdCursorUp() {
+  if(cursor > 1) {
+    cursor--;
+    redrawMenu();
+    lastCursor = cursor;
+  }
+}
+
+void lcdCursorDown() {
+  if(cursor < 5) {
+    cursor++;
+    redrawMenu();
+    lastCursor = cursor;
+  }
 }
 
 uint8 page, word, wordIdx, pixel;

@@ -25,7 +25,11 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
                               const char *str, bool cursor);
 void lcdShowMenuPage(const char *heading, const char *line1, const char *line2, 
                      const char *line3  , const char *line4, const char *line5,
-                     uint8 cursor);
+                     bool cursorOnly);
+void redrawMenu();
+void lcdCursorUp();
+void lcdCursorDown();
+
 void lcdTest();
 
 #endif	/* LCD_H */

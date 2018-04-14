@@ -58,7 +58,7 @@ void main(void) {
                    "> Paste", 
                    "> Pick / Place", 
                    "> Inspect", 
-                   "> Settings", 2);
+                   "> Settings", false);
 
   uint8  swValues = expReadA();
   uint8  swValChanged = 0;
@@ -66,20 +66,24 @@ void main(void) {
   
   // main event loop
   while(1) {
+    // get switch states (swValues) and change flags (swValChanged)
     uint8 swPinValues = expReadA();
     for(uint8 i = 0; i < 8; i++) {
       uint8 mask = (1 << i);
-//      if(mask != 0x01) continue;
       if((mask & swAllBits) == 0) continue;
       uint8 newval = swPinValues & mask;
-//      LATC7 = (newval != 0);
       if(newval == (swValues & mask)) 
         swChgCount[i] = 0;
       else if(++swChgCount[i] == 5) {
         swValues = (swValues & ~mask) | newval;
         swValChanged |= mask;
-        LATC7 = (newval != 0);
+        LATC7 = ((swValues & swTopLft) != 0);
       }
     }
+    
+    uint8 switchesClosing = (swValChanged & ~swValues);
+    if(switchesClosing & swTopLft) lcdCursorUp();
+    if(switchesClosing & swBotLft) lcdCursorDown();
+    swValChanged = 0;
   }
 }
