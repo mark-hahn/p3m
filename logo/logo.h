@@ -6,7 +6,8 @@
 #include "util.h"
 
 void initLogo();
-void logoShowLogo();
+uint16 getNextLogoRunlen();
+
 
 #endif	/* LOGOTABLE_H */
 

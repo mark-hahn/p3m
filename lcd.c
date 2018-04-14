@@ -102,116 +102,13 @@ void lcdClrAll() {
     lcdClrPageBuf();
 }
 
-uint8 cursor     = 1;
-uint8 lastCursor = 1;
-const char *lastLines[6];
-
-void lcdShowMenuPage(const char *heading, const char *line1, const char *line2, 
-                     const char *line3  , const char *line4, const char *line5,
-                     bool cursorOnly) {
-    lastLines[0] = heading;
-    lastLines[1] = line1;
-    lastLines[2] = line2;
-    lastLines[3] = line3;
-    lastLines[4] = line4;
-    lastLines[5] = line5;
-    
-    if(!cursorOnly) {
-      lcdClrPage(0);
-      lcdClrPage(1);
-      font813WriteStr(0,  0, 0, heading);
-      font813WriteStr(1, -8, 0, heading);
-    }
-    if(!cursorOnly || cursor == 1 || lastCursor == 1) {
-      lcdClrPage(2);
-      font708WriteStr(2,  0, 0, line1, cursor == 1);
-    }
-    if(!cursorOnly || cursor == 2 || lastCursor == 2) {
-      lcdClrPage(3);
-      font708WriteStr(3,  2, 0, line2, cursor == 2);
-    }
-    if(!cursorOnly || cursor == 2 || lastCursor == 2
-                   || cursor == 3 || lastCursor == 3) {
-      lcdClrPage(4);
-      font708WriteStr(9, -6, 0, line2, cursor == 2);
-      font708WriteStr(4,  3, 0, line3, cursor == 3);
-    }
-    if(!cursorOnly || cursor == 3 || lastCursor == 3
-                   || cursor == 4 || lastCursor == 4) {
-      lcdClrPage(5);
-      font708WriteStr(9, -5, 0, line3, cursor == 3);
-      font708WriteStr(5,  6, 0, line4, cursor == 4);
-    }
-    if(!cursorOnly || cursor == 4 || lastCursor == 4) {
-      lcdClrPage(6);
-      font708WriteStr(6, -2, 0, line4, cursor == 4);
-    }
-    if(!cursorOnly || cursor == 5 || lastCursor == 5) {
-      lcdClrPage(7);
-      font708WriteStr(7,  0, 0, line5, cursor == 5);
-    }
-}
-
-void redrawMenu() {
-  lcdShowMenuPage(lastLines[0], lastLines[1], lastLines[2], 
-                  lastLines[3], lastLines[4], lastLines[5], true);
-}
-
-void lcdCursorUp() {
-  if(cursor > 1) {
-    cursor--;
-    redrawMenu();
-    lastCursor = cursor;
-  }
-}
-
-void lcdCursorDown() {
-  if(cursor < 5) {
-    cursor++;
-    redrawMenu();
-    lastCursor = cursor;
-  }
-}
-
-uint8 page, word, wordIdx, pixel;
-
-void addBitsToWord(uint16 len) {
-    for(uint16 i = 0; i < len;  i++) {
-        word >>= 1;
-        word |= (pixel << 7);
-        if(++wordIdx == 8) {
-            lcdPageBuf[lcdPageBufIdx++] = word;
-            word = wordIdx = 0;
-            if(lcdPageBufIdx == 128) {
-                lcdSendPageBuf();
-                if(++page == 7) return;
-                lcdPageBufIdx = 0;
-                lcdClrPageBuf();
-                lcdSendCmd(0xb0 + page);
-                lcdSendCmd(0x04); // col idx<3:0> -> 0
-                lcdSendCmd(0x10); // col idx<7:4> -> 0
-            }
-        }
-    }
-}
-
-void lcdShowLogo() {
-    lcdClrAll();
-    initLogo();
-    lcdPageBufIdx = page = word = wordIdx = pixel = 0;
-    lcdSendCmd(0xb0 + page);
-    lcdSendCmd(0x04); // col (low  nibble) => 4
-    lcdSendCmd(0x10); // col (high nibble) => 0
-    while(page < 7) {
-      uint16 len = getNextLogoRunlen();
-      addBitsToWord(len);
-      pixel = 1 - pixel;
-    }
-}
-
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
-                              const char *str, bool cursor) {
+                              const char *str, bool cursor, char bullet) {
     lcdPageBufIdx = col;
+    
+    if(bullet)
+      font708Chr2pageBuf(bullet, rowOfs, cursor); 
+    
     for(const char* p = str; *p; p++) {
         switch(font) {
             case 708: font708Chr2pageBuf(*p, rowOfs, cursor); break;           

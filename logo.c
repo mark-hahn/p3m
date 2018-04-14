@@ -2,6 +2,7 @@
 #include <xc.h>
 #include "util.h"
 #include "logo.h"
+#include "lcd.h"
 
 // logotable is defined in logotable.asm
 extern const uint16 logotable;
@@ -41,4 +42,40 @@ uint16 getNextLogoRunlen() {
     }
     totalRun += run;
     return totalRun;
+}
+
+uint8 page, word, wordIdx, pixel;
+
+void addBitsToWord(uint16 len) {
+    for(uint16 i = 0; i < len;  i++) {
+        word >>= 1;
+        word |= (pixel << 7);
+        if(++wordIdx == 8) {
+            lcdPageBuf[lcdPageBufIdx++] = word;
+            word = wordIdx = 0;
+            if(lcdPageBufIdx == 128) {
+                lcdSendPageBuf();
+                if(++page == 7) return;
+                lcdPageBufIdx = 0;
+                lcdClrPageBuf();
+                lcdSendCmd(0xb0 + page);
+                lcdSendCmd(0x04); // col idx<3:0> -> 0
+                lcdSendCmd(0x10); // col idx<7:4> -> 0
+            }
+        }
+    }
+}
+
+void logoShowLogo() {
+    lcdClrAll();
+    initLogo();
+    lcdPageBufIdx = page = word = wordIdx = pixel = 0;
+    lcdSendCmd(0xb0 + page);
+    lcdSendCmd(0x04); // col (low  nibble) => 4
+    lcdSendCmd(0x10); // col (high nibble) => 0
+    while(page < 7) {
+      uint16 len = getNextLogoRunlen();
+      addBitsToWord(len);
+      pixel = 1 - pixel;
+    }
 }

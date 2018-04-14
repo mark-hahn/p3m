@@ -37,6 +37,7 @@
 #include "logo.h"
 #include "font708.h"
 #include "font813.h"
+#include "screens.h"
 #include "smot.h"
 
 void main(void) {
@@ -45,7 +46,7 @@ void main(void) {
   ANSELC = 0; // they should not default to on and override everything else
 
   utilInit();
-  i2cInit();
+  i2cInit();  
   expInit();
   lcdInit();   
   initLogo();
@@ -53,16 +54,12 @@ void main(void) {
   initFont813();
   smotInit();
 
-  lcdShowMenuPage( "MAIN MENU", 
-                   "> Calibrate",
-                   "> Paste", 
-                   "> Pick / Place", 
-                   "> Inspect", 
-                   "> Settings", false);
-
   uint8  swValues = expReadA();
   uint8  swValChanged = 0;
   uint8  swChgCount[8];
+  
+  lcdClrAll();
+  scrDrawMenu(0, false);
   
   // main event loop
   while(1) {
@@ -82,8 +79,8 @@ void main(void) {
     }
     
     uint8 switchesClosing = (swValChanged & ~swValues);
-    if(switchesClosing & swTopLft) lcdCursorUp();
-    if(switchesClosing & swBotLft) lcdCursorDown();
+    if(switchesClosing & swTopLft) scrCursorUp();
+    if(switchesClosing & swBotLft) scrCursorDown();
     swValChanged = 0;
   }
 }

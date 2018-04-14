@@ -17,18 +17,12 @@ void lcdInit();
 void lcdSendCmdByte(uint8 cmd);
 void lcdSendCmd(uint8 cmd);
 void lcdSendData(uint8 data);
+void lcdClrPage(uint8 page);
 void lcdClrPageBuf();
 void lcdClrAll();
 void lcdSendPageBuf();
-void lcdShowLogo();
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
-                              const char *str, bool cursor);
-void lcdShowMenuPage(const char *heading, const char *line1, const char *line2, 
-                     const char *line3  , const char *line4, const char *line5,
-                     bool cursorOnly);
-void redrawMenu();
-void lcdCursorUp();
-void lcdCursorDown();
+                              const char *str, bool cursor, char bullet);
 
 void lcdTest();
 
