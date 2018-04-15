@@ -15,7 +15,7 @@ void lcdSendCmdByte(uint8 cmd) {
 }
 
 void lcdInit() {
-    i2cStartSending(i2cLcdAddr);
+  i2cStartSending(i2cLcdAddr);
     
 	lcdSendCmdByte(0xae);//--turn off oled panel
     
@@ -53,8 +53,6 @@ void lcdInit() {
 	lcdSendCmdByte(0xdb);//--set vcomh
 	lcdSendCmdByte(0x40);
         
-	lcdSendCmdByte(0xaf);//--turn on oled panel
-
  	i2cStopSending();   
 }
 
@@ -123,3 +121,6 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
         lcdClrPageBuf();
     }
 }
+
+void lcdOn()  { lcdSendCmd(0xaf); }
+void lcdOff() { lcdSendCmd(0xae); }

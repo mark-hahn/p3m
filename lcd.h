@@ -23,8 +23,8 @@ void lcdClrAll();
 void lcdSendPageBuf();
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
                               const char *str, bool cursor, char bullet);
-
-void lcdTest();
+void lcdOn();
+void lcdOff();
 
 #endif	/* LCD_H */
 

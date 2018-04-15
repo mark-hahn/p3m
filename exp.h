@@ -19,14 +19,27 @@
 #define IODIRB   0x10
 #define GPIOB    0x19
 
+enum swIdx {
+    swTopLftIdx = 0,
+    swBotLftIdx,
+    swTopRgtIdx,
+    swBotRgtIdx,
+    swHomeUpIdx,
+    swPwrOffIdx,
+    switchesCount
+};
+
+extern uint8 swMask[switchesCount];
+
 // switches (port A)
-#define swTopLft   0x40
-#define swBotLft   0x20
-#define swTopRgt   0x10
-#define swBotRgt   0x08
-#define swHomeUp   0x02
-#define swPwrOff   0x01
-#define swAllBits  (swTopLft|swBotLft|swTopRgt|swBotRgt|swHomeUp|swPwrOff)
+#define swTopLftMask   0x40
+#define swBotLftMask   0x20
+#define swTopRgtMask   0x10
+#define swBotRgtMask   0x08
+#define swHomeUpMask   0x02
+#define swPwrOffMask   0x01
+#define swAllBitsMask  (swTopLftMask|swBotLftMask|swTopRgtMask|  \
+                        swBotRgtMask|swHomeUpMask|swPwrOffMask)
 
 void  expInit();
 uint8 expReadA();
@@ -34,6 +47,7 @@ uint8 expReadB();
 void  expWriteB(uint8 byt);
 uint8 expSwIntFlags();
 uint8 expSwPinValues();
+void  expChkSwitches();
 
 #endif	/* EXPANDER_H */
 
