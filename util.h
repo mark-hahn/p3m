@@ -18,7 +18,7 @@ typedef unsigned long uint32;
 void utilInit();
 void dbg();
 void dbgToggle();
-void timer();
+uint16 timer();
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
 
