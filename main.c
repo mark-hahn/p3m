@@ -38,6 +38,7 @@
 #include "font708.h"
 #include "font813.h"
 #include "screens.h"
+#include "state.h"
 #include "smot.h"
 
 void main(void) {
@@ -52,6 +53,7 @@ void main(void) {
   initLogo();
   initFont708();
   initFont813();
+  initState();
   smotInit();
 
   // main event loop

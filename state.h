@@ -14,6 +14,7 @@ enum states {
 
 extern uint8 nextState[statesCount][2][switchesCount];
         
+void initState();
 void stateSwitchChange(uint8 switchMask, bool swUp);
 void stateEnter(uint8 state);
 

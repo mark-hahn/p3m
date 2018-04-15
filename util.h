@@ -15,11 +15,10 @@ typedef unsigned long uint32;
 
 #define clkPeriod 64 // usecs
 
-extern volatile uint16 timer;
-
 void utilInit();
 void dbg();
 void dbgToggle();
+void timer();
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
 
