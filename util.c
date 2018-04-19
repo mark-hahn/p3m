@@ -28,6 +28,11 @@ uint16 timer() {
   return(TMR0H << 8) | low;
 }
 
+void delay128Usecs(uint16 ticks) {
+  uint16 start = timer();
+  while (timer() != (start + ticks));
+}
+
 void delayMs(uint16 ms) {
   uint16 start = timer();
   while (timer() != (start + (ms * 1000)/clkPeriod));

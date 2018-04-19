@@ -21,7 +21,7 @@ void expInit() {
     i2cSendTwoBytes(i2cExpAddr, IOCON,  0x82);       // bank bit = 1, mirror = 0, 
                                                      // not open-drain, active-high
     i2cSendTwoBytes(i2cExpAddr, IODIRA, swAllBitsMask);   // all A (switches) are input
-    i2cSendTwoBytes(i2cExpAddr, IODIRB, 0x00);       // B all output
+    i2cSendTwoBytes(i2cExpAddr, IODIRB, 0x00);            // B all output
     i2cSendTwoBytes(i2cExpAddr, GPINTENA, swAllBitsMask); // enable switch pin ints
     i2cSendTwoBytes(i2cExpAddr, INTCONA, 0);         // pin ints on any change
     expSwPinValues();  // read to clear all flags

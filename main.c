@@ -40,6 +40,7 @@
 #include "screens.h"
 #include "state.h"
 #include "smot.h"
+#include "bmotor.h"
 
 void main(void) {
   ANSELA = 0; // no analog inputs
@@ -53,11 +54,15 @@ void main(void) {
   initLogo();
   initFont708();
   initFont813();
-  initState();
-  smotInit();
+//  initState();
+//  smotInit();
+  bmotorInit();
+
+  bmotorTest();
 
   // main event loop
   while(1) {
-    expChkSwitches();
+    
+//    expChkSwitches();
   }
 }

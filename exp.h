@@ -32,10 +32,11 @@ enum swIdx {
 extern uint8 swMask[switchesCount];
 
 // switches (port A)
-#define swTopLftMask   0x40
-#define swBotLftMask   0x20
-#define swTopRgtMask   0x10
-#define swBotRgtMask   0x08
+#define swTopRgtMask   0x08
+#define swBotRgtMask   0x10
+#define swTopLftMask   0x20
+#define swBotLftMask   0x40
+
 #define swHomeUpMask   0x02
 #define swPwrOffMask   0x01
 #define swAllBitsMask  (swTopLftMask|swBotLftMask|swTopRgtMask|  \

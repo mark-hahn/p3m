@@ -19,6 +19,7 @@ void utilInit();
 void dbg();
 void dbgToggle();
 uint16 timer();
+void delay128Usecs(uint16 ticks);
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
 
