@@ -2,7 +2,7 @@
 #define	STATE_H
 
 #include "util.h"
-#include "exp.h"
+#include "exp-panel.h"
 
 enum states {
   noStateChange = 0,

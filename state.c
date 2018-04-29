@@ -1,6 +1,6 @@
 
 #include "state.h"
-#include "exp.h"
+#include "exp-panel.h"
 #include "lcd.h"
 #include "logo.h"
 #include "screens.h"
@@ -12,9 +12,7 @@ void initState() {
 }
 
 // [cur state], [switch down=0, up=1], [switch idx]
-// switch idx = swTopLft, swBotLft, 
-//              swTopRgt, swBotRgt 
-//              swHomeUp, swPwrOff 
+// switch idx = noStateChange pwrOffState splashState mainState
 uint8 nextState[statesCount][2][switchesCount] = {
   {{0,0,0,0,0,0},                                             // noStateChange
    {0,0,0,0,0,0}},

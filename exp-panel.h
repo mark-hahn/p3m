@@ -5,40 +5,37 @@
 
 #define swDebounceTime 16  // 2 ms @ 127.2 usecs/tick
 
-#define i2cExpAddr 0x27
+#define i2cExpAddr 0x20
 
 // reg addresses in expander chip
-#define IODIRA   0x00
-#define GPINTENA 0x02  // int enable
-#define INTCONA  0x04  // 1: compare to def val, 0: any change
-#define INTFA    0x07  // int flags, read-only
-#define INTCAPA  0x08  // pin values at time int event occured, read-only
-#define GPIOA    0x09
-#define IOCON    0x0B  // when bank = 0
-
-#define IODIRB   0x10
-#define GPIOB    0x19
+#define IODIR     0x00
+#define GPINTEN   0x02  // int enable
+#define expINTCON 0x04  // 1: compare to def val, 0: any change
+#define INTF      0x07  // int flags, read-only
+#define INTCAP    0x08  // pin values at time int event occured, read-only
+#define GPIO      0x09
+#define IOCON     0x0B  // when bank = 0
 
 enum swIdx {
-    swTopLftIdx = 0,
+    swHomeUpIdx = 0,
+    swPwrOffIdx,
+    swBotRgtIdx,
     swBotLftIdx,
     swTopRgtIdx,
-    swBotRgtIdx,
-    swHomeUpIdx,
-    swPwrOffIdx,
+    swTopLftIdx,
     switchesCount
 };
 
 extern uint8 swMask[switchesCount];
 
 // switches (port A)
-#define swTopRgtMask   0x08
-#define swBotRgtMask   0x10
+#define swHomeUpMask   0x01
+#define swPwrOffMask   0x02
+#define swBotRgtMask   0x04
+#define swBotLftMask   0x08
+#define swTopRgtMask   0x10
 #define swTopLftMask   0x20
-#define swBotLftMask   0x40
 
-#define swHomeUpMask   0x02
-#define swPwrOffMask   0x01
 #define swAllBitsMask  (swTopLftMask|swBotLftMask|swTopRgtMask|  \
                         swBotRgtMask|swHomeUpMask|swPwrOffMask)
 

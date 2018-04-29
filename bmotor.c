@@ -1,7 +1,7 @@
 
 #include <xc.h>
 #include "util.h"
-#include "exp.h"
+#include "exp-panel.h"
 #include "bmotor.h"
 
 void bmotorInit() {
@@ -41,13 +41,13 @@ void bmotorTest() {
     dirLAT = ((swreg & swBotLftMask) == 0);
     delay128Usecs(2);
     
-    tstepLAT = ((swreg & swBotLftMask) == 0) || ((swreg & swTopLftMask) == 0);
+    tstepLAT = 1;//((swreg & swBotLftMask) == 0) || ((swreg & swTopLftMask) == 0);
     delay128Usecs(2);
 
-    dirLAT = !((swreg & swBotRgtMask) == 0);
+    dirLAT = ((swreg & swBotRgtMask) == 0);
     delay128Usecs(2);
 
-    dstepLAT = ((swreg & swBotRgtMask) == 0) || ((swreg & swTopRgtMask) == 0);
+    dstepLAT = 1;//((swreg & swBotRgtMask) == 0) || ((swreg & swTopRgtMask) == 0);
   }
 }
 

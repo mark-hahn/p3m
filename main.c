@@ -32,7 +32,7 @@
 #include "util.h"
 #include "main.h"
 #include "i2c.h"
-#include "exp.h"
+#include "exp-panel.h"
 #include "lcd.h"
 #include "logo.h"
 #include "font708.h"
@@ -49,20 +49,22 @@ void main(void) {
 
   utilInit();
   i2cInit();  
-  expInit();
   lcdInit();   
   initLogo();
   initFont708();
   initFont813();
-//  initState();
+  expInit();
+  initState();
 //  smotInit();
-  bmotorInit();
+//  bmotorInit();
+//  bmotorTest();
 
-  bmotorTest();
-
+  
+  
   // main event loop
   while(1) {
-    
-//    expChkSwitches();
+//    lcdTest();
+    volatile int x=0;
+    expChkSwitches();
   }
 }
