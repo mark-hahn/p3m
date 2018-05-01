@@ -39,10 +39,8 @@ extern uint8 swMask[switchesCount];
 #define swAllBitsMask  (swTopLftMask|swBotLftMask|swTopRgtMask|  \
                         swBotRgtMask|swHomeUpMask|swPwrOffMask)
 
-void  expInit();
+void  expPanelInit();
 uint8 expReadA();
-uint8 expReadB();
-void  expWriteB(uint8 byt);
 uint8 expSwIntFlags();
 uint8 expSwPinValues();
 void  expChkSwitches();

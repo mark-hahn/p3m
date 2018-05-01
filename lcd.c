@@ -124,8 +124,3 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
 
 void lcdOn()  { lcdSendCmd(0xaf); }
 void lcdOff() { lcdSendCmd(0xae); }
-
-void lcdTest() {
-  lcdOn();
-  logoShowLogo();
-}

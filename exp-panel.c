@@ -16,7 +16,7 @@ uint8 switches;
 uint8 swChgCount[8];
 
 
-void expInit() {
+void expPanelInit() {
     // expander chip setup
     i2cSendTwoBytes(i2cExpAddr, IOCON,  0x22); // not seq op, no slew, not open-drain, active-high
     i2cSendTwoBytes(i2cExpAddr, IODIR, swAllBitsMask);   // all A (switches) are input
@@ -55,6 +55,7 @@ void expChkSwitches() {
     else if(++swChgCount[i] == 5) {
       switches = (switches & ~mask) | newval;
       stateSwitchChange(mask, (newval != 0));
+      dbgToggle();
     }
   }
 }

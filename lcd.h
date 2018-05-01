@@ -26,7 +26,5 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
 void lcdOn();
 void lcdOff();
 
-void lcdTest();
-
 #endif	/* LCD_H */
 

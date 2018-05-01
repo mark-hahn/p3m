@@ -2,20 +2,6 @@
 #include "util.h"
 #include "smot.h"
 
-#define smote 0
-#define smotp 1
-#define smotf 2
-
-#define smotDirFwd +1
-#define smotDirBwd -1
-
-#define smoteTris TRISC
-#define smotpTris TRISA
-#define smotfTris TRISA
-
-#define smoteLat LATC
-#define smotpLat LATA
-#define smotfLat LATA
 
 // -------- phases ----------
 // schematic     3  2  1  0
@@ -26,10 +12,10 @@
 //              {0, 0, 1, 1},
 //              {1, 0, 0, 1}
 
-uint8 smotPortMask[3] = {0x0f, 0xf0, 0x0f};
+uint8 smotPortMask[3] = {0xf0, 0x0f, 0x0f};
 uint8 smotPortValue[3][4] = { // motor, phase
+    {0x30, 0x60, 0xc0, 0x90},
     {0x03, 0x06, 0x0c, 0x09},
-    {0x30, 0xa0, 0xc0, 0x50},
     {0x03, 0x06, 0x0c, 0x09}
 };
 
@@ -85,8 +71,10 @@ void smotStep(uint8 motor, int dir){
 }
 
 // 800 pps max
-void smotTest(uint16 pps, int dir){
+void smotTest(uint8 motor, uint16 pps, int dir){
     smotOnOff(smote, 1);
+    smotOnOff(smotp, 1);
+    smotOnOff(smotf, 1);
     uint16 tgtSpeed = 4000/pps;
     uint16 speed = 100; // start at 40 pps then accelerate
     while(1) {
@@ -95,5 +83,7 @@ void smotTest(uint16 pps, int dir){
             for(uint8 j=0; j<100; j++) {}
         }
         smotStep(smote, dir);
+        smotStep(smotp, dir);
+        smotStep(smotf, dir);
     }
 }

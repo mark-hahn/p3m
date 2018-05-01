@@ -53,18 +53,21 @@ void main(void) {
   initLogo();
   initFont708();
   initFont813();
-  expInit();
+  expPanelInit();
   initState();
-//  smotInit();
-//  bmotorInit();
-//  bmotorTest();
-
   
+//  smotInit();
+//  smotTest(smote, 400, smotDirFwd);
+
+  bmotorInit();
+  bmotorTest();
+
+  lcdOn();
+  logoShowLogo();
   
   // main event loop
   while(1) {
-//    lcdTest();
-    volatile int x=0;
     expChkSwitches();
+    volatile int x=0;
   }
 }
