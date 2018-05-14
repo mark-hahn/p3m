@@ -33,11 +33,13 @@
 #include "main.h"
 #include "i2c.h"
 #include "exp-panel.h"
+#include "buzz.h"
 #include "lcd.h"
 #include "logo.h"
 #include "font708.h"
 #include "font813.h"
 #include "screens.h"
+#include "lights.h"
 #include "state.h"
 #include "smot.h"
 #include "bmotor.h"
@@ -54,20 +56,24 @@ void main(void) {
   initFont708();
   initFont813();
   expPanelInit();
+//  lgtsInit();
   initState();
   
 //  smotInit();
 //  smotTest(smote, 400, smotDirFwd);
 
-  bmotorInit();
-  bmotorTest();
+//  bmotorInit();
+//  bmotorTest();
 
   lcdOn();
   logoShowLogo();
-  
+
   // main event loop
   while(1) {
+//    lgtsDemo();
     expChkSwitches();
+//    beep();
+//    delayMs(2000);
     volatile int x=0;
   }
 }

@@ -1,8 +1,6 @@
 #ifndef BMOTOR_H
 #define	BMOTOR_H
 
-#define useFaultForDebug false
-
 #define bmotPinsB 0x79   // set all motor pins to output (except fault)
 #define bmotPinsC 0xe0   // set to output
 #define faultTRIS TRISB7 // also used as debug pin

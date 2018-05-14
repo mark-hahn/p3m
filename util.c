@@ -40,8 +40,8 @@ void delay128Usecs(uint16 ticks) {
 }
 
 void delayMs(uint16 ms) {
-  uint16 start = timer();
-  while (timer() != (start + (ms * 1000)/clkPeriod));
+  for(uint16 i=0; i < ms; i++)
+    delay128Usecs(8);
 }
 
 uint16 getRomWord(uint16 addr) {

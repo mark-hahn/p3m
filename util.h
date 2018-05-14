@@ -4,6 +4,8 @@
 
 #include <stdbool.h> 
 
+#define useFaultForDebug false
+
 typedef signed char int8;
 typedef unsigned char uint8;
 typedef int int16;
