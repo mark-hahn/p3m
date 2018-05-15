@@ -4,23 +4,25 @@
 #include "font708.h"
 #include "font813.h"
 
-// icons  (line in asterisk text file)
-//  ~ square button  846
-//  ` left rocker    
-//  \ right rocker
-//  @ top left
-//  # bot left
-//  $ top right
-//  ^ bot right
+// icons  /
+//  \x80\x81 square button
+
+//  2  left rocker
+//  4  right rocker
+//  6  top left
+//  8  bot left
+//  10 top right
+//  12 bot right
 
 const char *string[stringsCount] = {
     "",                      // blankStr
     "MAIN MENU",             // mainMenuStr
-    ">Paste",                 // pasteStr
-    ">Pick / Place",          // pickStr
-    ">Inspect",               // inspectStr
-    ">Settings",              // settingsStr
-    "Press ~ for menu help"  // menuHelpStr
+    ">Paste",                // pasteStr
+    ">Pick / Place",         // pickStr
+    ">Inspect",              // inspectStr
+    ">Settings",             // settingsStr
+    "\x80\x81 \x82\x83 \x84\x85 \x86\x87 \x88\x89 \x8a\x8b \x8c\x8d"  // menuHelpStr
+
 };
 
 uint8 menuLines[menusCount][6] = {
