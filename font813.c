@@ -5,12 +5,12 @@
 #include "lcd.h"
 
 // font813 is defined in font813.as
-extern const uint16 font813;
+extern const uint16 font0813;
 
 uint16 font813Addr;
 
 void initFont813() {
-  font813Addr = (uint16) &font813;
+  font813Addr = (uint16) &font0813;
 }
 
 void font813Chr2pageBuf(uint8 ascii, int8 rowOfs) {
@@ -25,5 +25,5 @@ void font813Chr2pageBuf(uint8 ascii, int8 rowOfs) {
 }
 
 void font813WriteStr(uint8 page, int8 rowOfs, uint8 col, const char *str) {
-    lcdWriteStr(813, page, rowOfs, col, str, false, 0);
+    lcdWriteStr(813, page, rowOfs, col, str, false);
 }

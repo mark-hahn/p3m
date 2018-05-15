@@ -2,12 +2,19 @@
 #include <xc.h>
 #include "util.h"
 #include "bmotor.h"
+#include "lcd.h"
+
+bool lcdDbgTogVal;
 
 void utilInit() {
-    if(useFaultForDebug) {
-      faultLAT  = 0;
+#ifdef FAULT_DEBUG
+      faultLat  = 0;
       faultTRIS = 0; // also used as debug pin
-    }
+#endif
+#ifdef LCD_DEBUG
+      lcdDbgTogVal = 0;
+#endif
+      
     T0ASYNC             = 0;   // sync clock
     T016BIT             = 1;   // 16-bit counter
     T0CON1bits.T0CS     = 5;   // src clk is MFINTOSC (0.5 mhz)
@@ -16,17 +23,24 @@ void utilInit() {
 }
 
 void dbg() {
-    if(useFaultForDebug) {
-      faultLAT = 1;
+#ifdef FAULT_DEBUG
+      faultLat = 1;
       volatile int x=1;
-      faultLAT = 0;
-    }
- }
+      faultLat = 0;
+#endif
+}
 
 void dbgToggle() {
-    if(useFaultForDebug) {
-        faultLAT = !faultLAT;
-    }
+#ifdef FAULT_DEBUG
+   faultLat = !faultLat;
+#endif
+#ifdef LCD_DEBUG
+   char tf[2]; tf[1] = 0;
+   if( lcdDbgTogVal) tf[0] = 'T';
+   if(!lcdDbgTogVal) tf[0] = 'F';
+   lcdDbgStr(7, tf);
+   lcdDbgTogVal = !lcdDbgTogVal;
+#endif
 }
 
 uint16 timer() {

@@ -4,22 +4,32 @@
 #include "font708.h"
 #include "font813.h"
 
+// icons  (line in asterisk text file)
+//  ~ square button  846
+//  ` left rocker    
+//  \ right rocker
+//  @ top left
+//  # bot left
+//  $ top right
+//  ^ bot right
+
 const char *string[stringsCount] = {
-    "MAIN MENU",    // mainMenuStr
-    "Calibrate",    // calibrateStr
-    "Paste",        // pasteStr
-    "Pick / Place", // pickStr
-    "Inspect",      // inspectStr
-    "Settings"      // settingsStr
+    "",                      // blankStr
+    "MAIN MENU",             // mainMenuStr
+    ">Paste",                 // pasteStr
+    ">Pick / Place",          // pickStr
+    ">Inspect",               // inspectStr
+    ">Settings",              // settingsStr
+    "Press ~ for menu help"  // menuHelpStr
 };
 
 uint8 menuLines[menusCount][6] = {
-    {mainMenuStr,
-    calibrateStr,
+   {mainMenuStr,
     pasteStr,
     pickStr,
     inspectStr,
-    settingsStr}
+    settingsStr,
+    menuHelpStr}
 };
 
 uint8 cursor     = 1;
@@ -39,31 +49,31 @@ void scrDrawMenu(uint8 menu, bool cursorOnly) {
     }
     if(!cursorOnly || cursor == 1 || lastCursor == 1) {
       lcdClrPage(2);
-      font708WriteStr(2,  0, 0, line[1], cursor == 1, bulletChr);
+      font708WriteStr(2,  0, 0, line[1], cursor == 1);
     }
     if(!cursorOnly || cursor == 2 || lastCursor == 2) {
       lcdClrPage(3);
-      font708WriteStr(3,  2, 0,  line[2], cursor == 2, bulletChr);
+      font708WriteStr(3,  2, 0,  line[2], cursor == 2);
     }
     if(!cursorOnly || cursor == 2 || lastCursor == 2
                    || cursor == 3 || lastCursor == 3) {
       lcdClrPage(4);
-      font708WriteStr(9, -6, 0, line[2], cursor == 2, bulletChr);
-      font708WriteStr(4,  3, 0, line[3], cursor == 3, bulletChr);
+      font708WriteStr(9, -6, 0, line[2], cursor == 2);
+      font708WriteStr(4,  3, 0, line[3], cursor == 3);
     }
     if(!cursorOnly || cursor == 3 || lastCursor == 3
                    || cursor == 4 || lastCursor == 4) {
       lcdClrPage(5);
-      font708WriteStr(9, -5, 0, line[3], cursor == 3, bulletChr);
-      font708WriteStr(5,  6, 0, line[4], cursor == 4, bulletChr);
+      font708WriteStr(9, -5, 0, line[3], cursor == 3);
+      font708WriteStr(5,  6, 0, line[4], cursor == 4);
     }
     if(!cursorOnly || cursor == 4 || lastCursor == 4) {
       lcdClrPage(6);
-      font708WriteStr(6, -2, 0, line[4], cursor == 4, bulletChr);
+      font708WriteStr(6, -2, 0, line[4], cursor == 4);
     }
     if(!cursorOnly || cursor == 5 || lastCursor == 5) {
       lcdClrPage(7);
-      font708WriteStr(7,  0, 0, line[5], cursor == 5, bulletChr);
+      font708WriteStr(7,  0, 0, line[5], cursor == 5);
     }
 }
 

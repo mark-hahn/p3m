@@ -11,14 +11,12 @@
 #define ms3LAT    LATB3
 #define resetLAT  LATB6
 
-#define faultLAT  LATB7
+#define faultLat  LATB7
 #define faultPORT RB7
 
-#define rstepLAT LATC5
-#define tstepLAT LATC6
-#define sstepLAT LATC7
-
-#define expReset 0x20  // reset pin on expansion port B
+#define rstepLAT  LATC5
+#define tstepLAT  LATC6
+#define sstepLAT  LATC7
 
 void bmotorInit();
 void bmotorTest();

@@ -102,11 +102,8 @@ void lcdClrAll() {
 }
 
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
-                              const char *str, bool cursor, char bullet) {
+                              const char *str, bool cursor) {
     lcdPageBufIdx = col;
-    
-    if(bullet)
-      font708Chr2pageBuf(bullet, rowOfs, cursor); 
     
     for(const char* p = str; *p; p++) {
         switch(font) {
@@ -123,18 +120,26 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
     }
 }
 
-#ifdef LCD_DEBUG
   void lcdDbgStr(uint8 page, const char *str) {
+#ifdef LCD_DEBUG
     lcdClrPage(page);
     lcdWriteStr(708, page, 0, 0, str, true, false);
+#endif
   }
-
   void lcdDbgInt(uint8 page, uint16 num) {
+#ifdef LCD_DEBUG
     char dbgStr[32];
     sprintf(dbgStr, "num = %d", num);
     lcdDbgStr(page, dbgStr);
-  }
 #endif
+  }
+  void lcdDbgHex(uint8 page, uint16 num) {
+#ifdef LCD_DEBUG
+    char dbgStr[32];
+    sprintf(dbgStr, "hex = %04X", num);
+    lcdDbgStr(page, dbgStr);
+#endif
+  }
 
 void lcdOn()  { lcdSendCmd(0xaf); }
 void lcdOff() { lcdSendCmd(0xae); }

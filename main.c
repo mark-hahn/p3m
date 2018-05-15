@@ -48,7 +48,7 @@ void main(void) {
   ANSELA = 0; // no analog inputs
   ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
   ANSELC = 0; // they should not default to on and override everything else
-
+  
   utilInit();
   i2cInit();  
   lcdInit();   
@@ -56,7 +56,7 @@ void main(void) {
   initFont708();
   initFont813();
   expPanelInit();
-//  lgtsInit();
+  lgtsInit();
   initState();
   
 //  smotInit();
@@ -65,17 +65,14 @@ void main(void) {
 //  bmotorInit();
 //  bmotorTest();
 
-  lcdOn();
-  logoShowLogo();
-  lcdDbgStr(6, "asdfg");
-  lcdDbgInt(7, 42);
+//  lcdOn();
+//  logoShowLogo();
   
   // main event loop
   while(1) {
+    expChkSwitches();
 //    lgtsDemo();
-//    expChkSwitches();
 //    beep();
 //    delayMs(2000);
-    volatile int x=0;
   }
 }

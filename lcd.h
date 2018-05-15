@@ -22,9 +22,11 @@ void lcdClrPageBuf();
 void lcdClrAll();
 void lcdSendPageBuf();
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
-                              const char *str, bool cursor, char bullet);
+                              const char *str, bool cursor);
 void lcdDbgStr(uint8 page, const char *str);
-void lcdDbgInt(uint8 page, uint8 num);
+void lcdDbgInt(uint8 page, uint16 num);
+void lcdDbgHex(uint8 page, uint16 num);
+
 void lcdOn();
 void lcdOff();
 

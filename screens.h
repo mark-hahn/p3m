@@ -3,23 +3,21 @@
 
 #include "util.h"
 
-#define bulletChr '>'
-
 enum strings {
-    mainMenuStr = 0,
-    calibrateStr,
+    blankStr = 0,
+    mainMenuStr,
     pasteStr,
     pickStr,
     inspectStr,
     settingsStr,
-    stringsCount
+    menuHelpStr,
+    stringsCount,
 };
 
 extern const char *string[stringsCount];
 
 enum menus {
     mainMenu = 0,
-//    calibrateMenu,
 //    settingsMenu,
     menusCount
 };

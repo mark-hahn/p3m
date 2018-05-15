@@ -17,8 +17,8 @@
 #define IOCON     0x0B  // when bank = 0
 
 enum swIdx {
-    swHomeUpIdx = 0,
-    swPwrOffIdx,
+    swHomeIdx = 0,
+    swPwrIdx,
     swBotRgtIdx,
     swBotLftIdx,
     swTopRgtIdx,
@@ -28,9 +28,9 @@ enum swIdx {
 
 extern uint8 swMask[switchesCount];
 
-// switches (port A)
-#define swHomeUpMask   0x01
-#define swPwrOffMask   0x02
+// switches
+#define swHomeMask     0x01
+#define swPwrMask      0x02
 #define swBotRgtMask   0x04
 #define swBotLftMask   0x08
 #define swTopRgtMask   0x10
@@ -38,7 +38,7 @@ extern uint8 swMask[switchesCount];
 #define buzzMask       0x80
 
 #define swAllSwMask  (swTopLftMask|swBotLftMask|swTopRgtMask|  \
-                        swBotRgtMask|swHomeUpMask|swPwrOffMask)
+                        swBotRgtMask|swHomeMask|swPwrMask)
 
 void  expPanelInit();
 uint8 expReadA();

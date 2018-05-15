@@ -4,12 +4,12 @@
 #include "lcd.h"
 
 // font708 is defined in font708.as
-extern const uint16 font708;
+extern const uint16 font0708;
 
 uint16 font708Addr;
 
 void initFont708() {
-  font708Addr = (uint16) &font708;
+  font708Addr = (uint16) &font0708;
 }
 
 uint8 chrBuf[9];
@@ -59,7 +59,7 @@ void font708Chr2pageBuf(char ascii, int8 rowOfs, bool cursor) {
 }
 
 void font708WriteStr(uint8 page, int8 rowOfs, uint8 col, 
-                                 const char *str, bool cursor, char bullet){
-    lcdWriteStr(708, page, rowOfs, col, str, cursor, bullet);
+                                 const char *str, bool cursor){
+    lcdWriteStr(708, page, rowOfs, col, str, cursor);
 }
 

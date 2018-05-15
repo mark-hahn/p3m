@@ -1,6 +1,6 @@
-PSECT font813sect,class=CODE,local,delta=2
-GLOBAL _font813
-_font813:
+PSECT font0813sect,class=CODE,local,delta=2
+GLOBAL _font0813
+_font0813:
  DW 0x0000
  DW 0x0000
  DW 0x0000

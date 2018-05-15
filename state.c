@@ -8,20 +8,27 @@
 uint8 curState = pwrOffState;
 
 void initState() {
-  stateEnter((expSwPinValues() & swPwrOffMask) ? pwrOffState : splashState);
+  uint8 swPinValues = expSwPinValues();
+  stateEnter((swPinValues & swPwrMask) ? pwrOffState : splashState);
 }
 
 // [cur state], [switch down=0, up=1], [switch idx]
-// switch idx = noStateChange pwrOffState splashState mainState
+// {home,pwr, topLft,botLft, topRgt,botRgt}
+
 uint8 nextState[statesCount][2][switchesCount] = {
-  {{0,0,0,0,0,0},                                             // noStateChange
-   {0,0,0,0,0,0}},
-  {{0,0,0,0,0, splashState},                                  // pwrOffState
-   {0,0,0,0,0,0}},
-  {{mainState,mainState,mainState,mainState, mainState, 0},   // splashState
-   {0,0,0,0,0,pwrOffState}},
-  {{0,0,0,0,0,0},                                             // mainState
-   {0,0,0,0,0,pwrOffState}}
+  {{0,0, 0,0, 0,0},                                 // 0: noStateChange
+   {0,0, 0,0, 0,0}},
+   
+  {{0,splashState, 0,0, 0,0},                       // 1: pwrOffState
+   {0,0, 0,0, 0,0}},
+   
+  {{mainState,0,                                    // 2: splashState
+    mainState,mainState,
+    mainState, mainState},                          
+   {0,pwrOffState, 0,0, 0,0}},
+   
+  {{0,0, 0,0, 0,0},                                 // 3: mainState
+   {0,pwrOffState, 0,0, 0,0}}
 };
 
 void stateSwitchChange(uint8 switchMask, bool swUp) {
@@ -35,10 +42,9 @@ void stateSwitchChange(uint8 switchMask, bool swUp) {
 
 void stateEnter(uint8 state) {
   if(!state) return;
-  if(curState == pwrOffState && state != pwrOffState) {
+  if(curState == pwrOffState && state != pwrOffState)  
     lcdOn();
-    state = splashState;
-  }
+
   switch(state) {
     case pwrOffState: lcdOff(); break;
     case splashState: logoShowLogo(); break;

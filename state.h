@@ -6,9 +6,9 @@
 
 enum states {
   noStateChange = 0,
-  pwrOffState,
-  splashState,
-  mainState,
+  pwrOffState, // 1
+  splashState, // 2
+  mainState,   // 3
   statesCount
 };
 

@@ -7,9 +7,9 @@
 #include "state.h"
 
 uint8 swMask[switchesCount] = {
+  swHomeMask, swPwrMask, 
   swTopLftMask, swBotLftMask, 
-  swTopRgtMask, swBotRgtMask, 
-  swHomeUpMask, swPwrOffMask
+  swTopRgtMask, swBotRgtMask
 };
 
 uint8 switches;
@@ -55,12 +55,12 @@ void expChkSwitches() {
   for(uint8 i = 0; i < switchesCount; i++) {
     uint8 mask = swMask[i];
     uint8 newval = swPinValues & mask;
+    // debounce
     if(newval == (switches & mask)) 
       swChgCount[i] = 0;
     else if(++swChgCount[i] == 5) {
       switches = (switches & ~mask) | newval;
       stateSwitchChange(mask, (newval != 0));
-      dbgToggle();
     }
   }
 }
