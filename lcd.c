@@ -5,6 +5,7 @@
 #include "logo.h"
 #include "font708.h"
 #include "font813.h"
+#include <stdio.h>
 
 uint8 lcdPageBuf[128];
 uint8 lcdPageBufIdx;
@@ -33,13 +34,13 @@ void lcdInit() {
     
 	lcdSendCmdByte(0x40);//--set start line address
     
-	lcdSendCmdByte(0xa6);//--set normal display (not inverted black/white))
+	lcdSendCmdByte(0xa6);//--set not inverted black/white
+  
+	lcdSendCmdByte(0xC8);//--set vertical not flipped
     
 	lcdSendCmdByte(0xa4);//  Disable Entire Display On
     
 	lcdSendCmdByte(0xa1);//--set segment re-map 128 to 0
-    
-	lcdSendCmdByte(0xC8);//--Set COM Output Scan Direction 64 to 0
     
 	lcdSendCmdByte(0xda);//--set com pins hardware configuration
 	lcdSendCmdByte(0x12); // 0x12 for 1106?  0x02 for 1306?  --  TODO
@@ -121,6 +122,19 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
         lcdClrPageBuf();
     }
 }
+
+#ifdef LCD_DEBUG
+  void lcdDbgStr(uint8 page, const char *str) {
+    lcdClrPage(page);
+    lcdWriteStr(708, page, 0, 0, str, true, false);
+  }
+
+  void lcdDbgInt(uint8 page, uint16 num) {
+    char dbgStr[32];
+    sprintf(dbgStr, "num = %d", num);
+    lcdDbgStr(page, dbgStr);
+  }
+#endif
 
 void lcdOn()  { lcdSendCmd(0xaf); }
 void lcdOff() { lcdSendCmd(0xae); }

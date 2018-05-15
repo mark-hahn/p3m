@@ -67,11 +67,13 @@ void main(void) {
 
   lcdOn();
   logoShowLogo();
-
+  lcdDbgStr(6, "asdfg");
+  lcdDbgInt(7, 42);
+  
   // main event loop
   while(1) {
 //    lgtsDemo();
-    expChkSwitches();
+//    expChkSwitches();
 //    beep();
 //    delayMs(2000);
     volatile int x=0;

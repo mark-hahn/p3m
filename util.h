@@ -5,6 +5,7 @@
 #include <stdbool.h> 
 
 #define useFaultForDebug false
+#define LCD_DEBUG
 
 typedef signed char int8;
 typedef unsigned char uint8;
