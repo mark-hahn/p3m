@@ -31,7 +31,7 @@ void expPanelInit() {
     IOCCP6 = 1;   // int pin pos edge
     IOCCF6 = 0;   // int flag
     
-    switches = expReadA();
+    switches = swAllSwMask;
 }
 
 uint8 expReadA() {

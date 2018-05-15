@@ -1,5 +1,6 @@
 
 #include "state.h"
+#include "util.h"
 #include "exp-panel.h"
 #include "lcd.h"
 #include "logo.h"
@@ -9,25 +10,45 @@ uint8 curState = pwrOffState;
 
 void initState() {
   uint8 swPinValues = expSwPinValues();
-  stateEnter((swPinValues & swPwrMask) ? pwrOffState : splashState);
+  curState = pwrOffState;
 }
 
 // [cur state], [switch down=0, up=1], [switch idx]
 // {home,pwr, topLft,botLft, topRgt,botRgt}
 
 uint8 nextState[statesCount][2][switchesCount] = {
-  {{0,0, 0,0, 0,0},                                 // 0: noStateChange
+  // 0: noStateChange
+  {{0,0, 0,0, 0,0},                                 
    {0,0, 0,0, 0,0}},
    
-  {{0,splashState, 0,0, 0,0},                       // 1: pwrOffState
+   // 1: pwrOffState
+  {{0,splashState, 0,0, 0,0},                       
    {0,0, 0,0, 0,0}},
    
-  {{mainState,0,                                    // 2: splashState
+   // 2: splashState
+  {{mainState,0,                                    
     mainState,mainState,
     mainState, mainState},                          
    {0,pwrOffState, 0,0, 0,0}},
    
-  {{0,0, 0,0, 0,0},                                 // 3: mainState
+   // 3: mainState
+  {{menuHelpState,0, 0,0, 0,0},                     
+   {0,pwrOffState, 0,0, 0,0}},
+  
+   // 4: menuHelpState
+  {{menuHelp2State,0, 0,0, 0,0},                    
+   {0,pwrOffState, 0,0, mainState,menuHelp2State}},
+   
+   // 5: menuHelp2State
+  {{menuHelp3State,0, 0,0, menuHelpState,menuHelp3State},                    
+   {0,pwrOffState, 0,0, 0,0}},
+   
+   // 6: menuHelp3State
+  {{menuHelp4State,0, 0,0, menuHelp2State,menuHelp4State},                         
+   {0,pwrOffState, 0,0, 0,0}},
+   
+   // 7: menuHelp4State
+  {{mainState,0, 0,0, menuHelp3State,mainState},                         
    {0,pwrOffState, 0,0, 0,0}}
 };
 
@@ -42,15 +63,34 @@ void stateSwitchChange(uint8 switchMask, bool swUp) {
 
 void stateEnter(uint8 state) {
   if(!state) return;
-  if(curState == pwrOffState && state != pwrOffState)  
-    lcdOn();
 
   switch(state) {
     case pwrOffState: lcdOff(); break;
-    case splashState: logoShowLogo(); break;
+    case splashState: 
+      beep();
+      logoShowLogo(); 
+      delayMs(logoMs);
+      state = mainState;
+      // fall through
     case mainState: 
       lcdClrAll();
-      scrDrawMenu(mainMenu, false);
+      scrDrawMenu(mainMenu, false, false);
+      break;
+    case menuHelpState: 
+      lcdClrAll();
+      scrDrawMenu(menuHelp, true, false);
+      break;
+    case menuHelp2State: 
+      lcdClrAll();
+      scrDrawMenu(menuHelp2, true, false);
+      break;
+    case menuHelp3State: 
+      lcdClrAll();
+      scrDrawMenu(menuHelp3, true, false);
+      break;
+    case menuHelp4State: 
+      lcdClrAll();
+      scrDrawMenu(menuHelp4, true, false);
       break;
     default: return;
   }

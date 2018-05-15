@@ -78,4 +78,5 @@ void logoShowLogo() {
       addBitsToWord(len);
       pixel = 1 - pixel;
     }
+    lcdOn();
 }

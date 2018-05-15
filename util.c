@@ -3,6 +3,7 @@
 #include "util.h"
 #include "bmotor.h"
 #include "lcd.h"
+#include "exp-panel.h"
 
 bool lcdDbgTogVal;
 
@@ -64,4 +65,11 @@ uint16 getRomWord(uint16 addr) {
     NVMADRH = addr >> 8;
     NVMCON1bits.RD = 1;
     return  ((uint16) NVMDATH << 8) | NVMDATL;   
+}
+
+void beep() {
+  delayMs(beepMs);
+  expWriteA(~buzzMask);
+  delayMs(beepMs);
+  expWriteA(buzzMask);
 }

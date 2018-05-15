@@ -103,6 +103,9 @@ void lcdClrAll() {
 
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 
                               const char *str, bool cursor) {
+    if (page == 7) {
+      volatile int x = 0; 
+    }
     lcdPageBufIdx = col;
     
     for(const char* p = str; *p; p++) {

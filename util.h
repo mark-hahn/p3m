@@ -16,7 +16,8 @@ typedef unsigned short long uint24;
 typedef long int32;
 typedef unsigned long uint32;
 
-#define clkPeriod 64 // usecs
+#define clkPeriodUs 64
+#define beepMs      50
 
 void utilInit();
 void dbg();
@@ -25,6 +26,7 @@ uint16 timer();
 void delay128Usecs(uint16 ticks);
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
+void beep();
 
 #endif	/* UTIL_H */
 

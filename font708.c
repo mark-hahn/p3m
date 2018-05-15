@@ -14,10 +14,10 @@ void initFont708() {
 
 uint8 chrBuf[9];
 
-char font708chrShrink2[]  = {' ', 'i', 'l'};
+char font708chrShrink2[]  = {' ', 'i', 'l', '('};
 char font708chrShrink1[]   = {'j', 'H'};
 //char font708chrExpand1[]   = {};
-char font708chrExpand2[]  = {'M', 'W'};
+char font708chrExpand2[]  = {'M', 'W', 'm', 'w'};
 
 
 void font708Chr2pageBuf(char ascii, int8 rowOfs, bool cursor) {

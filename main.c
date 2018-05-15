@@ -72,7 +72,6 @@ void main(void) {
   while(1) {
     expChkSwitches();
 //    lgtsDemo();
-//    beep();
 //    delayMs(2000);
   }
 }
