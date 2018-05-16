@@ -144,5 +144,8 @@ void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col,
 #endif
   }
 
-void lcdOn()  { lcdSendCmd(0xaf); }
+void lcdOn()  { 
+  lcdInit();
+  lcdSendCmd(0xaf); 
+}
 void lcdOff() { lcdSendCmd(0xae); }

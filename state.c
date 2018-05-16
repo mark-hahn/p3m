@@ -68,7 +68,7 @@ uint8 nextState[statesCount][2][switchesCount] = {
    
   // 13: settingsState
   {{mainState,0, 0,0, 0,0},                         
-   {0,pwrOffState, 0,0, 0,0}},
+   {0,pwrOffState, 0,0, 0,0}}
 };
 
 uint8 selState[menusCount][5] = {
@@ -129,6 +129,11 @@ chkState:
     case pickState: 
       lcdClrAll();
       scrDrawMenu(pickScreen, true, false);
+      break;
+      
+    case inspectState: 
+      lcdClrAll();
+      scrDrawMenu(inspectScreen, true, false);
       break;
       
     default: 

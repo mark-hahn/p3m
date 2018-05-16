@@ -6,12 +6,13 @@
 extern uint8 cursor;
 
 enum menus {
-    mainMenu    = 0,
-    menuHelp    = 1,
-    menuHelp2   = 2,
-    menuHelp3   = 3,
-    pasteScreen = 4,
-    pickScreen  = 5,
+    mainMenu      = 0,
+    menuHelp      = 1,
+    menuHelp2     = 2,
+    menuHelp3     = 3,
+    pasteScreen   = 4,
+    pickScreen    = 5,
+    inspectScreen = 6,
     menusCount
 };
 
@@ -41,15 +42,23 @@ enum strings {
     pasteScreenStr,
     paste1Str,
     paste2Str,
-    paste3Str,
-    paste4Str,
-    paste5Str,
+    lightsStr,
+    focusStr,
+    zoomStr,
     pickScreenStr,
     pick1Str,
     pick2Str,
-    pick3Str,
-    pick4Str,
-    pick5Str,
+    inspectScreenStr,
+    inspect1Str,
+    inspect2Str,
+    inspect3Str,
+    inspect4Str,
+    inspect5Str,
+    settingsMenuStr,
+    sm1Str,
+    sm2Str,
+    sm3Str,
+    sm4Str,
     stringsCount
 };
 

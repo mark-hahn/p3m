@@ -42,17 +42,33 @@ const char *string[stringsCount] = {
     
     "PASTE MODE",                   // pasteScreenStr
     "\x85\x82 Position Syringe",      // paste1Str
-    "\x82\x83 Extrude Paste",         // paste2Str
-    "\x82\x84 Retract Paste",         // paste3Str
-    "\x80\x81+ \x85\x82 Focus",       // paste4Str
-    "\x80\x81+ \x82\x85 Zoom",        // paste5Str
+    "\x82\x85 Extrude/Retract",       // paste2Str
+    "\x80\x81+ \x83\x82 Lights",      // lightsStr
+    "\x80\x81+ \x84\x82 Focus",       // focusStr
+    "\x80\x81+ \x82\x85 Zoom",        // zoomStr
             
     "PICK/PLACE MODE",             // pickScreenStr
     "\x85\x82 Rotate",               // pick1Str
-    "\x82\x83 Pinch",                // pick2Str
-    "\x82\x84 Release",              // pick3Str
-    "\x80\x81+ \x85\x82 Focus",      // pick4Str
-    "\x80\x81+ \x82\x85 Zoom"        // pick5Str
+    "\x82\x85 Pinch/Unpinch",        // pick2Str
+            
+    "INSPECTION MODE",             // inspectScreenStr
+    "\x85\x82 Focus",                // inspect1Str
+    "\x82\x85 Zoom",                 // inspect2Str
+    "\x80\x81+ \x83\x82 Lights",     // inspect3Str
+    "\x80\x81+ \x84\x82 Focus",      // inspect4Str
+    "\x80\x81+ \x82\x85 Clear View", // inspect5Str
+            
+    "SETTINGS MENU",               // settingsMenuStr
+    ">Button Press",                // sm1Str
+    ">Rotate",                      // sm2Str
+    ">Pinch",                       // sm3Str
+    ">Paste",                       // sm4Str
+    
+    "BUTTON PRESS",               // settingsMenuStr
+    ">Time before hold action",     // sm1Str
+    ">Rotate",                      // sm2Str
+    ">Pinch",                       // sm3Str
+    ">Paste"                        // sm4Str
 };
 
 uint8 menuLines[menusCount][6] = {
@@ -87,16 +103,30 @@ uint8 menuLines[menusCount][6] = {
    {pasteScreenStr, // pasteScreen
     paste1Str,
     paste2Str,
-    paste3Str,
-    paste4Str,
-    paste5Str},
+    lightsStr,
+    focusStr,
+    zoomStr},
     
    {pickScreenStr, // pickScreen
     pick1Str,
     pick2Str,
-    pick3Str,
-    pick4Str,
-    pick5Str}
+    lightsStr,
+    focusStr,
+    zoomStr},
+    
+   {inspectScreenStr, // inspectScreen
+    inspect1Str,
+    inspect2Str,
+    inspect3Str,
+    inspect4Str,
+    inspect5Str},
+    
+   {inspectScreenStr, // inspectScreen
+    sm1Str,
+    sm2Str,
+    sm3Str,
+    sm4Str,
+    hm5Str}
 };
 
 uint8 cursorLines[menusCount] = {
