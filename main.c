@@ -33,7 +33,6 @@
 #include "main.h"
 #include "i2c.h"
 #include "exp-panel.h"
-#include "buzz.h"
 #include "lcd.h"
 #include "logo.h"
 #include "font708.h"
