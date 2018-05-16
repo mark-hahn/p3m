@@ -41,11 +41,18 @@ const char *string[stringsCount] = {
     "\x82\x84 Select",              // hm13Str,
     
     "PASTE MODE",                   // pasteScreenStr
-    "\x85\x82 Position Syringe",    // paste1Str
-    "\x82\x83 Extrude Paste",       // paste2Str
-    "\x82\x84 Retract Paste",       // paste3Str
-    "\x80\x81+ \x85\x82 Focus",      // paste4Str
-    "\x80\x81+ \x82\x85 Zoom"        // paste5Str
+    "\x85\x82 Position Syringe",      // paste1Str
+    "\x82\x83 Extrude Paste",         // paste2Str
+    "\x82\x84 Retract Paste",         // paste3Str
+    "\x80\x81+ \x85\x82 Focus",       // paste4Str
+    "\x80\x81+ \x82\x85 Zoom",        // paste5Str
+            
+    "PICK/PLACE MODE",             // pickScreenStr
+    "\x85\x82 Rotate",               // pick1Str
+    "\x82\x83 Pinch",                // pick2Str
+    "\x82\x84 Release",              // pick3Str
+    "\x80\x81+ \x85\x82 Focus",      // pick4Str
+    "\x80\x81+ \x82\x85 Zoom"        // pick5Str
 };
 
 uint8 menuLines[menusCount][6] = {
@@ -82,7 +89,14 @@ uint8 menuLines[menusCount][6] = {
     paste2Str,
     paste3Str,
     paste4Str,
-    paste5Str}
+    paste5Str},
+    
+   {pickScreenStr, // pickScreen
+    pick1Str,
+    pick2Str,
+    pick3Str,
+    pick4Str,
+    pick5Str}
 };
 
 uint8 cursorLines[menusCount] = {

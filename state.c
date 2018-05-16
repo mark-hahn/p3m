@@ -126,6 +126,11 @@ chkState:
       scrDrawMenu(pasteScreen, true, false);
       break;
       
+    case pickState: 
+      lcdClrAll();
+      scrDrawMenu(pickScreen, true, false);
+      break;
+      
     default: 
       return;
   }

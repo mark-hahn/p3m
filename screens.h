@@ -11,6 +11,7 @@ enum menus {
     menuHelp2   = 2,
     menuHelp3   = 3,
     pasteScreen = 4,
+    pickScreen  = 5,
     menusCount
 };
 
@@ -43,6 +44,12 @@ enum strings {
     paste3Str,
     paste4Str,
     paste5Str,
+    pickScreenStr,
+    pick1Str,
+    pick2Str,
+    pick3Str,
+    pick4Str,
+    pick5Str,
     stringsCount
 };
 
