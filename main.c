@@ -54,6 +54,7 @@ void main(void) {
   initLogo();
   initFont708();
   initFont813();
+  initScreens();
   expPanelInit();
   lgtsInit();
   initState();

@@ -40,7 +40,12 @@ const char *string[stringsCount] = {
     "\x82\x83 Back",                // hm12Str,
     "\x82\x84 Select",              // hm13Str,
     
-    "PASTE MODE"                    // pasteScreenStr
+    "PASTE MODE",                   // pasteScreenStr
+    "\x85\x82 Position Syringe",    // paste1Str
+    "\x82\x83 Extrude Paste",       // paste2Str
+    "\x82\x84 Retract Paste",       // paste3Str
+    "\x80\x81+ \x85\x82 Focus",      // paste4Str
+    "\x80\x81+ \x82\x85 Zoom"        // paste5Str
 };
 
 uint8 menuLines[menusCount][6] = {
@@ -73,11 +78,11 @@ uint8 menuLines[menusCount][6] = {
     hm5Str},
     
    {pasteScreenStr, // pasteScreen
-    blankStr,
-    blankStr,
-    blankStr,
-    blankStr,
-    blankStr}
+    paste1Str,
+    paste2Str,
+    paste3Str,
+    paste4Str,
+    paste5Str}
 };
 
 uint8 cursorLines[menusCount] = {
@@ -85,9 +90,13 @@ uint8 cursorLines[menusCount] = {
   0,0,0,0
 };
 
-uint8 cursor     = 1;
-uint8 lastCursor = 1;
-uint8 lastMenu   = 0;
+uint8 cursor, lastCursor, lastMenu;;
+
+void initScreens() {
+  cursor = 1;
+  lastCursor = 1;
+  lastMenu   = 0;
+}
 
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
     lastMenu = menu;

@@ -38,12 +38,18 @@ enum strings {
     hm12Str,
     hm13Str,
     pasteScreenStr,
+    paste1Str,
+    paste2Str,
+    paste3Str,
+    paste4Str,
+    paste5Str,
     stringsCount
 };
 
 extern const char *string[stringsCount];
 extern uint8 menuLines[menusCount][6];
 
+void initScreens();
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly);
 void scrRedrawMenu(uint8 menu);
 void scrCursorUp();
