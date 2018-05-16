@@ -3,12 +3,14 @@
 
 #include "util.h"
 
+extern uint8 cursor;
+
 enum menus {
-    mainMenu  = 0,
-    menuHelp  = 1,
-    menuHelp2 = 2,
-    menuHelp3 = 3,
-    menuHelp4 = 4,    
+    mainMenu    = 0,
+    menuHelp    = 1,
+    menuHelp2   = 2,
+    menuHelp3   = 3,
+    pasteScreen = 4,
     menusCount
 };
 
@@ -35,10 +37,7 @@ enum strings {
     hm11Str,
     hm12Str,
     hm13Str,
-    hm14Str,
-    hm15Str,
-    hm16Str,
-    hm17Str,
+    pasteScreenStr,
     stringsCount
 };
 
@@ -48,7 +47,7 @@ extern uint8 menuLines[menusCount][6];
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly);
 void scrRedrawMenu(uint8 menu);
 void scrCursorUp();
-void scrCursorDown();
+void scrCursorDown(uint8 menuIdx);
 
 #endif	/* SCREENS_H */
 

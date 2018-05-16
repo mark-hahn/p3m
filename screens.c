@@ -6,15 +6,15 @@
 
 // icons 
 //  \x80\x81 square button
-//  \x82\x83 left rocker
-//  \x84\x85 right rocker
-//  \x86\x87 top left
-//  \x88\x89 bot left
-//  \x8a\x8b top right
-//  \x8c\x8d bot right
+//  \x82     empty rocker
+//  \x83     top rocker
+//  \x84     bot rocker
+//  \x85     both rocker
+//  \x86 up arrow
+//  \x87 dn arrow
 
 const char *string[stringsCount] = {
-    "",                           // blankStr
+    "",                            // blankStr
     "MAIN MENU",                   // mainMenuStr
     ">Paste",                      // pasteStr
     ">Pick / Place",               // pickStr
@@ -23,27 +23,24 @@ const char *string[stringsCount] = {
     "  (Press\x80\x81 for help)",  // menuHelpStr
     
     "MENU HELP",                  // helpMenuStr
-    " --- Symbols ---",             // hm1Str 
-    "\x80\x81 Leftmost Button",     // hm2Str 
-    "\x82\x83 Left Switch",         // hm3Str 
-    "\x84\x85 Right Switch",        // hm4Str 
+    "The symbol\x80\x81 is the",    // hm1Str 
+    "leftmost button.",             // hm2Str 
+    "It takes you back",            // hm3Str 
+    "to the MAIN MENU.",            // hm4Str   
     "           (Press\x80\x81)",   // hm5Str
     
-     "MENU HELP Cntd.",           // helpMenu2Str
-    "\x86\x87 Left Switch Up",      // hm6Str 
-    "\x88\x89 Left Switch Dn",      // hm7Str 
-    "\x8a\x8b Right Switch Up",     // hm8Str 
-    "\x8c\x8d Right Switch Dn",     // hm9Str 
+    "MENU HELP cont.",            // helpMenu2Str
+    "The pair \x82\x82 are on",     // hm6Str 
+    "the right. \x85 means",        // hm7Str 
+    "press \x86 or \x87 and",       // hm8Str 
+    "\x83 means just \x86.",        // hm9Str 
 
     " --- Navigation ---",          // hm10Str 
-    "\x82\x83 Cursor Up/Down",      // hm11Str 
-    "\x8a\x8b Back",                // hm12Str,
-    "\x8c\x8d Select",              // hm13Str,
+    "\x85\x82 Cursor Up/Down",      // hm11Str 
+    "\x82\x83 Back",                // hm12Str,
+    "\x82\x84 Select",              // hm13Str,
     
-    " When in any menu, ",           // hm14Str 
-    " \x80\x81 will take you",       // hm15Str 
-    " back to the MAIN",             // hm16Str 
-    " MENU."                         // hm17Str 
+    "PASTE MODE"                    // pasteScreenStr
 };
 
 uint8 menuLines[menusCount][6] = {
@@ -75,12 +72,17 @@ uint8 menuLines[menusCount][6] = {
     hm13Str,
     hm5Str},
     
-   {helpMenu2Str, // menuHelp3
-    hm14Str,
-    hm15Str,
-    hm16Str,
-    hm17Str,
-    hm5Str}
+   {pasteScreenStr, // pasteScreen
+    blankStr,
+    blankStr,
+    blankStr,
+    blankStr,
+    blankStr}
+};
+
+uint8 cursorLines[menusCount] = {
+  4,  // mainMenu
+  0,0,0,0
 };
 
 uint8 cursor     = 1;
@@ -151,8 +153,8 @@ void scrCursorUp() {
   }
 }
 
-void scrCursorDown() {
-  if(cursor < 5) {
+void scrCursorDown(uint8 menuIdx) {
+  if(cursor < cursorLines[menuIdx]) {
     cursor++;
     scrRedrawMenu(lastMenu);
     lastCursor = cursor;

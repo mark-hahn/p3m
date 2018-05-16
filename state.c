@@ -28,29 +28,41 @@ uint8 nextState[statesCount][2][switchesCount] = {
    // 2: splashState
   {{mainState,0,                                    
     mainState,mainState,
-    mainState, mainState},                          
+    mainState,mainState},                          
    {0,pwrOffState, 0,0, 0,0}},
    
    // 3: mainState
-  {{menuHelpState,0, 0,0, 0,0},                     
+  {{menuHelpState,0, mainUpState,mainDnState, 0, mainSelState},                     
    {0,pwrOffState, 0,0, 0,0}},
   
    // 4: menuHelpState
   {{menuHelp2State,0, 0,0, 0,0},                    
-   {0,pwrOffState, 0,0, mainState,menuHelp2State}},
+   {0,pwrOffState, 0,0, 0,0}},
    
    // 5: menuHelp2State
-  {{menuHelp3State,0, 0,0, menuHelpState,menuHelp3State},                    
+  {{menuHelp3State,0, 0,0, 0,0},                    
    {0,pwrOffState, 0,0, 0,0}},
    
    // 6: menuHelp3State
-  {{menuHelp4State,0, 0,0, menuHelp2State,menuHelp4State},                         
+  {{mainState,0, 0,0, 0,0},                         
    {0,pwrOffState, 0,0, 0,0}},
    
-   // 7: menuHelp4State
-  {{mainState,0, 0,0, menuHelp3State,mainState},                         
-   {0,pwrOffState, 0,0, 0,0}}
+  // 7: pasteState
+  {{mainState,0, 0,0, 0,0},                         
+   {0,pwrOffState, 0,0, 0,0}},
+   
+  // 8: mainUpState
+  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}},
+  // 8: mainDnState
+  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}},
+  // 8: mainSelState
+  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}}    
 };
+
+uint8 selState[menusCount][5] = {
+  {pasteState, pickState, inspectState, settingsState}
+};
+
 
 void stateSwitchChange(uint8 switchMask, bool swUp) {
   for(uint8 swIdx=0; swIdx < switchesCount; swIdx++) {
@@ -63,7 +75,8 @@ void stateSwitchChange(uint8 switchMask, bool swUp) {
 
 void stateEnter(uint8 state) {
   if(!state) return;
-
+  
+chkState:
   switch(state) {
     case pwrOffState: lcdOff(); break;
     case splashState: 
@@ -71,11 +84,20 @@ void stateEnter(uint8 state) {
       logoShowLogo(); 
       delayMs(logoMs);
       state = mainState;
-      // fall through
+      goto chkState;
+      
     case mainState: 
       lcdClrAll();
       scrDrawMenu(mainMenu, false, false);
       break;
+    case mainUpState: scrCursorUp();           return;
+    case mainDnState: scrCursorDown(mainMenu); return;
+    case mainSelState:
+      switch(cursor) {
+        case 1: state = selState[mainMenu][cursor-1]; goto chkState;
+        default: return;
+      }
+      
     case menuHelpState: 
       lcdClrAll();
       scrDrawMenu(menuHelp, true, false);
@@ -88,11 +110,14 @@ void stateEnter(uint8 state) {
       lcdClrAll();
       scrDrawMenu(menuHelp3, true, false);
       break;
-    case menuHelp4State: 
+      
+    case pasteState: 
       lcdClrAll();
-      scrDrawMenu(menuHelp4, true, false);
+      scrDrawMenu(pasteScreen, true, false);
       break;
-    default: return;
+      
+    default: 
+      return;
   }
   curState = state;
 }

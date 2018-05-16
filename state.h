@@ -14,7 +14,13 @@ enum states {
   menuHelpState,  // 4
   menuHelp2State, // 5
   menuHelp3State, // 6
-  menuHelp4State, // 7
+  pasteState,     // 7
+  mainUpState,    // 8
+  mainDnState,    // 9
+  mainSelState,   // 10
+  pickState,      // 11
+  inspectState,   // 12
+  settingsState,  // 13
   statesCount
 };
 
