@@ -64,11 +64,11 @@ const char *string[stringsCount] = {
     ">Pinch",                       // sm3Str
     ">Paste",                       // sm4Str
     
-    "BUTTON PRESS",               // settingsMenuStr
-    ">Time before hold action",     // sm1Str
-    ">Rotate",                      // sm2Str
-    ">Pinch",                       // sm3Str
-    ">Paste"                        // sm4Str
+//    "BUTTON PRESS",               // settingsMenuStr
+//    ">Time before hold action",     // sm1Str
+//    ">Rotate",                      // sm2Str
+//    ">Pinch",                       // sm3Str
+//    ">Paste"                        // sm4Str
 };
 
 uint8 menuLines[menusCount][6] = {
@@ -79,7 +79,14 @@ uint8 menuLines[menusCount][6] = {
     settingsStr,
     menuHelpStr},
     
-   {helpMenuStr, // menuHelp
+   {settingsMenuStr, // settingsMenu
+    sm1Str,
+    sm2Str,
+    sm3Str,
+    sm4Str,
+    hm5Str},
+
+    {helpMenuStr, // menuHelp
     hm1Str,
     hm2Str,
     hm3Str,
@@ -119,25 +126,18 @@ uint8 menuLines[menusCount][6] = {
     inspect2Str,
     inspect3Str,
     inspect4Str,
-    inspect5Str},
-    
-   {inspectScreenStr, // inspectScreen
-    sm1Str,
-    sm2Str,
-    sm3Str,
-    sm4Str,
-    hm5Str}
+    inspect5Str}
 };
 
 uint8 cursorLines[menusCount] = {
   4,  // mainMenu
-  0,0,0,0
+  4   // settingsMenu
 };
 
 uint8 cursor, lastCursor, lastMenu;;
 
 void initScreens() {
-  cursor = 1;
+  cursor     = 1;
   lastCursor = 1;
   lastMenu   = 0;
 }

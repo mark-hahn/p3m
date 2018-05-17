@@ -18,17 +18,14 @@ void initState() {
 
 uint8 nextState[statesCount][2][switchesCount] = {
   // 0: noStateChange
-  {{0,0, 0,0, 0,0},                                 
-   {0,0, 0,0, 0,0}},
+  {{0,0, 0,0, 0,0},{0,0, 0,0, 0,0}},
    
    // 1: pwrOffState
   {{0,splashState, 0,0, 0,0},                       
    {0,0, 0,0, 0,0}},
    
    // 2: splashState
-  {{mainState,0,                                    
-    mainState,mainState,
-    mainState,mainState},                          
+  {{mainState,0, mainState,mainState, mainState,mainState},                          
    {0,pwrOffState, 0,0, 0,0}},
    
    // 3: mainState
@@ -72,7 +69,8 @@ uint8 nextState[statesCount][2][switchesCount] = {
 };
 
 uint8 selState[menusCount][5] = {
-  {pasteState, pickState, inspectState, settingsState}
+  {pasteState, pickState, inspectState, settingsState}, // main menu
+//  {pasteState, pickState, inspectState, settingsState}, // settings menu
 };
 
 void stateSwitchChange(uint8 switchMask, bool swUp) {
@@ -134,6 +132,11 @@ chkState:
     case inspectState: 
       lcdClrAll();
       scrDrawMenu(inspectScreen, true, false);
+      break;
+      
+    case settingsState: 
+      lcdClrAll();
+      scrDrawMenu(settingsMenu, false, false);
       break;
       
     default: 
