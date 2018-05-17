@@ -13,6 +13,7 @@ enum menus {
     pasteScreen   = 4,
     pickScreen    = 5,
     inspectScreen = 6,
+    settingsMenu  = 7,
     menusCount
 };
 
