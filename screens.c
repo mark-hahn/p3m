@@ -59,10 +59,10 @@ const char *string[stringsCount] = {
     "\x80\x81+ \x82\x85 Clear View", // inspect5Str
             
     "SETTINGS MENU",               // settingsMenuStr
-    ">Button Press",                // sm1Str
-    ">Rotate",                      // sm2Str
-    ">Pinch",                       // sm3Str
-    ">Paste",                       // sm4Str
+    ">Button Press",                 // sm1Str
+    ">Rotate",                       // sm2Str
+    ">Pinch",                        // sm3Str
+    ">Paste"                         // sm4Str
     
 //    "BUTTON PRESS",               // settingsMenuStr
 //    ">Time before hold action",     // sm1Str
@@ -142,7 +142,7 @@ void initScreens() {
   lastMenu   = 0;
 }
 
-void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
+void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {  
     lastMenu = menu;
     const char *line[6];
     for(uint8 i=0; i<6; i++)
