@@ -92,7 +92,7 @@ chkState:
       break;
     case splashState: 
       initScreens();
-//      beep();
+      beep();
       logoShowLogo(); 
       delayMs(logoMs);
       state = mainState;
