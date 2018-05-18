@@ -1,0 +1,51 @@
+# run strs-rom.js in node to compile this into strings-rom.asm
+
+blankStr		  ""
+
+mainMenuStr		  "MAIN MENU"
+pasteStr		  ">Paste"
+pickStr		      ">Pick / Place"
+inspectStr		  ">Inspect"
+settingsStr		  ">Settings"
+menuHelpStr		  "  (Press\x80\x81 for help)"
+
+helpMenuStr		  "MENU HELP"
+hm1Str		      "The symbol\x80\x81 is the"
+hm2Str		      "leftmost button."
+hm3Str		      "It takes you back"
+hm4Str		      "to the MAIN MENU."
+hm5Str		      "           (Press\x80\x81)"
+
+helpMenu2Str      "MENU HELP cont."
+hm6Str		      "The pair		x82\x82 are on"
+hm7Str		      "the right.		x85 means"
+hm8Str		      "press		x86 or		x87 and"
+hm9Str		      "\x83 means just		x86."
+hm10Str		      " --- Navigation ---"
+hm11Str		      "\x85\x82 Cursor Up/Down"
+hm12Str		      "\x82\x83 Back"
+hm13Str		      "\x82\x84 Select"
+
+pasteScreenStr    "PASTE MODE"
+paste1Str		  "\x85\x82 Position Syringe"
+paste2Str		  "\x82\x85 Extrude/Retract"
+lightsStr		  "\x80\x81+		x83\x82 Lights"
+focusStr		  "\x80\x81+		x84\x82 Focus"
+zoomStr           "\x80\x81+		x82\x85 Zoom"
+
+pickScreenStr     "PICK/PLACE MODE"
+pick1Str		  "\x85\x82 Rotate"
+pick2Str		  "\x82\x85 Pinch/Unpinch"
+
+inspectScreenStr  "INSPECTION MODE"
+inspect1Str		  "\x85\x82 Focus"
+inspect2Str		  "\x82\x85 Zoom"
+inspect3Str		  "\x80\x81+		x83\x82 Lights"
+inspect4Str		  "\x80\x81+		x84\x82 Focus"
+inspect5Str		  "\x80\x81+		x82\x85 Clear View"
+
+settingsMenuStr	  "SETTINGS MENU"
+sm1Str		      ">Button Press"
+sm2Str		      ">Rotate"
+sm3Str		      ">Pinch"
+sm4Str		      ">Paste"
