@@ -1,5 +1,14 @@
 # run strs-rom.js in node to compile this into strings-rom.asm
 
+# icons 
+#  \s\q square button
+#  \e   empty rocker
+#  \t   top rocker
+#  \b   bot rocker
+#  \a   both rocker
+#  \u   up arrow
+#  \d   dn arrow
+
 blankStr		  ""
 
 mainMenuStr		  "MAIN MENU"
@@ -7,45 +16,43 @@ pasteStr		  ">Paste"
 pickStr		      ">Pick / Place"
 inspectStr		  ">Inspect"
 settingsStr		  ">Settings"
-menuHelpStr		  "  (Press\x80\x81 for help)"
+menuHelpStr		  "  (Press\s\1 for help)"
 
 helpMenuStr		  "MENU HELP"
-hm1Str		      "The symbol\x80\x81 is the"
+hm1Str		      "The symbol\s\q is the"
 hm2Str		      "leftmost button."
 hm3Str		      "It takes you back"
 hm4Str		      "to the MAIN MENU."
-hm5Str		      "           (Press\x80\x81)"
+hm5Str		      "           (Press\s\q)"
 
 helpMenu2Str      "MENU HELP cont."
-hm6Str		      "The pair		x82\x82 are on"
-hm7Str		      "the right.		x85 means"
-hm8Str		      "press		x86 or		x87 and"
-hm9Str		      "\x83 means just		x86."
+hm6Str		      "The pair \e\e are on"
+hm7Str		      "the right. \a means"
+hm8Str		      "press \u or \d and"
+hm9Str		      "\t means just \u."
+
 hm10Str		      " --- Navigation ---"
-hm11Str		      "\x85\x82 Cursor Up/Down"
-hm12Str		      "\x82\x83 Back"
-hm13Str		      "\x82\x84 Select"
+hm11Str		      "\a\e Cursor Up/Down"
+hm12Str		      "\e\t Back"
+hm13Str		      "\e\b Select"
 
 pasteScreenStr    "PASTE MODE"
-paste1Str		  "\x85\x82 Position Syringe"
-paste2Str		  "\x82\x85 Extrude/Retract"
-lightsStr		  "\x80\x81+		x83\x82 Lights"
-focusStr		  "\x80\x81+		x84\x82 Focus"
-zoomStr           "\x80\x81+		x82\x85 Zoom"
+paste1Str		  "\a\e Position Syringe"
+paste2Str		  "\e\a Extrude/Retract"
+lightsStr		  "\s\q+ \t\e Lights"
+focusStr		  "\s\q+ \b\e Focus"
+zoomStr           "\s\q+ \e\a Zoom"
 
 pickScreenStr     "PICK/PLACE MODE"
-pick1Str		  "\x85\x82 Rotate"
-pick2Str		  "\x82\x85 Pinch/Unpinch"
+pick1Str		  "\a\e Rotate"
+pick2Str		  "\e\a Pinch/Unpinch"
 
 inspectScreenStr  "INSPECTION MODE"
-inspect1Str		  "\x85\x82 Focus"
-inspect2Str		  "\x82\x85 Zoom"
-inspect3Str		  "\x80\x81+		x83\x82 Lights"
-inspect4Str		  "\x80\x81+		x84\x82 Focus"
-inspect5Str		  "\x80\x81+		x82\x85 Clear View"
+inspect1Str		  "\a\e Focus"
+inspect2Str		  "\e\a Zoom"
+inspect5Str		  "\s\q+ \e\a Clear View"
 
 settingsMenuStr	  "SETTINGS MENU"
 sm1Str		      ">Button Press"
 sm2Str		      ">Rotate"
 sm3Str		      ">Pinch"
-sm4Str		      ">Paste"

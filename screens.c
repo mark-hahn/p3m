@@ -4,15 +4,6 @@
 #include "font708.h"
 #include "font813.h"
 
-// icons 
-//  \x80\x81 square button
-//  \x82     empty rocker
-//  \x83     top rocker
-//  \x84     bot rocker
-//  \x85     both rocker
-//  \x86 up arrow
-//  \x87 dn arrow
-
 const char *string[stringsCount] = {
     "",                            // blankStr
     "MAIN MENU",                   // mainMenuStr
