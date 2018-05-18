@@ -2,7 +2,7 @@
 #define	I2C_H
 
 #include <xc.h>
-#include "main.h"
+#include "util.h"
         
 void i2cHardReset();
 void i2cInit();

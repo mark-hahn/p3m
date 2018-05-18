@@ -28,47 +28,10 @@
 #pragma config LVP = OFF        // Low Voltage Programming Enable bit (High Voltage on MCLR/Vpp must be used for programming)
 #pragma config CP = OFF         // UserNVM Program memory code protection bit (UserNVM code protection disabled)
 
-#include <xc.h>
-#include "util.h"
-#include "main.h"
 #include "i2c.h"
-#include "exp-panel.h"
-#include "lcd.h"
-#include "logo.h"
-#include "font708.h"
-#include "font813.h"
-#include "screens.h"
-#include "state.h"
 
 void main(void) {
-  ANSELA = 0; // no analog inputs
-  ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
-  ANSELC = 0; // they should not default to on and override everything else
-  
-  utilInit();
   i2cInit();  
-  lcdInit();   
-  initLogo();
-  initFont708();
-  initFont813();
-  initScreens();
-//  lgtsInit();
-  expPanelInit();
-  initState();
-  
-//  smotInit();
-//  smotTest(smote, 400, smotDirFwd);
-
-//  bmotorInit();
-//  bmotorTest();
-
-//  lcdOn();
-//  logoShowLogo();
-  
-  // main event loop
   while(1) {
-//    expChkSwitches();
-//    lgtsDemo();
-//    delayMs(2000);
   }
 }
