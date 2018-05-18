@@ -16,7 +16,7 @@ pasteStr		  ">Paste"
 pickStr		      ">Pick / Place"
 inspectStr		  ">Inspect"
 settingsStr		  ">Settings"
-menuHelpStr		  "  (Press\s\1 for help)"
+menuHelpStr		  "  (Press\s\q for help)"
 
 helpMenuStr		  "MENU HELP"
 hm1Str		      "The symbol\s\q is the"

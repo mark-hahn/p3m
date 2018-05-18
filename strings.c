@@ -30,7 +30,7 @@ char *romStr(uint8 strId) {
     }
     *strptr++ = chr;
     
-    chr = word & 0x3f;
+    chr = word & 0x7f;
     if(chr == eol) {
       *strptr = 0;
       return glblRomString;

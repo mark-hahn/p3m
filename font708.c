@@ -22,6 +22,8 @@ char font708chrExpand2[]  = {'M', 'W', 'm', 'w'};
 
 
 void font708Chr2pageBuf(char ascii, int8 rowOfs, bool cursor) {
+    if(ascii < 32) ascii += (32 - 8 - 2);
+    
     uint8 wid = 7;
     for(uint8 i=0; i < sizeof(font708chrShrink2); i++)
         if (ascii == font708chrShrink2[i]) wid = 5;
@@ -33,7 +35,7 @@ void font708Chr2pageBuf(char ascii, int8 rowOfs, bool cursor) {
         if (ascii == font708chrExpand2[i]) wid = 9;
     if(lcdPageBufIdx + wid > 128) return;
     
-    uint16 romOfs = (uint16) (ascii - 32) * 4;
+    uint16 romOfs = ((uint16) ascii - 32 + 8) * 4;
     uint16 word0 = getRomWord(font708Addr + romOfs);
     uint16 word1 = getRomWord(font708Addr + romOfs+1);
     uint16 word2 = getRomWord(font708Addr + romOfs+2);
