@@ -1,7 +1,6 @@
 
 #include <xc.h>
 #include "util.h"
-#include "bmotor.h"
 #include "lcd.h"
 #include "exp-panel.h"
 

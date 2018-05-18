@@ -38,10 +38,7 @@
 #include "font708.h"
 #include "font813.h"
 #include "screens.h"
-#include "lights.h"
 #include "state.h"
-#include "smot.h"
-#include "bmotor.h"
 
 void main(void) {
   ANSELA = 0; // no analog inputs
