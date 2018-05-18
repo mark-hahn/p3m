@@ -15,6 +15,8 @@ asm =  "PSECT stringsromsect,class=CODE,local,delta=2\n";
 asm += "GLOBAL _stringsrom\n";
 asm += "_stringsrom:\n";
 
+var zero = "0".charCodeAt(0);
+        
 for(lineIdx = 0; lineIdx < lines.length; lineIdx++) {
    var line = lines[lineIdx];
    if(line.length === 0 || line[0] === '#') continue;
@@ -25,6 +27,19 @@ for(lineIdx = 0; lineIdx < lines.length; lineIdx++) {
    
    enumTxt += "  " + name + ",\n";
    
+   var num = 0;
+   var idx = 0;
+   
+   while(idx < str.length) {
+      var code = str.charCodeAt(i);
+      if (str[idx] === "\\") {
+        code = str.charCodeAt(++idx) - zero;
+      };
+      num = (num << 7) | code;
+      if(i & 1) {
+          
+      }
+   }
    hex = "ffff";
    asm += "  DW 0x" + hex + "\n"
 }
