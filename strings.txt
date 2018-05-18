@@ -50,7 +50,7 @@ pick2Str		  "\e\a Pinch/Unpinch"
 inspectScreenStr  "INSPECTION MODE"
 inspect1Str		  "\a\e Focus"
 inspect2Str		  "\e\a Zoom"
-inspect5Str		  "\s\q+ \e\a Clear View"
+inspect3Str		  "\s\q+ \e\a Clear View"
 
 settingsMenuStr	  "SETTINGS MENU"
 sm1Str		      ">Button Press"

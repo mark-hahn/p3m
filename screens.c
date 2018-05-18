@@ -3,64 +3,7 @@
 #include "lcd.h"
 #include "font708.h"
 #include "font813.h"
-
-const char *string[stringsCount] = {
-    "",                            // blankStr
-    "MAIN MENU",                   // mainMenuStr
-    ">Paste",                      // pasteStr
-    ">Pick / Place",               // pickStr
-    ">Inspect",                    // inspectStr
-    ">Settings",                   // settingsStr
-    "  (Press\x80\x81 for help)",  // menuHelpStr
-    
-    "MENU HELP",                  // helpMenuStr
-    "The symbol\x80\x81 is the",    // hm1Str 
-    "leftmost button.",             // hm2Str 
-    "It takes you back",            // hm3Str 
-    "to the MAIN MENU.",            // hm4Str   
-    "           (Press\x80\x81)",   // hm5Str
-    
-    "MENU HELP cont.",            // helpMenu2Str
-    "The pair \x82\x82 are on",     // hm6Str 
-    "the right. \x85 means",        // hm7Str 
-    "press \x86 or \x87 and",       // hm8Str 
-    "\x83 means just \x86.",        // hm9Str 
-
-    " --- Navigation ---",          // hm10Str 
-    "\x85\x82 Cursor Up/Down",      // hm11Str 
-    "\x82\x83 Back",                // hm12Str,
-    "\x82\x84 Select",              // hm13Str,
-    
-    "PASTE MODE",                   // pasteScreenStr
-    "\x85\x82 Position Syringe",      // paste1Str
-    "\x82\x85 Extrude/Retract",       // paste2Str
-    "\x80\x81+ \x83\x82 Lights",      // lightsStr
-    "\x80\x81+ \x84\x82 Focus",       // focusStr
-    "\x80\x81+ \x82\x85 Zoom",        // zoomStr
-            
-    "PICK/PLACE MODE",             // pickScreenStr
-    "\x85\x82 Rotate",               // pick1Str
-    "\x82\x85 Pinch/Unpinch",        // pick2Str
-            
-    "INSPECTION MODE",             // inspectScreenStr
-    "\x85\x82 Focus",                // inspect1Str
-    "\x82\x85 Zoom",                 // inspect2Str
-    "\x80\x81+ \x83\x82 Lights",     // inspect3Str
-    "\x80\x81+ \x84\x82 Focus",      // inspect4Str
-    "\x80\x81+ \x82\x85 Clear View", // inspect5Str
-            
-    "SETTINGS MENU",               // settingsMenuStr
-    ">Button Press",                // sm1Str
-    ">Rotate",                      // sm2Str
-    ">Pinch",                       // sm3Str
-    ">Paste",                       // sm4Str
-    
-//    "BUTTON PRESS",               // settingsMenuStr
-//    ">Time before hold action",     // sm1Str
-//    ">Rotate",                      // sm2Str
-//    ">Pinch",                       // sm3Str
-//    ">Paste"                        // sm4Str
-};
+#include "strings.h"
 
 uint8 menuLines[menusCount][6] = {
    {mainMenuStr, // mainMenu
@@ -108,15 +51,15 @@ uint8 menuLines[menusCount][6] = {
    {inspectScreenStr, // inspectScreen
     inspect1Str,
     inspect2Str,
-    inspect3Str,
-    inspect4Str,
-    inspect5Str},
+    focusStr,
+    zoomStr,
+    inspect3Str},
     
    {settingsMenuStr, // inspectScreen
     sm1Str,
     sm2Str,
     sm3Str,
-    sm4Str,
+    pasteStr,
     hm5Str}
 };
 
@@ -136,8 +79,12 @@ void initScreens() {
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
     lastMenu = menu;
     const char *line[6];
+    
+    
     for(uint8 i=0; i<6; i++)
-      line[i] = string[menuLines[menu][i]];
+      line[i] = 0; // string[menuLines[menu][i]];
+    
+    
     if(!cursorOnly) {
       lcdClrPage(0);
       lcdClrPage(1);
