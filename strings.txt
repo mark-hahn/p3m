@@ -1,6 +1,6 @@
 # run strs-rom.js in node to compile this into strings-rom.asm
 
-# icons 
+# these char codes are defined in str-rom.js
 #  \s\q square button
 #  \e   empty rocker
 #  \t   top rocker

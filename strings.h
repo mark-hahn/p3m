@@ -5,6 +5,8 @@
 
 #include "util.h"
 
+#define eol 1
+
 enum string_names {
   blankStr,
   mainMenuStr,
@@ -47,6 +49,8 @@ enum string_names {
   sm3Str,
 };
 
+#define MAX_ROMSTR_SIZE 23
+
 const uint16 strRomOfs[] = {
   0,
   1,
@@ -88,5 +92,8 @@ const uint16 strRomOfs[] = {
   271,
   275,
 };
+
+void initStringsRom();
+char *romStr(uint8 strId);
 
 #endif

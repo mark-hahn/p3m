@@ -37,6 +37,7 @@
 #include "logo.h"
 #include "font708.h"
 #include "font813.h"
+#include "strings.h"
 #include "screens.h"
 #include "lights.h"
 #include "state.h"
@@ -54,6 +55,8 @@ void main(void) {
   initLogo();
   initFont708();
   initFont813();
+  initFont708();
+  initStringsRom();
   initScreens();
   expPanelInit();
   lgtsInit();

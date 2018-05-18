@@ -1,10 +1,17 @@
-// this compile strings.txt into strings-rom.asm and strings-rom.h
+// this compiles strings.txt into strings-rom.asm and strings-rom.h
+// usage: node str-rom.js
 
 fs   = require('fs');
 
-icons = { s: 2, q: 3,
-          e: 4, t: 5, b: 6, a: 7,
-          u: 8, d: 9}
+icons = { 
+    s: 2, q: 3, // square button
+    e: 4,       // empty rocker
+    t: 5,       // top rocker
+    b: 6,       // bot rocker
+    a: 7,       // both rocker
+    u: 8,       // up arrow
+    d: 9        // dn arrow
+}
 
 eol = 1;
 
@@ -20,6 +27,7 @@ hdrTxt += "#define STRINGS_H\n";
 hdrTxt += "\n";
 hdrTxt += '#include "util.h"\n';
 hdrTxt += "\n";
+hdrTxt += "#define eol " + eol + "\n\n";
 hdrTxt += "enum string_names {\n";
 hdrTxt += "";
 
@@ -29,8 +37,9 @@ asm =  "PSECT stringsromsect,class=CODE,local,delta=2\n";
 asm += "GLOBAL _stringsrom\n";
 asm += "_stringsrom:\n";
 
-var zero = "0".charCodeAt(0);
-var romOfs = 0;
+zero = "0".charCodeAt(0);
+romOfs = 0;
+maxStrLen = 0;
 
 for(lineIdx = 0; lineIdx < lines.length; lineIdx++) {
    var line = lines[lineIdx];
@@ -41,6 +50,8 @@ for(lineIdx = 0; lineIdx < lines.length; lineIdx++) {
    parts = /^(\S*)\s*"(.*)"$/.exec(line);
    name = parts[1];
    str  = parts[2];
+   
+   maxStrLen = Math.max(maxStrLen, str.length);
    
    if(allStrings[str]) {
      console.log("duplicate string:", str);
@@ -54,7 +65,7 @@ for(lineIdx = 0; lineIdx < lines.length; lineIdx++) {
    var addWord = function() {
       var hex = num.toString(16);
       while(hex.length < 4) hex = "0" + hex;
-      asm += "  DW 0x" + hex + "\n"
+      asm += " DW 0x" + hex + "\n"
       romOfs += 1;
       num = 0;
    }
@@ -72,8 +83,13 @@ for(lineIdx = 0; lineIdx < lines.length; lineIdx++) {
 }
 
 hdrTxt += "};\n\n";
+hdrTxt += "#define MAX_ROMSTR_SIZE " + (maxStrLen + 1) + "\n\n";
 hdrTxt += offsets;
 hdrTxt += "};\n\n";
+
+hdrTxt += "void initStringsRom();\n";
+hdrTxt += "char *romStr(uint8 strId);\n\n";
+
 hdrTxt += "#endif\n";
 
 fs.writeFileSync('strings.h', hdrTxt );

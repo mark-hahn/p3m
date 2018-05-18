@@ -1,9 +1,10 @@
 
 #include <xc.h>
+#include "font708.h"
 #include "util.h"
 #include "lcd.h"
 
-// font708 is defined in font708.as
+// font708 is defined in font708.asm
 extern const uint16 font0708;
 
 uint16 font708Addr;

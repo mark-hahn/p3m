@@ -78,57 +78,55 @@ void initScreens() {
 
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
     lastMenu = menu;
-    const char *line[6];
-    
+    uint16 strId[6];
     
     for(uint8 i=0; i<6; i++)
-      line[i] = 0; // string[menuLines[menu][i]];
-    
+      strId[i] = menuLines[menu][i];
     
     if(!cursorOnly) {
       lcdClrPage(0);
       lcdClrPage(1);
-      font813WriteStr(0,  0, 0, line[0]);
-      font813WriteStr(1, -8, 0, line[0]);
+      font813WriteStr(0,  0, 0, romStr(0));
+      font813WriteStr(1, -8, 0, romStr(0));
     }
     if(!screenOnly) {
       if(!cursorOnly || cursor == 1 || lastCursor == 1) {
         lcdClrPage(2);
-        font708WriteStr(2,  0, 0, line[1], cursor == 1);
+        font708WriteStr(2,  0, 0, romStr(1), cursor == 1);
       }
       if(!cursorOnly || cursor == 2 || lastCursor == 2) {
         lcdClrPage(3);
-        font708WriteStr(3,  2, 0,  line[2], cursor == 2);
+        font708WriteStr(3,  2, 0,  romStr(2), cursor == 2);
       }
       if(!cursorOnly || cursor == 2 || lastCursor == 2
                      || cursor == 3 || lastCursor == 3) {
         lcdClrPage(4);
-        font708WriteStr(9, -6, 0, line[2], cursor == 2);
-        font708WriteStr(4,  3, 0, line[3], cursor == 3);
+        font708WriteStr(9, -6, 0, romStr(2), cursor == 2);
+        font708WriteStr(4,  3, 0, romStr(3), cursor == 3);
       }
       if(!cursorOnly || cursor == 3 || lastCursor == 3
                      || cursor == 4 || lastCursor == 4) {
         lcdClrPage(5);
-        font708WriteStr(9, -5, 0, line[3], cursor == 3);
-        font708WriteStr(5,  6, 0, line[4], cursor == 4);
+        font708WriteStr(9, -5, 0, romStr(3), cursor == 3);
+        font708WriteStr(5,  6, 0, romStr(4), cursor == 4);
       }
       if(!cursorOnly || cursor == 4 || lastCursor == 4) {
         lcdClrPage(6);
-        font708WriteStr(6, -2, 0, line[4], cursor == 4);
+        font708WriteStr(6, -2, 0, romStr(4), cursor == 4);
       }
       if(!cursorOnly || cursor == 5 || lastCursor == 5) {
         lcdClrPage(7);
-        font708WriteStr(7,  0, 0, line[5], cursor == 5);
+        font708WriteStr(7,  0, 0, romStr(5), cursor == 5);
       }
     } else {
-      font708WriteStr(2,  0, 0, line[1], false);
-      font708WriteStr(3,  2, 0, line[2], false);
-      font708WriteStr(9, -6, 0, line[2], false);
-      font708WriteStr(4,  3, 0, line[3], false);
-      font708WriteStr(9, -5, 0, line[3], false);
-      font708WriteStr(5,  6, 0, line[4], false);
-      font708WriteStr(6, -2, 0, line[4], false);
-      font708WriteStr(7,  0, 0, line[5], false);
+      font708WriteStr(2,  0, 0, romStr(1), false);
+      font708WriteStr(3,  2, 0, romStr(2), false);
+      font708WriteStr(9, -6, 0, romStr(2), false);
+      font708WriteStr(4,  3, 0, romStr(3), false);
+      font708WriteStr(9, -5, 0, romStr(3), false);
+      font708WriteStr(5,  6, 0, romStr(4), false);
+      font708WriteStr(6, -2, 0, romStr(4), false);
+      font708WriteStr(7,  0, 0, romStr(5), false);
     }
 }
 
