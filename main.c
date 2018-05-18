@@ -55,8 +55,8 @@ void main(void) {
   initFont708();
   initFont813();
   initScreens();
+//  lgtsInit();
   expPanelInit();
-  lgtsInit();
   initState();
   
 //  smotInit();
@@ -70,7 +70,7 @@ void main(void) {
   
   // main event loop
   while(1) {
-    expChkSwitches();
+//    expChkSwitches();
 //    lgtsDemo();
 //    delayMs(2000);
   }
