@@ -67,12 +67,33 @@ uint8 nextState[statesCount][2][switchesCount] = {
    {0,pwrOffState, 0,0, 0,0}},
    
   // 13: settingsState
+  {{mainState,0, settingsUpState,settingsDnState, mainState, settingsSelState},                             
+   {0,pwrOffState, 0,0, 0,0}},
+
+   // 14: pasteSettingState
   {{mainState,0, 0,0, 0,0},                         
-   {0,pwrOffState, 0,0, 0,0}}
+   {0,pwrOffState, 0,0, 0,0}},
+   
+  // 15: rotateSettingState
+  {{mainState,0, 0,0, 0,0},                         
+   {0,pwrOffState, 0,0, 0,0}},
+   
+  // 16: pinchSettingState
+  {{mainState,0, 0,0, 0,0},                         
+   {0,pwrOffState, 0,0, 0,0}},
+
+  // 17: settingsUpState
+  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}},
+  // 18: settingsDnState
+  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}},
+  // 19: settingselState
+  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}}, 
+  
 };
 
 uint8 selState[menusCount][5] = {
-  {pasteState, pickState, inspectState, settingsState}
+  {pasteState, pickState, inspectState, settingsState}, // mainMenu
+  {pasteSettingState, rotateSettingState,pinchSettingState}, // settingsMenu
 };
 
 void stateSwitchChange(uint8 switchMask, bool swUp) {
@@ -93,20 +114,30 @@ chkState:
       lcdOff(); 
       break;
     case splashState: 
-      initScreens();
-      beep();
+      initCursor();
+//      beep();
       logoShowLogo(); 
       delayMs(logoMs);
       state = mainState;
       goto chkState;
       
     case mainState: 
+      initCursor();
       lcdClrAll();
       scrDrawMenu(mainMenu, false, false);
       break;
     case mainUpState:  scrCursorUp();           return;
     case mainDnState:  scrCursorDown(mainMenu); return;
     case mainSelState: state = selState[mainMenu][cursor-1]; goto chkState;
+    
+    case settingsState: 
+      initCursor();
+      lcdClrAll();
+      scrDrawMenu(settingsMenu, false, false);
+      break;
+    case settingsUpState:  scrCursorUp();               return;
+    case settingsDnState:  scrCursorDown(settingsMenu); return;
+    case settingsSelState: state = selState[settingsMenu][cursor-1]; goto chkState;
       
     case menuHelpState: 
       lcdClrAll();

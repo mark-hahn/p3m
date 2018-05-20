@@ -21,6 +21,12 @@ enum states {
   pickState,      // 11
   inspectState,   // 12
   settingsState,  // 13
+  pasteSettingState,  // 14
+  rotateSettingState, // 15
+  pinchSettingState,  // 16
+  settingsUpState, // 17
+  settingsDnState, // 18
+  settingsSelState, // 19
   statesCount
 };
 

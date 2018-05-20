@@ -1,6 +1,8 @@
 # run strs-rom.js in node to compile this into strings-rom.asm
 
-# these char codes are defined in str-rom.js
+# these escape codes are defined in str-rom.js
+# they should be defined in this file, but oh well ...
+
 #  \s\q square button
 #  \e   empty rocker
 #  \t   top rocker
@@ -53,6 +55,9 @@ inspect2Str		  "\e\a Zoom"
 inspect3Str		  "\s\q+ \e\a Clear View"
 
 settingsMenuStr	  "SETTINGS MENU"
-sm1Str		      ">Button Press"
-sm2Str		      ">Rotate"
-sm3Str		      ">Pinch"
+sm1Str		      ">Rotate"
+sm2Str		      ">Pinch"
+
+pasteSettingsMenuStr "PASTE SETTINGS"
+ps1Str		         "Extrude On Click"
+ps2Str		         "Extrude On Hold"

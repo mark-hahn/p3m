@@ -7,17 +7,18 @@ extern uint8 cursor;
 
 enum menus {
     mainMenu      = 0,
-    menuHelp      = 1,
-    menuHelp2     = 2,
-    menuHelp3     = 3,
-    pasteScreen   = 4,
-    pickScreen    = 5,
-    inspectScreen = 6,
-    settingsMenu  = 7,
+    settingsMenu,  // 1
+    menuHelp,      // 2
+    menuHelp2,     // 3
+    menuHelp3,     // 4
+    pasteScreen,   // 5
+    pickScreen ,   // 6
+    inspectScreen, // 7
     menusCount
 };
 
 void initScreens();
+void initCursor();
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly);
 void scrRedrawMenu(uint8 menu);
 void scrCursorUp();

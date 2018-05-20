@@ -46,7 +46,9 @@ enum string_names {
   settingsMenuStr,
   sm1Str,
   sm2Str,
-  sm3Str,
+  pasteSettingsMenuStr,
+  ps1Str,
+  ps2Str,
 };
 
 #define MAX_ROMSTR_SIZE 23
@@ -89,8 +91,10 @@ const uint16 strRomOfs[] = {
   249,
   258,
   265,
-  272,
-  276,
+  269,
+  273,
+  281,
+  290,
 };
 
 void initStringsRom();
