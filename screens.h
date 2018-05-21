@@ -3,18 +3,19 @@
 
 #include "util.h"
 
-extern uint8 cursor;
+extern uint8 curMenu;;
+extern uint8 curCursor;
 
 enum menus {
-    mainMenu      = 0,
-    settingsMenu,  // 1
-    menuHelp,      // 2
-    menuHelp2,     // 3
-    menuHelp3,     // 4
-    pasteScreen,   // 5
-    pickScreen ,   // 6
-    inspectScreen, // 7
-    pasteSettingsMenu, // 8
+    mainMenu = 0,
+    settingsMenu,      // 1
+    pasteSettingsMenu, // 2
+    menuHelp,      
+    menuHelp2,     
+    menuHelp3,     
+    pasteScreen,   
+    pickScreen ,   
+    inspectScreen, 
     menusCount
 };
 
@@ -22,9 +23,10 @@ enum menus {
 void initScreens();
 void initCursor();
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly);
-void scrRedrawMenu(uint8 menu);
+void scrRedrawMenu();
 void scrCursorUp();
-void scrCursorDown(uint8 menuIdx);
+void scrCursorDown();
+void openOptionField(uint8 optCode);
 
 #endif	/* SCREENS_H */
 

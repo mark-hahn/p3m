@@ -8,26 +8,27 @@
 
 enum states {
   noStateChange = 0,
-  pwrOffState,    // 1
-  splashState,    // 2
-  mainState,      // 3
-  menuHelpState,  // 4
-  menuHelp2State, // 5
-  menuHelp3State, // 6
-  pasteState,     // 7
-  mainUpState,    // 8
-  mainDnState,    // 9
-  mainSelState,   // 10
-  pickState,      // 11
-  inspectState,   // 12
-  settingsState,  // 13
-  pasteSettingState,  // 14
-  rotateSettingState, // 15
-  pinchSettingState,  // 16
-  settingsUpState, // 17
-  settingsDnState, // 18
-  settingsSelState, // 19
-  statesCount
+  pwrOffState,        // 1
+  splashState,        // 2
+  mainState,          // 3
+  menuHelpState,      // 4
+  menuHelp2State,     // 5
+  menuHelp3State,     // 6
+  pasteState,         // 7
+  pickState,          // 8
+  inspectState,       // 9
+  settingsState,      // 10
+  pasteSettingState,  // 11
+  rotateSettingState, // 12
+  pinchSettingState,  // 13
+  extrudeDistState,   // 14
+  extrudeRateState,   // 15
+  statesCount,
+
+  upAction,
+  downAction,
+  escAction,
+  selAction,   
 };
 
 extern uint8 nextState[statesCount][2][switchesCount];

@@ -20,6 +20,14 @@ uint8 menuLines[menusCount][6] = {
     sm1Str,
     sm2Str,
    },
+   
+   {pasteSettingsMenuStr,
+    ps1Str,
+    pasteClickOption,
+    ps2Str,
+    pasteHoldOption,
+   },
+
    {helpMenuStr,
     hm1Str,
     hm2Str,
@@ -67,101 +75,109 @@ uint8 menuLines[menusCount][6] = {
     focusStr,
     inspect3Str,
     },
-    
-   {pasteSettingsMenuStr,
-    ps1Str,
-    pasteClickOption,
-    ps2Str,
-    pasteHoldOption,
-   },
-
-    
 };
 
-uint8 cursorLines[menusCount] = {
-  4,  // mainMenu
-  3,  // settingsMenuStr
-  0,0,0,0
-};
-
-uint8 cursor, lastCursor, lastMenu;;
+uint8 curCursor, lastCursor;
+uint8 curMenu;;
 
 void initCursor() {
-  cursor = 1;
+  curCursor = 1;
   lastCursor = 1;
 }
 void initScreens() {
   initCursor();
-  lastMenu   = 0;
+  curMenu = 0;
+}
+
+char *menuLine(uint8 menu, uint8 line){
+  if(menuLines[menu][line] < firstOptionCode)
+    return romStr(menuLines[menu][line]);
+  else
+    return optionStr(menuLines[menu][line]);
 }
 
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
-    lastMenu = menu;        
+    curMenu = menu;        
     
     if(!cursorOnly) {
       lcdClrPage(0);
       lcdClrPage(1);
-      font813WriteStr(0,  0, 0, romStr(menuLines[menu][0]));
-      font813WriteStr(1, -8, 0, romStr(menuLines[menu][0]));
+      font813WriteStr(0,  0, 0, menuLine(menu,0));
+      font813WriteStr(1, -8, 0, menuLine(menu,0));
     }
     if(!screenOnly) {
-      if(!cursorOnly || cursor == 1 || lastCursor == 1) {
+      if(!cursorOnly || curCursor == 1 || lastCursor == 1) {
         lcdClrPage(2);
-        font708WriteStr(2,  0, 0, romStr(menuLines[menu][1]), cursor == 1);
+        font708WriteStr(2,  0, 0, menuLine(menu,1), curCursor == 1);
       }
-      if(!cursorOnly || cursor == 2 || lastCursor == 2) {
+      if(!cursorOnly || curCursor == 2 || lastCursor == 2) {
         lcdClrPage(3);
-        font708WriteStr(3,  2, 0,  romStr(menuLines[menu][2]), cursor == 2);
+        font708WriteStr(3,  2, 0,  menuLine(menu,2), curCursor == 2);
       }
-      if(!cursorOnly || cursor == 2 || lastCursor == 2
-                     || cursor == 3 || lastCursor == 3) {
+      if(!cursorOnly || curCursor == 2 || lastCursor == 2
+                     || curCursor == 3 || lastCursor == 3) {
         lcdClrPage(4);
-        font708WriteStr(9, -6, 0, romStr(menuLines[menu][2]), cursor == 2);
-        font708WriteStr(4,  3, 0, romStr(menuLines[menu][3]), cursor == 3);
+        font708WriteStr(9, -6, 0, menuLine(menu,2), curCursor == 2);
+        font708WriteStr(4,  3, 0, menuLine(menu,3), curCursor == 3);
       }
-      if(!cursorOnly || cursor == 3 || lastCursor == 3
-                     || cursor == 4 || lastCursor == 4) {
+      if(!cursorOnly || curCursor == 3 || lastCursor == 3
+                     || curCursor == 4 || lastCursor == 4) {
         lcdClrPage(5);
-        font708WriteStr(9, -5, 0, romStr(menuLines[menu][3]), cursor == 3);
-        font708WriteStr(5,  6, 0, romStr(menuLines[menu][4]), cursor == 4);
+        font708WriteStr(9, -5, 0, menuLine(menu,3), curCursor == 3);
+        font708WriteStr(5,  6, 0, menuLine(menu,4), curCursor == 4);
       }
-      if(!cursorOnly || cursor == 4 || lastCursor == 4) {
+      if(!cursorOnly || curCursor == 4 || lastCursor == 4) {
         lcdClrPage(6);
-        font708WriteStr(6, -2, 0, romStr(menuLines[menu][4]), cursor == 4);
+        font708WriteStr(6, -2, 0, menuLine(menu,4), curCursor == 4);
       }
-      if(!cursorOnly || cursor == 5 || lastCursor == 5) {
+      if(!cursorOnly || curCursor == 5 || lastCursor == 5) {
         lcdClrPage(7);
-        font708WriteStr(7,  0, 0, romStr(menuLines[menu][5]), cursor == 5);
+        font708WriteStr(7,  0, 0, menuLine(menu,5), curCursor == 5);
       }
     } else {
-      font708WriteStr(2,  0, 0, romStr(menuLines[menu][1]), false);
-      font708WriteStr(3,  2, 0, romStr(menuLines[menu][2]), false);
-      font708WriteStr(9, -6, 0, romStr(menuLines[menu][2]), false);
-      font708WriteStr(4,  3, 0, romStr(menuLines[menu][3]), false);
-      font708WriteStr(9, -5, 0, romStr(menuLines[menu][3]), false);
-      font708WriteStr(5,  6, 0, romStr(menuLines[menu][4]), false);
-      font708WriteStr(6, -2, 0, romStr(menuLines[menu][4]), false);
-      font708WriteStr(7,  0, 0, romStr(menuLines[menu][5]), false);
+      font708WriteStr(2,  0, 0, menuLine(menu,1), false);
+      font708WriteStr(3,  2, 0, menuLine(menu,2), false);
+      font708WriteStr(9, -6, 0, menuLine(menu,2), false);
+      font708WriteStr(4,  3, 0, menuLine(menu,3), false);
+      font708WriteStr(9, -5, 0, menuLine(menu,3), false);
+      font708WriteStr(5,  6, 0, menuLine(menu,4), false);
+      font708WriteStr(6, -2, 0, menuLine(menu,4), false);
+      font708WriteStr(7,  0, 0, menuLine(menu,5), false);
     }
 }
 
-void scrRedrawMenu(uint8 menu) {
-  scrDrawMenu(menu, false, true);
+void scrRedrawMenu() {
+  scrDrawMenu(curMenu, false, true);
 }
+
+uint8 cursorLines[] = {
+  4,  // mainMenu
+  3,  // settingsMenuStr
+  4,  // pasteSettingsMenuStr
+};
+
+uint8 cursorDist[] = {
+  1,  // mainMenu
+  1,  // settingsMenuStr
+  2,  // pasteSettingsMenuStr
+};
 
 void scrCursorUp() {
-  if(cursor > 1) {
-    cursor--;
-    scrRedrawMenu(lastMenu);
-    lastCursor = cursor;
+  if(curCursor > cursorDist[curMenu]) {
+    curCursor -= cursorDist[curMenu];
+    scrRedrawMenu(curMenu);
+    lastCursor = curCursor;
   }
 }
 
-void scrCursorDown(uint8 menuIdx) {
-  if(cursor < cursorLines[menuIdx]) {
-    cursor++;
-    scrRedrawMenu(lastMenu);
-    lastCursor = cursor;
+void scrCursorDown() {
+  if(curCursor < cursorLines[curMenu] - cursorDist[curMenu] + 1) {
+    curCursor += cursorDist[curMenu];
+    scrRedrawMenu();
+    lastCursor = curCursor;
   }
 }
 
+void openOptionField(uint8 optCode) {
+  scrCursorDown(1);
+}

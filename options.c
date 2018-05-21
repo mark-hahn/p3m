@@ -46,7 +46,7 @@ void optValUp(uint8 optCode) {
 char  glblOptStr[32];
 char *glblOptStrPtr;
 
-void addStr(char *str) {
+void addStr(const char *str) {
   for(; *str; str++) {
     *glblOptStrPtr = *str;
     glblOptStrPtr++;
@@ -94,12 +94,13 @@ char *optionRateStr(uint16 micronsPerSec) {
 }
 
 char *optionStr(uint8 optCode) {
-  glblOptStrPtr = &glblOptStr;
+  glblOptStrPtr = glblOptStr;
+  addStr("   ");
   switch (optCode) {
     case pasteClickOption: return optionDistStr(option.val.pasteClick);
     case pasteHoldOption:  return optionRateStr(option.val.pasteHold);
   }
-  return "error"; 
+  return (char *) "error"; 
 }
 
 void flash_memory_erase () {
