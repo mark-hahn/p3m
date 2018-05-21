@@ -30,6 +30,7 @@
 
 #include <xc.h>
 #include "util.h"
+#include "options.h"
 #include "main.h"
 #include "i2c.h"
 #include "exp-panel.h"
@@ -50,6 +51,7 @@ void main(void) {
   ANSELC = 0; // they should not default to on and override everything else
   
   utilInit();
+  optionsInit();
   i2cInit();  
   lcdInit();   
   initLogo();

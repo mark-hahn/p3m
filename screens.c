@@ -4,6 +4,7 @@
 #include "font708.h"
 #include "font813.h"
 #include "strings.h"
+#include "options.h"
 
 uint8 menuLines[menusCount][6] = {
    {mainMenuStr, 
@@ -66,6 +67,14 @@ uint8 menuLines[menusCount][6] = {
     focusStr,
     inspect3Str,
     },
+    
+   {pasteSettingsMenuStr,
+    ps1Str,
+    pasteClickOption,
+    ps2Str,
+    pasteHoldOption,
+   },
+
     
 };
 

@@ -14,8 +14,10 @@ enum menus {
     pasteScreen,   // 5
     pickScreen ,   // 6
     inspectScreen, // 7
+    pasteSettingsMenu, // 8
     menusCount
 };
+
 
 void initScreens();
 void initCursor();
