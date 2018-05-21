@@ -22,11 +22,9 @@ void optionsInit() {
   }
 }
 
-char glblOptStr[32];
-
-uint16 optValChoices[optionsCount][4] = {
-  {500, 1000, 2000, 0}, // pasteClickOption
-  {500, 1000, 2000, 0}, // pasteHoldOption
+uint16 optValChoices[optionsCount][5] = {
+  {500, 1000, 1500, 2000, 0}, // pasteClickOption
+  {500, 1000, 1500, 2000, 0}, // pasteHoldOption
 };
 
 void optValDown(uint8 optCode) {
@@ -45,13 +43,58 @@ void optValUp(uint8 optCode) {
   }  
 }
 
+char  glblOptStr[32];
+char *glblOptStrPtr;
+
+void addStr(char *str) {
+  for(; *str; str++) {
+    *glblOptStrPtr = *str;
+    glblOptStrPtr++;
+  }
+}
+
+void addInt(uint8 n) {
+  char digStr[] = {0,0};
+  if(n==0) {
+    addStr("0");
+    return;
+  }
+  if(n >= 100) {
+    *digStr = (48 +        n / 100); addStr(digStr);
+    *digStr = (48 + (n % 100)/  10); addStr(digStr);
+    *digStr = (48 +  n %  10);       addStr(digStr);
+  } else if( n >= 10) {
+    *digStr = (48 + n / 10); addStr(digStr);
+    *digStr = (48 + n % 10); addStr(digStr);
+  } else {
+    *digStr = (48 + n); addStr(digStr);
+  }
+}
+
+void addNum(uint16 num){
+  uint8 man  = num / 1000;
+  uint8 frac = (num-man*1000)/100;
+  addInt(man);
+  addStr(".");
+  addInt(frac);
+}
+
 char *optionDistStr(uint16 microns) {
-  
+  addNum(microns);
+  addStr(" mm");
+  *glblOptStrPtr = 0;
+  return glblOptStr;
 }
+
 char *optionRateStr(uint16 micronsPerSec) {
-  
+  addNum(micronsPerSec);
+  addStr(" mm/sec");
+  *glblOptStrPtr = 0;
+  return glblOptStr;
 }
+
 char *optionStr(uint8 optCode) {
+  glblOptStrPtr = &glblOptStr;
   switch (optCode) {
     case pasteClickOption: return optionDistStr(option.val.pasteClick);
     case pasteHoldOption:  return optionRateStr(option.val.pasteHold);

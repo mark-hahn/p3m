@@ -33,9 +33,9 @@ union valFld {
 extern union valFld option;
 
 void optionsInit();
-void saveOptions();
 void optValDown(uint8 optCode);
 void optValUp(uint8 optCode);
+void saveOptions();
 char *optionStr(uint8 optCode);
 
 #endif	/* OPTIONS_H */
