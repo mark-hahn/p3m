@@ -77,11 +77,11 @@ uint8 nextState[statesCount][2][switchesCount] = {
    {0,pwrOffState, 0,0, 0,0}},
   
   // 14: extrudeDistState
-   {{mainState,0, upAction,downAction, escAction,selAction},                     
+   {{mainState,0, upOptAction,downOptAction, escAction,selOptAction},                     
    {0,pwrOffState, 0,0, 0,0}},  
   
   // 15: extrudeRateState
-   {{mainState,0, upAction,downAction, escAction,selAction},                     
+   {{mainState,0, upOptAction,downOptAction, escAction,selOptAction},                     
    {0,pwrOffState, 0,0, 0,0}},    
 };
 
@@ -103,10 +103,30 @@ uint8 actionState[menusCount][5] = {
 void stateEnter(uint8 state) {
 chkState:
   switch(state) {
-    case upAction:   scrCursorUp();   return;
-    case downAction: scrCursorDown(); return;
+    case upAction:   scrCursorUp(false);   return;
+    case downAction: scrCursorDown(false); return;
     case selAction:
       state = actionState[curMenu][curCursor-1];
+      goto chkState;
+      
+    case upOptAction:   
+      optValUp(editingOption);
+      scrRedrawMenu();
+      return;
+    case downOptAction: 
+      optValDown(editingOption);
+      scrRedrawMenu();      
+      return;
+    case selOptAction: 
+      saveOptions(); 
+      // fall through
+    case escAction: 
+      loadOptions();
+      editingOption = 0;
+      scrCursorUp(true); 
+      switch(curMenu) {
+        case pasteSettingsMenu: state = pasteSettingState; break;
+      }
       goto chkState;
       
     case pwrOffState: 
@@ -164,8 +184,8 @@ chkState:
       lcdClrAll();
       scrDrawMenu(pasteSettingsMenu, false, false);
       break;
-    case extrudeDistState: openOptionField(pasteClickOption);
-    case extrudeRateState: openOptionField(pasteHoldOption);
+    case extrudeDistState: openOptionField(pasteClickOption); break;
+    case extrudeRateState: openOptionField(pasteHoldOption);  break;
 
     default: 
       return;

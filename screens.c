@@ -152,32 +152,37 @@ void scrRedrawMenu() {
 
 uint8 cursorLines[] = {
   4,  // mainMenu
-  3,  // settingsMenuStr
-  4,  // pasteSettingsMenuStr
+  3,  // settingsMenu
+  4,  // pasteSettingsMenu
 };
 
 uint8 cursorDist[] = {
   1,  // mainMenu
-  1,  // settingsMenuStr
-  2,  // pasteSettingsMenuStr
+  1,  // settingsMenu
+  2,  // pasteSettingsMenu
 };
 
-void scrCursorUp() {
-  if(curCursor > cursorDist[curMenu]) {
-    curCursor -= cursorDist[curMenu];
-    scrRedrawMenu(curMenu);
-    lastCursor = curCursor;
-  }
-}
-
-void scrCursorDown() {
-  if(curCursor < cursorLines[curMenu] - cursorDist[curMenu] + 1) {
-    curCursor += cursorDist[curMenu];
+void scrCursorUp(bool oneOnly) {
+  uint8 dist = (oneOnly ? 1 : cursorDist[curMenu]);
+  if(curCursor > dist) {
+    curCursor -= dist;
     scrRedrawMenu();
     lastCursor = curCursor;
   }
 }
 
+void scrCursorDown(bool oneOnly) {
+  uint8 dist = (oneOnly ? 1 : cursorDist[curMenu]);
+  if(curCursor < cursorLines[curMenu] - dist + 1) {
+    curCursor += dist;
+    scrRedrawMenu();
+    lastCursor = curCursor;
+  }
+}
+
+uint8 editingOption = 0;
+
 void openOptionField(uint8 optCode) {
-  scrCursorDown(1);
+  editingOption = optCode;
+  scrCursorDown(true);
 }

@@ -51,7 +51,9 @@ void main(void) {
   ANSELC = 0; // they should not default to on and override everything else
   
   utilInit();
-  optionsInit();
+  
+  
+  loadOptions();
   i2cInit();  
   lcdInit();   
   initLogo();

@@ -3,6 +3,9 @@
 
 #include "util.h"
 
+#define RESET_OPTIONS     false
+#define DONT_SAVE_OPTIONS false
+
 #define OPTION_ROM_ADDR    0x1000
 #define OPTION_ROM_ADDR_HI 0x10
 #define OPTION_ROM_ADDR_LO 0x00
@@ -32,7 +35,7 @@ union valFld {
 
 extern union valFld option;
 
-void optionsInit();
+void loadOptions();
 void optValDown(uint8 optCode);
 void optValUp(uint8 optCode);
 void saveOptions();

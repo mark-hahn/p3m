@@ -29,6 +29,9 @@ enum states {
   downAction,
   escAction,
   selAction,   
+  upOptAction,
+  downOptAction, 
+  selOptAction
 };
 
 extern uint8 nextState[statesCount][2][switchesCount];

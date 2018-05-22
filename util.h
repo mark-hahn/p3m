@@ -4,6 +4,9 @@
 
 #include <stdbool.h> 
 
+//   __builtin_software_breakpoint();
+
+
 //#define FAULT_DEBUG
 //#define LCD_DEBUG
 

@@ -9,9 +9,8 @@ void saveOptions();
 
 union valFld option;
 
-void optionsInit() {
+void loadOptions() {
   if(getRomWord(OPTION_ROM_ADDR) != MAGIC_WORD) { // empty option data
-    volatile int y = 0;
     option.val.magic = MAGIC_WORD;
     option.val.pasteClick = 1000; // microns
     option.val.pasteHold  = 1000; // microns/sec
@@ -28,17 +27,21 @@ uint16 optValChoices[optionsCount][5] = {
 };
 
 void optValDown(uint8 optCode) {
-  for(uint8 optValIdx = 1; optValChoices[optCode][optValIdx]; optValIdx++) {
-    if(option.words[optCode] == optValChoices[optCode][optValIdx]) {
-      option.words[optCode] = optValChoices[optCode][optValIdx-1];
+  uint8 optCodeIdx = optCode-firstOptionCode;
+  for(uint8 optValIdx = 1; optValChoices[optCodeIdx-1][optValIdx]; optValIdx++) {
+    if(option.words[optCodeIdx] == optValChoices[optCodeIdx-1][optValIdx]) {
+      option.words[optCodeIdx] = optValChoices[optCodeIdx-1][optValIdx-1];
+      return;
     }
   }
 }
 void optValUp(uint8 optCode) {
-  for(uint8 optValIdx = 0; optValChoices[optCode][optValIdx]; optValIdx++) {
-    if(option.words[optCode] == optValChoices[optCode][optValIdx]) {
-      uint16 next = optValChoices[optCode][optValIdx+1];
-      if(next) option.words[optCode] == next;
+  uint8 optCodeIdx = optCode-firstOptionCode;
+  for(uint8 optValIdx = 0; optValChoices[optCodeIdx-1][optValIdx]; optValIdx++) {
+    if(option.words[optCodeIdx] == optValChoices[optCodeIdx-1][optValIdx]) {
+      uint16 next = optValChoices[optCodeIdx-1][optValIdx+1];
+      if(next) option.words[optCodeIdx] = next;
+      return;
     }
   }  
 }
@@ -95,7 +98,7 @@ char *optionRateStr(uint16 micronsPerSec) {
 
 char *optionStr(uint8 optCode) {
   glblOptStrPtr = glblOptStr;
-  addStr("   ");
+  addStr("  = ");
   switch (optCode) {
     case pasteClickOption: return optionDistStr(option.val.pasteClick);
     case pasteHoldOption:  return optionRateStr(option.val.pasteHold);
@@ -115,6 +118,7 @@ void flash_memory_erase () {
 }
 
 void saveOptions () {
+  if(DONT_SAVE_OPTIONS) return;
   char wordIdx;
   uint16 wordAddress = OPTION_ROM_ADDR;
   NVMCON1 = 0x24; // LWLO=1 => don't flash yet, WREN=1 => allow write
