@@ -5,11 +5,6 @@
 #include "bmotor.h"
 
 void bmotorInit() {
-  
-#ifdef FAULT_DEBUG
-  faultTRIS = 1;
-#endif
-
   ms3LAT = 1; // half-stepping
   ms2LAT = 0;
   ms1LAT = 0;

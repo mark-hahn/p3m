@@ -4,8 +4,7 @@
 
 #include <stdbool.h> 
 
-//#define FAULT_DEBUG
-//#define LCD_DEBUG
+//   __builtin_software_breakpoint();
 
 typedef signed char int8;
 typedef unsigned char uint8;
@@ -20,13 +19,15 @@ typedef unsigned long uint32;
 #define beepMs      50
 
 void utilInit();
-void dbg();
-void dbgToggle();
 uint16 timer();
 void delay128Usecs(uint16 ticks);
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
 void beep();
+void bdbg(uint8 count);
+
+// by setting this var, DBG=1, you can do a data breakpoint
+extern volatile uint8 DBG;
 
 #endif	/* UTIL_H */
 

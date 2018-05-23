@@ -5,6 +5,7 @@
 #include "lcd.h"
 #include "logo.h"
 #include "screens.h"
+#include "options.h"
 
 uint8 curState = pwrOffState;
 
@@ -29,7 +30,7 @@ uint8 nextState[statesCount][2][switchesCount] = {
    {0,pwrOffState, 0,0, 0,0}},
    
    // 3: mainState
-  {{menuHelpState,0, mainUpState,mainDnState, 0, mainSelState},                     
+  {{menuHelpState,0, upAction,downAction, 0,selAction},                     
    {0,pwrOffState, 0,0, 0,0}},
   
    // 4: menuHelpState
@@ -48,29 +49,37 @@ uint8 nextState[statesCount][2][switchesCount] = {
   {{mainState,0, 0,0, 0,0},                         
    {0,pwrOffState, 0,0, 0,0}},
    
-  // 8: mainUpState
-  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}},
-  // 9: mainDnState
-  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}},
-  // 10: mainSelState
-  {{0,0, 0,0, 0,0}, {0,0, 0,0, 0,0}}, 
-  
-  // 11: pickState
+  // 8: pickState
   {{mainState,0, 0,0, 0,0},                         
    {0,pwrOffState, 0,0, 0,0}},
   
-  // 12: inspectState
+  // 9: inspectState
   {{mainState,0, 0,0, 0,0},                         
    {0,pwrOffState, 0,0, 0,0}},
    
-  // 13: settingsState
-  {{mainState,0, 0,0, 0,0},                         
-   {0,pwrOffState, 0,0, 0,0}}
-};
+  // 10: settingsState
+  {{mainState,0, upAction,downAction, mainState,selAction},                     
+   {0,pwrOffState, 0,0, 0,0}},
 
-uint8 selState[menusCount][5] = {
-  {pasteState, pickState, inspectState, settingsState}, // main menu
-//  {pasteState, pickState, inspectState, settingsState}, // settings menu
+   // 11: pasteSettingState
+   {{mainState,0, upAction,downAction, settingsState,selAction},               
+   {0,pwrOffState, 0,0, 0,0}},
+   
+  // 12: rotateSettingState
+  {{mainState,0, 0,0, 0,0},                         
+   {0,pwrOffState, 0,0, 0,0}},
+   
+  // 13: pinchSettingState
+  {{mainState,0, 0,0, 0,0},                         
+   {0,pwrOffState, 0,0, 0,0}},
+  
+  // 14: extrudeDistState
+   {{mainState,0, upOptAction,downOptAction, escAction,selOptAction},                     
+   {0,pwrOffState, 0,0, 0,0}},  
+  
+  // 15: extrudeRateState
+   {{mainState,0, upOptAction,downOptAction, escAction,selOptAction},                     
+   {0,pwrOffState, 0,0, 0,0}},    
 };
 
 void stateSwitchChange(uint8 switchMask, bool swUp) {
@@ -82,30 +91,64 @@ void stateSwitchChange(uint8 switchMask, bool swUp) {
   }
 }
 
+uint8 actionState[menusCount][5] = {
+  {pasteState, pickState, inspectState, settingsState},       // mainMenu
+  {pasteSettingState, rotateSettingState, pinchSettingState}, // settingsMenu
+  {extrudeDistState, 0, extrudeRateState},                    // pasteSettingState
+};
+
 void stateEnter(uint8 state) {
-  if(!state) return;
-  
 chkState:
   switch(state) {
+    case upAction:   scrCursorUp(false);   return;
+    case downAction: scrCursorDown(false); return;
+    case selAction:
+      state = actionState[curMenu][curCursor-1];
+      goto chkState;
+      
+    case upOptAction:   
+      optValUp(editingOption);
+      scrRedrawMenu();
+      return;
+    case downOptAction: 
+      optValDown(editingOption);
+      scrRedrawMenu();      
+      return;
+    case selOptAction: 
+      saveOptions(); 
+      // fall through
+    case escAction: 
+      loadOptions();
+      editingOption = 0;
+      scrCursorUp(true); 
+      switch(curMenu) {
+        case pasteSettingsMenu: state = pasteSettingState; break;
+      }
+      goto chkState;
+      
     case pwrOffState: 
       lcdOff(); 
       break;
     case splashState: 
-      initScreens();
-      beep();
+      initCursor();
+//      beep();
       logoShowLogo(); 
       delayMs(logoMs);
       state = mainState;
       goto chkState;
       
     case mainState: 
+      initCursor();
       lcdClrAll();
       scrDrawMenu(mainMenu, false, false);
       break;
-    case mainUpState:  scrCursorUp();           return;
-    case mainDnState:  scrCursorDown(mainMenu); return;
-    case mainSelState: state = selState[mainMenu][cursor-1]; goto chkState;
-      
+    
+    case settingsState: 
+      initCursor();
+      lcdClrAll();
+      scrDrawMenu(settingsMenu, false, false);
+      break;
+
     case menuHelpState: 
       lcdClrAll();
       scrDrawMenu(menuHelp, true, false);
@@ -134,11 +177,13 @@ chkState:
       scrDrawMenu(inspectScreen, true, false);
       break;
       
-    case settingsState: 
+    case pasteSettingState:
       lcdClrAll();
-      scrDrawMenu(settingsMenu, false, false);
+      scrDrawMenu(pasteSettingsMenu, false, false);
       break;
-      
+    case extrudeDistState: openOptionField(pasteClickOption); break;
+    case extrudeRateState: openOptionField(pasteHoldOption);  break;
+
     default: 
       return;
   }

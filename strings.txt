@@ -1,0 +1,63 @@
+# run strs-rom.js in node to compile this into strings-rom.asm
+
+# these escape codes are defined in str-rom.js
+# they should be defined in this file, but oh well ...
+
+#  \s\q square button
+#  \e   empty rocker
+#  \t   top rocker
+#  \b   bot rocker
+#  \a   both rocker
+#  \u   up arrow
+#  \d   dn arrow
+
+blankStr		  ""
+
+mainMenuStr		  "MAIN MENU"
+pasteStr		  ">Paste"
+pickStr		      ">Pick / Place"
+inspectStr		  ">Inspect"
+settingsStr		  ">Settings"
+menuHelpStr		  "  (Press\s\q for help)"
+
+helpMenuStr		  "MENU HELP"
+hm1Str		      "The symbol\s\q is the"
+hm2Str		      "leftmost button."
+hm3Str		      "It takes you back"
+hm4Str		      "to the MAIN MENU."
+hm5Str		      "           (Press\s\q)"
+
+helpMenu2Str      "MENU HELP cont."
+hm6Str		      "The pair \e\e are on"
+hm7Str		      "the right. \a means"
+hm8Str		      "press \u or \d and"
+hm9Str		      "\t means just \u."
+
+hm10Str		      " --- Navigation ---"
+hm11Str		      "\a\e Cursor Up/Down"
+hm12Str		      "\e\t Back"
+hm13Str		      "\e\b Select"
+
+pasteScreenStr    "PASTE MODE"
+paste1Str		  "\a\e Position Syringe"
+paste2Str		  "\e\a Extrude/Retract"
+lightsStr		  "\s\q+ \t\e Lights"
+focusStr		  "\s\q+ \b\e Focus"
+zoomStr           "\s\q+ \e\a Zoom"
+
+pickScreenStr     "PICK/PLACE MODE"
+pick1Str		  "\a\e Rotate"
+pick2Str		  "\e\a Pinch/Unpinch"
+
+inspectScreenStr  "INSPECTION MODE"
+inspect1Str		  "\a\e Focus"
+inspect2Str		  "\e\a Zoom"
+inspect3Str		  "\s\q+ \e\a Clear View"
+
+settingsMenuStr	  "SETTINGS MENU"
+sm1Str		      ">Rotate"
+sm2Str		      ">Pinch"
+
+pasteSettingsMenuStr "PASTE SETTINGS"
+ps1Str		         "Extrude On Click"
+ps2Str		         "Extrude On Hold"

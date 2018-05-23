@@ -30,6 +30,7 @@
 
 #include <xc.h>
 #include "util.h"
+#include "options.h"
 #include "main.h"
 #include "i2c.h"
 #include "exp-panel.h"
@@ -37,6 +38,7 @@
 #include "logo.h"
 #include "font708.h"
 #include "font813.h"
+#include "strings.h"
 #include "screens.h"
 #include "lights.h"
 #include "state.h"
@@ -48,17 +50,23 @@ void main(void) {
   ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
   ANSELC = 0; // they should not default to on and override everything else
   
+  DBG = 0;
+  
   utilInit();
   i2cInit();  
   lcdInit();   
   initLogo();
   initFont708();
   initFont813();
+  initFont708();
+  initStringsRom();
   initScreens();
   expPanelInit();
   lgtsInit();
   initState();
+  loadOptions();
   
+  bdbg(1);
 //  smotInit();
 //  smotTest(smote, 400, smotDirFwd);
 

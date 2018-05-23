@@ -5,43 +5,14 @@
 #include "lcd.h"
 #include "exp-panel.h"
 
-bool lcdDbgTogVal;
+volatile uint8 DBG;
 
 void utilInit() {
-#ifdef FAULT_DEBUG
-      faultLat  = 0;
-      faultTRIS = 0; // also used as debug pin
-#endif
-#ifdef LCD_DEBUG
-      lcdDbgTogVal = 0;
-#endif
-      
     T0ASYNC             = 0;   // sync clock
     T016BIT             = 1;   // 16-bit counter
     T0CON1bits.T0CS     = 5;   // src clk is MFINTOSC (0.5 mhz)
     T0CON1bits.T0CKPS   = 6;   // prescaler  is 1:64 (8 khz, 128 usecs)
     T0EN                = 1;   // enable timer0
-}
-
-void dbg() {
-#ifdef FAULT_DEBUG
-      faultLat = 1;
-      volatile int x=1;
-      faultLat = 0;
-#endif
-}
-
-void dbgToggle() {
-#ifdef FAULT_DEBUG
-   faultLat = !faultLat;
-#endif
-#ifdef LCD_DEBUG
-   char tf[2]; tf[1] = 0;
-   if( lcdDbgTogVal) tf[0] = 'T';
-   if(!lcdDbgTogVal) tf[0] = 'F';
-   lcdDbgStr(7, tf);
-   lcdDbgTogVal = !lcdDbgTogVal;
-#endif
 }
 
 uint16 timer() {
@@ -72,4 +43,13 @@ void beep() {
   expWriteA(~buzzMask);
   delayMs(beepMs);
   expWriteA(buzzMask);
+}
+
+void bdbg(uint8 count) {
+    for(int i=0; i<count; i++) {
+        beep(); 
+        delayMs(100);
+    };
+    delayMs(400);
+    
 }
