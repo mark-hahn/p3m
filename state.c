@@ -6,6 +6,7 @@
 #include "logo.h"
 #include "screens.h"
 #include "options.h"
+#include "bmotor.h"
 
 uint8 curState = pwrOffState;
 
@@ -54,8 +55,8 @@ uint8 nextState[statesCount][2][switchesCount] = {
    {0,pwrOffState, 0,0, 0,0}},
   
   // 9: inspectState
-  {{mainState,0, 0,0, 0,0},                         
-   {0,pwrOffState, 0,0, 0,0}},
+  {{mainState,0, 0,0, upAction,downAction},                         
+   {0,pwrOffState, 0,0,  upOffAction,downOffAction}},
    
   // 10: settingsState
   {{mainState,0, upAction,downAction, mainState,selAction},                     
@@ -100,9 +101,37 @@ uint8 actionState[menusCount][5] = {
 void stateEnter(uint8 state) {
 chkState:
   switch(state) {
-    case upAction:   scrCursorUp(false);   return;
-    case downAction: scrCursorDown(false); return;
+    case upAction:   
+        DBG = 2;
+
+      switch(curMenu) {
+        case inspectScreen: 
+            setBmotInfo(2, 2, false, 200);
+            startBmot(2, 65535);
+            break;
+        default: 
+          scrCursorUp(false); 
+          break;
+      }
+      return;
+    case downAction: 
+      switch(curMenu) {
+        case inspectScreen: 
+            setBmotInfo(2, 2, true, 200);
+            startBmot(2, 65535);
+            break;
+        default: 
+          scrCursorDown(false); 
+          break;
+      }
+      return;
+    case upOffAction:
+    case downOffAction:
+      stopBmot(2);
+      return;
+
     case selAction:
+      DBG=3;
       state = actionState[curMenu][curCursor-1];
       goto chkState;
       

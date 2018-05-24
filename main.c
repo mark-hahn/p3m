@@ -70,8 +70,6 @@ void main(void) {
 //  smotTest(smote, 400, smotDirFwd);
 
   bmotorInit();
-  setBmotInfo(2, 2, true, 1000);
-  startBmot(2, 255);
           
 //  lcdOn();
 //  logoShowLogo();

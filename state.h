@@ -26,7 +26,9 @@ enum states {
   statesCount,
 
   upAction,
+  upOffAction,
   downAction,
+  downOffAction,
   escAction,
   selAction,   
   upOptAction,

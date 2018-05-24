@@ -96,6 +96,7 @@ char *menuLine(uint8 menu, uint8 line){
 }
 
 void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
+  DBG=4;
     curMenu = menu;        
     if(!cursorOnly) {
       lcdClrPage(0);

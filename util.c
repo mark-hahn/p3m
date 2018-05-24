@@ -41,7 +41,7 @@ uint8 subTime;
 uint8 motorIdx;
 
 void interrupt globalInt() {
-  faultLAT = 1;
+//  faultLAT = 1;
 
   if(++subTime == 12) {
     subTime = 0;
@@ -56,7 +56,7 @@ void interrupt globalInt() {
   
   TMR0IF = 0; // only int source
   
-  faultLAT = 0;
+//  faultLAT = 0;
 }
 
 uint16 getRomWord(uint16 addr) {

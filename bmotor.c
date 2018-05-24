@@ -11,7 +11,7 @@ void bmotorInit() {
   TRISB = TRISB & ~bmotPinsB;
   TRISC = TRISC & ~bmotPinsC;
 
-  faultTRIS = 0;
+//  faultTRIS = 0;
 }
 
 struct bmotStateStruct bmotState[3];
@@ -23,7 +23,8 @@ void setBmotInfo(uint8 motorIdx, uint8 ustep, bool fwdDir, uint16 pps) {
 }
 
 void startBmot(uint8 motorIdx, uint16 count) {
-  // count must be > 0,  255 == forever
+  DBG = 1;
+  // count must be > 0,  65535 == forever
   bmotState[motorIdx].count = count;
   resetLAT = 1; // not resetting
 }
@@ -44,13 +45,13 @@ void bmotInt(uint8 motorIdx) {
   
   if (pState->count && (++*pCtr == pState->rateInc)) {
     *pCtr = 0;
-    if(pState->count < 255) pState->count--;
-     LATB = (LATB & 0xc6) | pState->ustep | pState->fwdDir;
-     delay = 2;
-     switch(motorIdx) {
-       case 0: LATC5 = 0;  while(--delay > 0) NOP(); LATC5 = 1;  break;
-       case 1: LATC6 = 0;  while(--delay > 0) NOP(); LATC6 = 1;  break;
-       case 2: LATC7 = 0;  while(--delay > 0) NOP(); LATC7 = 1;  break;
-     }
+    if(pState->count < 65535) pState->count--;
+    LATB = (LATB & 0xc6) | pState->ustep | pState->fwdDir;
+    delay = 2;
+    switch(motorIdx) {
+      case 0: LATC5 = 0;  while(--delay > 0) NOP(); LATC5 = 1;  break;
+      case 1: LATC6 = 0;  while(--delay > 0) NOP(); LATC6 = 1;  break;
+      case 2: LATC7 = 0;  while(--delay > 0) NOP(); LATC7 = 1;  break;
+    }
   }
 }
