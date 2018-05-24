@@ -87,3 +87,10 @@ void smotTest(uint8 motor, uint16 pps, int dir){
         smotStep(smotf, dir);
     }
 }
+
+// small motor interrupt routine
+void smotInt(uint8 motorIdx) {
+  
+  
+  
+}

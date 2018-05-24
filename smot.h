@@ -26,6 +26,7 @@ void smotInit();
 void smotOnOff(uint8 motor, bool on);
 void smotStep( uint8 motor, int dir);
 void smotTest( uint8 motor, uint16 pps, int dir);
+void smotInt(uint8 motorIdx);
 
 #endif	/* SMOT_H */
 

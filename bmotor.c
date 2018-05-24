@@ -61,3 +61,7 @@ void bmotorTest() {
   }
 }
 
+// big motor interrupt routine
+void bmotInt(uint8 motorIdx) {
+
+}

@@ -18,7 +18,6 @@ uint8 menuLines[menusCount][6] = {
    {settingsMenuStr,
     pasteStr,
     sm1Str,
-    sm2Str,
    },
    
    {pasteSettingsMenuStr,

@@ -18,13 +18,15 @@ typedef unsigned long uint32;
 #define clkPeriodUs 64
 #define beepMs      50
 
+// updated by ints
+extern volatile uint16 time;
+
 void utilInit();
 uint16 timer();
 void delay128Usecs(uint16 ticks);
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
-void beep();
-void bdbg(uint8 count);
+void beep(uint8 count);
 
 // by setting this var, DBG=1, you can do a data breakpoint
 extern volatile uint8 DBG;

@@ -13,10 +13,7 @@ union valFld option;
 void loadOptions() {
   uint16 addr = OPTION_ROM_ADDR;
   uint16 magic = getRomWord(addr);
-  DBG=3;
   if(magic != 0x16df) { // empty option data
-    DBG=4;
-    bdbg(3);
     option.val.magic = 0x16df;
     option.val.pasteClick = 1000; // microns
     option.val.pasteHold  = 1000; // microns/sec
@@ -24,7 +21,6 @@ void loadOptions() {
   } else {
     for(uint8 wordIdx = 0; wordIdx < optionsCount; wordIdx++)
       option.words[wordIdx] = getRomWord(OPTION_ROM_ADDR + wordIdx);
-    bdbg(2);
   }
 }
 

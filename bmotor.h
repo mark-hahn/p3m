@@ -20,6 +20,7 @@
 
 void bmotorInit();
 void bmotorTest();
+void bmotInt(uint8 motorIdx);
 
 
 #endif	/* BMOTOR_H */

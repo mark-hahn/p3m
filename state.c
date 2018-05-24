@@ -131,7 +131,7 @@ chkState:
       break;
     case splashState: 
       initCursor();
-//      beep();
+      beep(1);
       logoShowLogo(); 
       delayMs(logoMs);
       state = mainState;

@@ -66,7 +66,6 @@ void main(void) {
   initState();
   loadOptions();
   
-  bdbg(1);
 //  smotInit();
 //  smotTest(smote, 400, smotDirFwd);
 
