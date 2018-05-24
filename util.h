@@ -18,12 +18,11 @@ typedef unsigned long uint32;
 #define clkPeriodUs 64
 #define beepMs      50
 
+
 // updated by ints
 extern volatile uint16 time;
 
 void utilInit();
-uint16 timer();
-void delay128Usecs(uint16 ticks);
 void delayMs(uint16 ms);
 uint16 getRomWord(uint16 addr);
 void beep(uint8 count);

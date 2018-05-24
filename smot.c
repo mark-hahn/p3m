@@ -1,6 +1,7 @@
 
 #include "util.h"
 #include "smot.h"
+#include "bmotor.h"
 
 
 // -------- phases ----------
@@ -90,7 +91,4 @@ void smotTest(uint8 motor, uint16 pps, int dir){
 
 // small motor interrupt routine
 void smotInt(uint8 motorIdx) {
-  
-  
-  
 }
