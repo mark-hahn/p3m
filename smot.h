@@ -1,14 +1,14 @@
 #ifndef SMOT_H
 #define	SMOT_H
 
-#include <xc.h>
+
 #include "main.h"
 #include "util.h"
 
 enum smotIdx {
+  focusMotor,  
   extrudeMotor,
   pasteMotor,  
-  focusMotor,  
 };
 
 #define smotDirFwd +1
@@ -34,10 +34,10 @@ struct smotStateStruct {
 extern struct smotStateStruct smotState[3];
 
 void smotInit();
-void setSmotInfo(uint8 motor, bool fwdDir, uint16 pps);
+void setSmotInfo(uint8 motor, int dir, uint16 pps);
 void startSmot(uint8 motor, uint16 count);
 void stopSmot(uint8 motor);
-void bmotAllPwrOff();
+void smotAllPwrOff();
 void smotInt(uint8 motor);
 
 #endif	/* SMOT_H */

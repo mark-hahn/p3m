@@ -1,6 +1,6 @@
 
 
-#include <xc.h>
+
 #include "util.h"
 #include "lcd.h"
 

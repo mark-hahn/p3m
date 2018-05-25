@@ -1,5 +1,5 @@
 
-#include <xc.h>
+
 #include "font708.h"
 #include "util.h"
 #include "lcd.h"

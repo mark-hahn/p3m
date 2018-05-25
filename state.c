@@ -7,6 +7,7 @@
 #include "screens.h"
 #include "options.h"
 #include "bmotor.h"
+#include "smot.h"
 
 uint8 curState = pwrOffState;
 
@@ -106,8 +107,8 @@ chkState:
 
       switch(curMenu) {
         case inspectScreen: 
-            setBmotInfo(2, 2, false, 200);
-            startBmot(2, 65535);
+            setSmotInfo(focusMotor, -1, 200);
+            startSmot(focusMotor, 65535);
             break;
         default: 
           scrCursorUp(false); 
@@ -117,8 +118,8 @@ chkState:
     case downAction: 
       switch(curMenu) {
         case inspectScreen: 
-            setBmotInfo(2, 2, true, 200);
-            startBmot(2, 65535);
+            setSmotInfo(focusMotor, +1, 200);
+            startSmot(focusMotor, 65535);
             break;
         default: 
           scrCursorDown(false); 
@@ -127,7 +128,7 @@ chkState:
       return;
     case upOffAction:
     case downOffAction:
-      stopBmot(2);
+      stopSmot(focusMotor);
       return;
 
     case selAction:
@@ -158,6 +159,7 @@ chkState:
     case pwrOffState: 
       lcdOff(); 
       bmotAllPwrOff();
+      smotAllPwrOff();
       break;
     case splashState: 
       initCursor();

@@ -1,7 +1,7 @@
 #ifndef I2C_H
 #define	I2C_H
 
-#include <xc.h>
+
 #include "main.h"
         
 void i2cHardReset();

@@ -1,4 +1,5 @@
 
+#include <xc.h>
 #include "util.h"
 #include "smot.h"
 #include "bmotor.h"
@@ -13,9 +14,9 @@ uint8 smotPortValue[3][4] = { // motor, phase
 struct smotStateStruct smotState[3];
 
 void smotInit() {
+  smotAllPwrOff();
   for(uint8 motor=0; motor < 3; motor++) {
     stopSmot(motor);
-    smotPwrOnOff(motor, false);
     smotState[motor].phase = 0;
   }        
 }
@@ -37,6 +38,11 @@ void smotPwrOnOff(uint8 motor, bool on) {
     }
     smotState[motor].pwrOn = on;
   }
+}
+
+void smotAllPwrOff(){
+  for(uint8 motor=0; motor < 3; motor++) 
+    smotPwrOnOff(motor, false);
 }
 
 void setSmotInfo(uint8 motor, int dir, uint16 pps){
