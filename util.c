@@ -38,7 +38,7 @@ void delayMs(uint16 ms) {
 
 // global interrupt routine
 uint8 subTime;
-uint8 motorIdx;
+uint8 motor;
 
 void interrupt globalInt() {
 //  faultLAT = 1;
@@ -47,12 +47,12 @@ void interrupt globalInt() {
     subTime = 0;
     time++; // 1 ms
   }
-  if(motorIdx < 3) 
-    smotInt(motorIdx);   // each motor called every 500 us
+  if(motor < 3) 
+    smotInt(motor);   // each motor called every 500 us
   else
-    bmotInt(motorIdx-3); // each motor called every 500 us
-  if(++motorIdx == 6)
-    motorIdx = 0;
+    bmotInt(motor-3); // each motor called every 500 us
+  if(++motor == 6)
+    motor = 0;
   
   TMR0IF = 0; // only int source
   

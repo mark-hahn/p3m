@@ -157,6 +157,7 @@ chkState:
       
     case pwrOffState: 
       lcdOff(); 
+      bmotAllPwrOff();
       break;
     case splashState: 
       initCursor();
