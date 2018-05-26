@@ -103,13 +103,10 @@ void stateEnter(uint8 state) {
 chkState:
   switch(state) {
     case upAction:   
-        DBG = 2;
-
       switch(curMenu) {
         case inspectScreen: 
-            setSmotInfo(focusMotor, -1, 200);
-            startSmot(focusMotor, 65535);
-            break;
+          startSmot(pasteMotor, -1, 200, 65535);
+          break;
         default: 
           scrCursorUp(false); 
           break;
@@ -118,9 +115,8 @@ chkState:
     case downAction: 
       switch(curMenu) {
         case inspectScreen: 
-            setSmotInfo(focusMotor, +1, 200);
-            startSmot(focusMotor, 65535);
-            break;
+          startSmot(pasteMotor, +1, 200, 65535);
+          break;
         default: 
           scrCursorDown(false); 
           break;
@@ -128,11 +124,10 @@ chkState:
       return;
     case upOffAction:
     case downOffAction:
-      stopSmot(focusMotor);
+      stopSmot(pasteMotor);
       return;
 
     case selAction:
-      DBG=3;
       state = actionState[curMenu][curCursor-1];
       goto chkState;
       

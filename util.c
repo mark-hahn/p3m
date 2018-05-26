@@ -26,9 +26,9 @@ volatile uint16 time;
 // each tick is 1 ms
 uint16 timer() {
   GIE = 0;
-  uint16 tim = time;
+  uint16 timeTemp = time;
   GIE = 1;
-  return time;
+  return timeTemp;
 }
 
 void delayMs(uint16 ms) {
@@ -36,27 +36,30 @@ void delayMs(uint16 ms) {
   while (timer() != (start + ms)) NOP();
 }
 
-// global interrupt routine
-uint8 subTime;
-uint8 motor;
+volatile uint8 subTime;
+volatile uint8 motorInt;
 
+// global interrupt routine
+// interrupts every 84 usecs (11.9 KHz))
 void interrupt globalInt() {
-//  faultLAT = 1;
+  faultLAT = 1;
 
   if(++subTime == 12) {
     subTime = 0;
     time++; // 1 ms
   }
-  if(motor < 3) 
-    smotInt(motor);   // each motor called every 500 us
-  else
-    bmotInt(motor-3); // each motor called every 500 us
-  if(++motor == 6)
-    motor = 0;
+  if(motorInt < 3) {
+//    faultLAT = 0;
+    smotInt(motorInt);   // each motor called every 500 us
+//    faultLAT = 1;
+  } else
+    bmotInt(motorInt-3); // each motor called every 500 us
+  if(++motorInt == 6)
+    motorInt = 0;
   
   TMR0IF = 0; // only int source
   
-//  faultLAT = 0;
+  faultLAT = 0;
 }
 
 uint16 getRomWord(uint16 addr) {

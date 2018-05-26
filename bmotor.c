@@ -10,19 +10,16 @@ void bmotorInit() {
   TRISB = TRISB & ~bmotPinsB;
   TRISC = TRISC & ~bmotPinsC;
 
-//  faultTRIS = 0;
+  faultTRIS = 0;
 }
 
 struct bmotStateStruct bmotState[3];
 
-void setBmotInfo(uint8 motor, uint8 ustep, bool fwdDir, uint16 pps) {
+// count must be > 0,  65535 == forever
+void startBmot(uint8 motor, uint8 ustep, bool fwdDir, uint16 pps, uint16 count) {
   bmotState[motor].ustep   = ustep << 3;
   bmotState[motor].fwdDir  = fwdDir;
   bmotState[motor].rateCount = (1984 / pps) + 1;  // pps = 10..2000 
-}
-
-// count must be > 0,  65535 == forever
-void startBmot(uint8 motor, uint16 count) {
   bmotState[motor].intCtr = 0;
   bmotState[motor].count = count;
   resetLAT = 1; // reset off, all pwr on

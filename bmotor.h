@@ -25,11 +25,10 @@ struct bmotStateStruct {
 };
 
 void bmotorInit();
-void bmotInt(uint8 motor);
-void setBmotInfo(uint8 motor, uint8 ustep, bool fwdDir, uint16 pps);
-void startBmot(uint8 motor, uint16 count);
+void startBmot(uint8 motor, uint8 ustep, bool fwdDir, uint16 pps, uint16 count);
 void stopBmot(uint8 motor);
 void bmotAllPwrOff();
+void bmotInt(uint8 motor);
 
 #endif	/* BMOTOR_H */
 

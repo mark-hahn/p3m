@@ -6,9 +6,9 @@
 #include "util.h"
 
 enum smotIdx {
-  focusMotor,  
   extrudeMotor,
   pasteMotor,  
+  focusMotor,  
 };
 
 #define smotDirFwd +1
@@ -25,7 +25,7 @@ enum smotIdx {
 struct smotStateStruct {
   uint16 count;       // pulse count, 65535 is infinity; 0 means idle
   bool   pwrOn;       // not tri-stated -> powered on
-  uint8  phase;       // rotor phase
+  int8   phase;       // rotor phase
   int8   dir;         // smotDirFwd or smotDirBwd
   uint8  rateCount;   // pulse period is (1984/rateCount) * 96 usecs
   uint8  intCtr;      // interrupt counter
@@ -34,10 +34,10 @@ struct smotStateStruct {
 extern struct smotStateStruct smotState[3];
 
 void smotInit();
-void setSmotInfo(uint8 motor, int dir, uint16 pps);
-void startSmot(uint8 motor, uint16 count);
+void startSmot(uint8 motorsmotIdx, int dir, uint16 pps, uint16 count);
 void stopSmot(uint8 motor);
 void smotAllPwrOff();
+
 void smotInt(uint8 motor);
 
 #endif	/* SMOT_H */

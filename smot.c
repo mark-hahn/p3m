@@ -4,6 +4,7 @@
 #include "smot.h"
 #include "bmotor.h"
 
+// 0:extrudeMotor, 1:pasteMotor, 2:focusMotor, 
 uint8 smotPortMask[3] = {0xf0, 0x0f, 0x0f};
 uint8 smotPortValue[3][4] = { // motor, phase
     {0x30, 0x60, 0xc0, 0x90},
@@ -41,20 +42,20 @@ void smotPwrOnOff(uint8 motor, bool on) {
 }
 
 void smotAllPwrOff(){
-  for(uint8 motor=0; motor < 3; motor++) 
+  for(uint8 motor=0; motor < 3; motor++) {
+    smotState[motor].count = 0;
     smotPwrOnOff(motor, false);
+  };
 }
 
-void setSmotInfo(uint8 motor, int dir, uint16 pps){
+void startSmot(uint8 motor, int dir, uint16 pps, uint16 count) {
   smotState[motor].dir       = dir;
-  smotState[motor].rateCount = 1984 / pps;  // pps = 10..200
-}
-
-void startSmot(uint8 motor, uint16 count) {
+  smotState[motor].rateCount = 2000 / pps;  // pps = 10..200
+  smotState[motor].intCtr    = 0;
+  smotState[motor].count     = count;
   smotPwrOnOff(motor, true);
-  smotState[motor].intCtr = 0;
-  smotState[motor].count = count;
 }
+// 500 usecs  200 pps => 5ms
 
 void stopSmot(uint8 motor) {
    smotState[motor].count = 0;
@@ -62,6 +63,8 @@ void stopSmot(uint8 motor) {
 
 // small motor interrupt routine
 void smotInt(uint8 motor) {
+//    DBP(motor)                                            
+
   struct smotStateStruct *pState = &smotState[motor];
 
   if (pState->count && (++(pState->intCtr) == pState->rateCount)) {
@@ -69,18 +72,18 @@ void smotInt(uint8 motor) {
     if(pState->count < 65535) pState->count--;
     uint8 phase = smotState[motor].phase =
                  (smotState[motor].phase + pState->dir) & 3;
-    uint8 portVal;
+    uint8 latVal;
     switch (motor) {
-      case extrudeMotor: portVal = smoteLat; break;
-      case pasteMotor:   portVal = smotpLat; break;
-      case focusMotor:   portVal = smotfLat; break;
+      case extrudeMotor: latVal = smoteLat; break;
+      case pasteMotor:   latVal = smotpLat; break;
+      case focusMotor:   latVal = smotfLat; break;
     }
-    portVal = (portVal & ~smotPortMask[motor]) | 
-                          smotPortValue[motor][phase];
+    latVal = (latVal & ~smotPortMask[motor]) | 
+                        smotPortValue[motor][phase];
     switch (motor) {
-      case extrudeMotor: smoteLat = portVal; break;
-      case pasteMotor:   smotpLat = portVal; break;
-      case focusMotor:   smotfLat = portVal; break;
+      case extrudeMotor: smoteLat = latVal; break;
+      case pasteMotor:   smotpLat = latVal; break;
+      case focusMotor:   smotfLat = latVal; break;
     }
   }
 }

@@ -50,8 +50,6 @@ void main(void) {
   ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
   ANSELC = 0; // they should not default to on and override everything else
   
-  DBG = 0;
-  
   utilInit();
   i2cInit();  
   lcdInit();   
@@ -65,11 +63,12 @@ void main(void) {
   lgtsInit();
   initState();
   loadOptions();
-  
-//  smotInit();
-//  smotTest(smote, 400, smotDirFwd);
-
+  smotInit();
   bmotorInit();
+  
+  // --ROM=default,-1000-1020
+            startSmot(pasteMotor, +1, 1000, 65535);
+            while(1);
           
 //  lcdOn();
 //  logoShowLogo();

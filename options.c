@@ -110,7 +110,6 @@ char *optionStr(uint8 optCode) {
 }
 
 void flash_memory_erase () {
-  DBG=1;
   NVMADRL = OPTION_ROM_ADDR_LO;
   NVMADRH = OPTION_ROM_ADDR_HI;
   NVMCON1 = 0x94; 	// access FLASH memory, wren=1, FREE specifies erase 
@@ -122,7 +121,6 @@ void flash_memory_erase () {
 }
 
 void saveOptions () {
-  DBG=2;
   if(DONT_SAVE_OPTIONS) return;
   flash_memory_erase();
   char wordIdx;
