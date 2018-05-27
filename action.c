@@ -133,8 +133,7 @@ void actionChk(uint8 swIdx) {
 }
 
 void poweredUp() {
-  lcdOn();
-  logoShowLogo();
-  logoStartTimeStamp = timer();
   curScreen = logoScrn;
+  logoStartTimeStamp = timer();
+  logoShowLogo();
 }
