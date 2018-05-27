@@ -72,10 +72,10 @@ void doAction(uint8 action) {
 chkAction:
   if(action >= scrOfs) {
     curScreen = action - scrOfs;
-    if(curScreen < menuCnt)
-      curCursor = cursorByMenu[curScreen] + 1;
+    if(curScreen < menuCnt) 
+      lastCursor = curCursor = cursorByMenu[curScreen];
     lcdClrAll();
-    drawScreen(curScreen, false);
+    drawScreen(false);
     return;
   }
   switch (action) {
@@ -134,8 +134,8 @@ void actionChk(uint8 swIdx) {
 
 void poweredUp() {
   curScreen = logoScrn;
+//  beep(beepMs);  // BREAKS STARTUP ???
   initCursor();
-  cursorByMenu[mainMenu] = 0;
   logoStartTimeStamp = timer();
   logoShowLogo();
 }

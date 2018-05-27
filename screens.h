@@ -34,7 +34,8 @@ enum menusAndScreens {
 #define screenIdxLen   ( screenIdxEnd -   screenIdxStart)
 #define screenCnt screenIdxEnd
 
-extern       uint8 curScreen;;
+extern       uint8 curScreen;
+extern       uint8 lastCursor;
 extern       uint8 curCursor;
 extern       uint8 editingOption;
 extern const uint8 parentMenu[menuCnt];
@@ -43,8 +44,7 @@ extern uint8 cursorByMenu[menuCnt];
 
 void initScreens();
 void initCursor();
-void drawScreen(uint8 screen, bool cursorOnly);
-void redrawScreen();
+void drawScreen(bool cursorOnly);
 bool scrCursorUp(bool oneOnly);
 bool scrCursorDown(bool oneOnly);
 void openOptionField(uint8 optCode);

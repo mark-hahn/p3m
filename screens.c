@@ -87,6 +87,8 @@ uint8 curScreen;
 void initCursor() {
   curCursor = 1;
   lastCursor = 1;
+  for(int i=0; i<menuCnt; i++)
+    cursorByMenu[i] = 1;
 }
 void initScreens() {
   initCursor();
@@ -100,57 +102,52 @@ char *menuLine(uint8 line){
     return optionStr(menuLines[curScreen][line]);
 }
 
-void drawScreen(uint8 screen, bool cursorOnly) {
-    curScreen = screen;        
-    if(!cursorOnly) {
-      lcdClrPage(0);
-      lcdClrPage(1);
-      font813WriteStr(0,  0, 0, menuLine(0));
-      font813WriteStr(1, -8, 0, menuLine(0));
+void drawScreen(bool cursorOnly) {
+  if(!cursorOnly) {
+    lcdClrPage(0);
+    lcdClrPage(1);
+    font813WriteStr(0,  0, 0, menuLine(0));
+    font813WriteStr(1, -8, 0, menuLine(0));
+  }
+  if(curScreen < menuCnt) {
+    if(!cursorOnly || curCursor == 1 || lastCursor == 1) {
+      lcdClrPage(2);
+      font708WriteStr(2,  0, 0, menuLine(1), curCursor == 1);
     }
-    if(screen < menuCnt) {
-      if(!cursorOnly || curCursor == 1 || lastCursor == 1) {
-        lcdClrPage(2);
-        font708WriteStr(2,  0, 0, menuLine(1), curCursor == 1);
-      }
-      if(!cursorOnly || curCursor == 2 || lastCursor == 2) {
-        lcdClrPage(3);
-        font708WriteStr(3,  2, 0,  menuLine(2), curCursor == 2);
-      }
-      if(!cursorOnly || curCursor == 2 || lastCursor == 2
-                     || curCursor == 3 || lastCursor == 3) {
-        lcdClrPage(4);
-        font708WriteStr(9, -6, 0, menuLine(2), curCursor == 2);
-        font708WriteStr(4,  3, 0, menuLine(3), curCursor == 3);
-      }
-      if(!cursorOnly || curCursor == 3 || lastCursor == 3
-                     || curCursor == 4 || lastCursor == 4) {
-        lcdClrPage(5);
-        font708WriteStr(9, -5, 0, menuLine(3), curCursor == 3);
-        font708WriteStr(5,  6, 0, menuLine(4), curCursor == 4);
-      }
-      if(!cursorOnly || curCursor == 4 || lastCursor == 4) {
-        lcdClrPage(6);
-        font708WriteStr(6, -2, 0, menuLine(4), curCursor == 4);
-      }
-      if(!cursorOnly || curCursor == 5 || lastCursor == 5) {
-        lcdClrPage(7);
-        font708WriteStr(7,  0, 0, menuLine(5), curCursor == 5);
-      }
-    } else {
-      font708WriteStr(2,  0, 0, menuLine(1), false);
-      font708WriteStr(3,  2, 0, menuLine(2), false);
-      font708WriteStr(9, -6, 0, menuLine(2), false);
-      font708WriteStr(4,  3, 0, menuLine(3), false);
-      font708WriteStr(9, -5, 0, menuLine(3), false);
-      font708WriteStr(5,  6, 0, menuLine(4), false);
-      font708WriteStr(6, -2, 0, menuLine(4), false);
-      font708WriteStr(7,  0, 0, menuLine(5), false);
+    if(!cursorOnly || curCursor == 2 || lastCursor == 2) {
+      lcdClrPage(3);
+      font708WriteStr(3,  2, 0,  menuLine(2), curCursor == 2);
     }
-}
-
-void redrawScreen() {
-  drawScreen(curScreen, true);
+    if(!cursorOnly || curCursor == 2 || lastCursor == 2
+                   || curCursor == 3 || lastCursor == 3) {
+      lcdClrPage(4);
+      font708WriteStr(9, -6, 0, menuLine(2), curCursor == 2);
+      font708WriteStr(4,  3, 0, menuLine(3), curCursor == 3);
+    }
+    if(!cursorOnly || curCursor == 3 || lastCursor == 3
+                   || curCursor == 4 || lastCursor == 4) {
+      lcdClrPage(5);
+      font708WriteStr(9, -5, 0, menuLine(3), curCursor == 3);
+      font708WriteStr(5,  6, 0, menuLine(4), curCursor == 4);
+    }
+    if(!cursorOnly || curCursor == 4 || lastCursor == 4) {
+      lcdClrPage(6);
+      font708WriteStr(6, -2, 0, menuLine(4), curCursor == 4);
+    }
+    if(!cursorOnly || curCursor == 5 || lastCursor == 5) {
+      lcdClrPage(7);
+      font708WriteStr(7,  0, 0, menuLine(5), curCursor == 5);
+    }
+  } else {
+    font708WriteStr(2,  0, 0, menuLine(1), false);
+    font708WriteStr(3,  2, 0, menuLine(2), false);
+    font708WriteStr(9, -6, 0, menuLine(2), false);
+    font708WriteStr(4,  3, 0, menuLine(3), false);
+    font708WriteStr(9, -5, 0, menuLine(3), false);
+    font708WriteStr(5,  6, 0, menuLine(4), false);
+    font708WriteStr(6, -2, 0, menuLine(4), false);
+    font708WriteStr(7,  0, 0, menuLine(5), false);
+  }
 }
 
 const uint8 cursorLines[] = {
@@ -182,9 +179,9 @@ bool scrCursorUp(bool oneOnly) {
   uint8 dist = (oneOnly ? 1 : cursorDist[curScreen]);
   if(curCursor > dist) {
     curCursor -= dist;
-    redrawScreen();
+    drawScreen(true);
     lastCursor = curCursor;
-    cursorByMenu[curScreen] = curCursor - 1;
+    cursorByMenu[curScreen] = curCursor;
     return true;
   } else
     return false;
@@ -194,9 +191,9 @@ bool scrCursorDown(bool oneOnly) {
   uint8 dist = (oneOnly ? 1 : cursorDist[curScreen]);
   if(curCursor < cursorLines[curScreen] - dist + 1) {
     curCursor += dist;
-    redrawScreen();
+    drawScreen(true);
     lastCursor = curCursor;
-    cursorByMenu[curScreen] = curCursor - 1;
+    cursorByMenu[curScreen] = curCursor;
     return true;
   } else
     return false;

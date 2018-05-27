@@ -44,7 +44,6 @@ void panelChkSwitches() {
   for(uint8 i = 0; i < switchesCount; i++) {
     uint8 mask = swMask[i];
     uint8 newval = swPinValues & mask;
-    // debounce
     if(newval == (switches & mask)) 
       debounceCount[i] = 0;
     else if(++debounceCount[i] == 5) {
