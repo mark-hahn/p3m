@@ -93,11 +93,11 @@ void initScreens() {
   curScreen = pwrOffScrn;
 }
 
-char *menuLine(uint8 menu, uint8 line){
-  if(menuLines[menu][line] < firstOptionCode)
-    return romStr(menuLines[menu][line]);
+char *menuLine(uint8 line){
+  if(menuLines[curScreen][line] < firstOptionCode)
+    return romStr(menuLines[curScreen][line]);
   else
-    return optionStr(menuLines[menu][line]);
+    return optionStr(menuLines[curScreen][line]);
 }
 
 void drawScreen(uint8 screen, bool cursorOnly) {
@@ -105,47 +105,47 @@ void drawScreen(uint8 screen, bool cursorOnly) {
     if(!cursorOnly) {
       lcdClrPage(0);
       lcdClrPage(1);
-      font813WriteStr(0,  0, 0, menuLine(screen,0));
-      font813WriteStr(1, -8, 0, menuLine(screen,0));
+      font813WriteStr(0,  0, 0, menuLine(0));
+      font813WriteStr(1, -8, 0, menuLine(0));
     }
     if(screen < menuCnt) {
       if(!cursorOnly || curCursor == 1 || lastCursor == 1) {
         lcdClrPage(2);
-        font708WriteStr(2,  0, 0, menuLine(screen,1), curCursor == 1);
+        font708WriteStr(2,  0, 0, menuLine(1), curCursor == 1);
       }
       if(!cursorOnly || curCursor == 2 || lastCursor == 2) {
         lcdClrPage(3);
-        font708WriteStr(3,  2, 0,  menuLine(screen,2), curCursor == 2);
+        font708WriteStr(3,  2, 0,  menuLine(2), curCursor == 2);
       }
       if(!cursorOnly || curCursor == 2 || lastCursor == 2
                      || curCursor == 3 || lastCursor == 3) {
         lcdClrPage(4);
-        font708WriteStr(9, -6, 0, menuLine(screen,2), curCursor == 2);
-        font708WriteStr(4,  3, 0, menuLine(screen,3), curCursor == 3);
+        font708WriteStr(9, -6, 0, menuLine(2), curCursor == 2);
+        font708WriteStr(4,  3, 0, menuLine(3), curCursor == 3);
       }
       if(!cursorOnly || curCursor == 3 || lastCursor == 3
                      || curCursor == 4 || lastCursor == 4) {
         lcdClrPage(5);
-        font708WriteStr(9, -5, 0, menuLine(screen,3), curCursor == 3);
-        font708WriteStr(5,  6, 0, menuLine(screen,4), curCursor == 4);
+        font708WriteStr(9, -5, 0, menuLine(3), curCursor == 3);
+        font708WriteStr(5,  6, 0, menuLine(4), curCursor == 4);
       }
       if(!cursorOnly || curCursor == 4 || lastCursor == 4) {
         lcdClrPage(6);
-        font708WriteStr(6, -2, 0, menuLine(screen,4), curCursor == 4);
+        font708WriteStr(6, -2, 0, menuLine(4), curCursor == 4);
       }
       if(!cursorOnly || curCursor == 5 || lastCursor == 5) {
         lcdClrPage(7);
-        font708WriteStr(7,  0, 0, menuLine(screen,5), curCursor == 5);
+        font708WriteStr(7,  0, 0, menuLine(5), curCursor == 5);
       }
     } else {
-      font708WriteStr(2,  0, 0, menuLine(screen,1), false);
-      font708WriteStr(3,  2, 0, menuLine(screen,2), false);
-      font708WriteStr(9, -6, 0, menuLine(screen,2), false);
-      font708WriteStr(4,  3, 0, menuLine(screen,3), false);
-      font708WriteStr(9, -5, 0, menuLine(screen,3), false);
-      font708WriteStr(5,  6, 0, menuLine(screen,4), false);
-      font708WriteStr(6, -2, 0, menuLine(screen,4), false);
-      font708WriteStr(7,  0, 0, menuLine(screen,5), false);
+      font708WriteStr(2,  0, 0, menuLine(1), false);
+      font708WriteStr(3,  2, 0, menuLine(2), false);
+      font708WriteStr(9, -6, 0, menuLine(2), false);
+      font708WriteStr(4,  3, 0, menuLine(3), false);
+      font708WriteStr(9, -5, 0, menuLine(3), false);
+      font708WriteStr(5,  6, 0, menuLine(4), false);
+      font708WriteStr(6, -2, 0, menuLine(4), false);
+      font708WriteStr(7,  0, 0, menuLine(5), false);
     }
 }
 
@@ -176,12 +176,15 @@ const uint8 menuSelScreen[menuCnt][menuLineCnt] = {
   {pasteSettingsMenu},                                    // settingsMenu
 };
 
+uint8 cursorByMenu[menuCnt];
+
 bool scrCursorUp(bool oneOnly) {
   uint8 dist = (oneOnly ? 1 : cursorDist[curScreen]);
   if(curCursor > dist) {
     curCursor -= dist;
     redrawScreen();
     lastCursor = curCursor;
+    cursorByMenu[curScreen] = curCursor - 1;
     return true;
   } else
     return false;
@@ -193,6 +196,7 @@ bool scrCursorDown(bool oneOnly) {
     curCursor += dist;
     redrawScreen();
     lastCursor = curCursor;
+    cursorByMenu[curScreen] = curCursor - 1;
     return true;
   } else
     return false;

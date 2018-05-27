@@ -39,7 +39,8 @@ extern       uint8 curCursor;
 extern       uint8 editingOption;
 extern const uint8 parentMenu[menuCnt];
 extern const uint8 menuSelScreen[menuCnt][5];
-        
+extern uint8 cursorByMenu[menuCnt];
+
 void initScreens();
 void initCursor();
 void drawScreen(uint8 screen, bool cursorOnly);

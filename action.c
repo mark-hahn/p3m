@@ -53,31 +53,31 @@ const uint8 actionTable[screenCnt][3][switchesCount] = {
    {0,pwrOffAction, 0,0, 0,0}},
   
   // 8: pasteScreen
-  {{0,0, 0,0, 0,0}, 
+  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
    {0,0, 0,0, 0,0},
    {0,pwrOffAction, 0,0, 0,0}},
   
   // 9: pickScreen
-  {{0,0, 0,0, 0,0}, 
+  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
    {0,0, 0,0, 0,0},
    {0,pwrOffAction, 0,0, 0,0}},
   
   // 10: inspectScreen
-  {{0,0, 0,0, 0,0}, 
+  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
    {0,0, 0,0, 0,0},
    {0,pwrOffAction, 0,0, 0,0}},
 };
   
-
 void doAction(uint8 action) {
+chkAction:
   if(action >= scrOfs) {
     curScreen = action - scrOfs;
+    if(curScreen < menuCnt)
+      curCursor = cursorByMenu[curScreen] + 1;
     lcdClrAll();
     drawScreen(curScreen, false);
     return;
   }
-  
-chkAction:
   switch (action) {
     case pwrOffAction:
       lcdOff(); 
@@ -134,6 +134,8 @@ void actionChk(uint8 swIdx) {
 
 void poweredUp() {
   curScreen = logoScrn;
+  initCursor();
+  cursorByMenu[mainMenu] = 0;
   logoStartTimeStamp = timer();
   logoShowLogo();
 }
