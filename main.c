@@ -35,13 +35,13 @@
 #include "i2c.h"
 #include "exp-panel.h"
 #include "lcd.h"
-#include "logo.h"
+//#include "logo.h"
 #include "font708.h"
 #include "font813.h"
 #include "strings.h"
 #include "screens.h"
 #include "lights.h"
-#include "state.h"
+#include "action.h"
 #include "smot.h"
 #include "bmotor.h"
 
@@ -53,7 +53,7 @@ void main(void) {
   utilInit();
   i2cInit();  
   lcdInit();   
-  initLogo();
+//  initLogo();
   initFont708();
   initFont813();
   initFont708();
@@ -61,22 +61,28 @@ void main(void) {
   initScreens();
   expPanelInit();
   lgtsInit();
-  initState();
   loadOptions();
   smotInit();
   bmotorInit();
   
-  // --ROM=default,-1000-1020
-            startSmot(pasteMotor, +1, 1000, 65535);
-            while(1);
+//startSmot(pasteMotor, +1, 200, 65535);
+//while(1);
           
 //  lcdOn();
 //  logoShowLogo();
   
+  uint8 swCtr = 0;
+  
   // main event loop
   while(1) {
     expChkSwitches();
-//    lgtsDemo();
-//    delayMs(2000);
+    
+    if(swHoldWaiting[swCtr] && 
+      (timer() - swDownTimestamp[swCtr]) > optHoldTime) {
+      swHoldWaiting[swCtr] = false;
+      handleSwHoldStart(swCtr);
+    }
+    if(++swCtr == 6)
+      swCtr = 0;
   }
 }

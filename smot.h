@@ -31,7 +31,7 @@ struct smotStateStruct {
   uint8  intCtr;      // interrupt counter
 };
 
-extern struct smotStateStruct smotState[3];
+extern volatile struct smotStateStruct smotState[3];
 
 void smotInit();
 void startSmot(uint8 motorsmotIdx, int dir, uint16 pps, uint16 count);

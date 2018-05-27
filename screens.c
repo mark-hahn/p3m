@@ -5,8 +5,9 @@
 #include "font813.h"
 #include "strings.h"
 #include "options.h"
+//#include "action.h"
 
-uint8 menuLines[menusCount][6] = {
+uint8 menuLines[screenCnt][6] = {
    {mainMenuStr, 
     pasteStr,
     pickStr,
@@ -26,6 +27,8 @@ uint8 menuLines[menusCount][6] = {
     ps2Str,
     pasteHoldOption,
    },
+   
+   {0}, // pwrOffScrn
 
    {helpMenuStr,
     hm1Str,
@@ -77,7 +80,7 @@ uint8 menuLines[menusCount][6] = {
 };
 
 uint8 curCursor, lastCursor;
-uint8 curMenu;;
+uint8 curScreen;
 
 void initCursor() {
   curCursor = 1;
@@ -85,7 +88,7 @@ void initCursor() {
 }
 void initScreens() {
   initCursor();
-  curMenu = 0;
+  curScreen = pwrOffScrn;
 }
 
 char *menuLine(uint8 menu, uint8 line){
@@ -95,8 +98,8 @@ char *menuLine(uint8 menu, uint8 line){
     return optionStr(menuLines[menu][line]);
 }
 
-void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
-    curMenu = menu;        
+void drawScreen(uint8 menu, bool screenOnly, bool cursorOnly) {
+    curScreen = menu;        
     if(!cursorOnly) {
       lcdClrPage(0);
       lcdClrPage(1);
@@ -144,8 +147,8 @@ void scrDrawMenu(uint8 menu, bool screenOnly, bool cursorOnly) {
     }
 }
 
-void scrRedrawMenu() {
-  scrDrawMenu(curMenu, false, true);
+void redrawScreen() {
+  drawScreen(curScreen, false, true);
 }
 
 uint8 cursorLines[] = {
@@ -161,19 +164,19 @@ uint8 cursorDist[] = {
 };
 
 void scrCursorUp(bool oneOnly) {
-  uint8 dist = (oneOnly ? 1 : cursorDist[curMenu]);
+  uint8 dist = (oneOnly ? 1 : cursorDist[curScreen]);
   if(curCursor > dist) {
     curCursor -= dist;
-    scrRedrawMenu();
+    redrawScreen();
     lastCursor = curCursor;
   }
 }
 
 void scrCursorDown(bool oneOnly) {
-  uint8 dist = (oneOnly ? 1 : cursorDist[curMenu]);
-  if(curCursor < cursorLines[curMenu] - dist + 1) {
+  uint8 dist = (oneOnly ? 1 : cursorDist[curScreen]);
+  if(curCursor < cursorLines[curScreen] - dist + 1) {
     curCursor += dist;
-    scrRedrawMenu();
+    redrawScreen();
     lastCursor = curCursor;
   }
 }

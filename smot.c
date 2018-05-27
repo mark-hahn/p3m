@@ -12,7 +12,7 @@ uint8 smotPortValue[3][4] = { // motor, phase
     {0x03, 0x06, 0x0c, 0x09}
 };
 
-struct smotStateStruct smotState[3];
+volatile struct smotStateStruct smotState[3];
 
 void smotInit() {
   smotAllPwrOff();
@@ -63,9 +63,7 @@ void stopSmot(uint8 motor) {
 
 // small motor interrupt routine
 void smotInt(uint8 motor) {
-//    DBP(motor)                                            
-
-  struct smotStateStruct *pState = &smotState[motor];
+  volatile struct smotStateStruct *pState = &smotState[motor];
 
   if (pState->count && (++(pState->intCtr) == pState->rateCount)) {
     pState->intCtr = 0;

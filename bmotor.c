@@ -13,13 +13,13 @@ void bmotorInit() {
   faultTRIS = 0;
 }
 
-struct bmotStateStruct bmotState[3];
+volatile struct bmotStateStruct bmotState[3];
 
 // count must be > 0,  65535 == forever
 void startBmot(uint8 motor, uint8 ustep, bool fwdDir, uint16 pps, uint16 count) {
   bmotState[motor].ustep   = ustep << 3;
   bmotState[motor].fwdDir  = fwdDir;
-  bmotState[motor].rateCount = (1984 / pps) + 1;  // pps = 10..2000 
+  bmotState[motor].rateCount = 1984 / pps;  // pps = 10..1984
   bmotState[motor].intCtr = 0;
   bmotState[motor].count = count;
   resetLAT = 1; // reset off, all pwr on
@@ -38,12 +38,12 @@ uint8 delay;
 
 // big motor interrupt routine
 void bmotInt(uint8 motor) {
-  struct bmotStateStruct *pState = &bmotState[motor];
+  volatile struct bmotStateStruct *pState = &bmotState[motor];
   
   if (pState->count && (++pState->intCtr == pState->rateCount)) {
     pState->intCtr = 0;
     if(pState->count < 65535) pState->count--;
-    LATB = (LATB & 0xc6) | pState->ustep | pState->fwdDir;
+    LATB = (LATB & 0xe6) | pState->ustep | pState->fwdDir;
     delay = 2;
     switch(motor) {
       case 0: LATC5 = 0;  while(--delay > 0) NOP(); LATC5 = 1;  break;

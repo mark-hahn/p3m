@@ -4,7 +4,7 @@
 #include "util.h"
 #include "exp-panel.h"
 #include "i2c.h"
-#include "state.h"
+#include "action.h"
 
 uint8 swMask[switchesCount] = {
   swHomeMask, swPwrMask, 
@@ -60,7 +60,7 @@ void expChkSwitches() {
       swChgCount[i] = 0;
     else if(++swChgCount[i] == 5) {
       switches = (switches & ~mask) | newval;
-      stateSwitchChange(mask, (newval != 0));
+      handleSwUpDown(mask, (newval != 0));
     }
   }
 }

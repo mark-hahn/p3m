@@ -5,6 +5,8 @@
 #include "bmotor.h"
 #include "lcd.h"
 #include "exp-panel.h"
+#include "options.h"
+#include "action.h"
 
 volatile uint8 DBG;
 
@@ -37,29 +39,23 @@ void delayMs(uint16 ms) {
 }
 
 volatile uint8 subTime;
-volatile uint8 motorInt;
+volatile uint8 motorCtr = 0;
 
 // global interrupt routine
 // interrupts every 84 usecs (11.9 KHz))
 void interrupt globalInt() {
-  faultLAT = 1;
-
   if(++subTime == 12) {
     subTime = 0;
     time++; // 1 ms
   }
-  if(motorInt < 3) {
-//    faultLAT = 0;
-    smotInt(motorInt);   // each motor called every 500 us
-//    faultLAT = 1;
-  } else
-    bmotInt(motorInt-3); // each motor called every 500 us
-  if(++motorInt == 6)
-    motorInt = 0;
+  if(motorCtr < 3)
+    smotInt(motorCtr);   // each motor called every 500 us
+  else 
+    bmotInt(motorCtr-3); // each motor called every 500 us
+  if(++motorCtr == 6)
+    motorCtr = 0;
   
   TMR0IF = 0; // only int source
-  
-  faultLAT = 0;
 }
 
 uint16 getRomWord(uint16 addr) {
@@ -71,12 +67,12 @@ uint16 getRomWord(uint16 addr) {
 }
 
 void beep(uint8 count) {
-//  for(int i=0; i<count; i++) {
-//    expWriteA(~buzzMask);
-//    delayMs(beepMs);
-//    expWriteA(buzzMask);
-//    delayMs(100);
-//  };
-//  delayMs(400);
+  for(int i=0; i<count; i++) {
+    expWriteA(~buzzMask);
+    delayMs(beepMs);
+    expWriteA(buzzMask);
+    delayMs(100);
+  };
+  delayMs(400);
 }
 
