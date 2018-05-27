@@ -43,7 +43,6 @@ extern uint8 swMask[switchesCount];
 void  panelInit();
 uint8 panelReadA();
 void  panelWriteA(uint8 data);
-uint8 panelSwIntFlags();
 uint8 panelSwPinValues();
 void  panelChkSwitches();
 

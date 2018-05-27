@@ -35,7 +35,7 @@
 #include "i2c.h"
 #include "panel.h"
 #include "lcd.h"
-//#include "logo.h"
+#include "logo.h"
 #include "font708.h"
 #include "font813.h"
 #include "strings.h"
@@ -53,7 +53,7 @@ void main(void) {
   utilInit();
   i2cInit();  
   lcdInit();   
-//  initLogo();
+  initLogo();
   initFont708();
   initFont813();
   initFont708();
@@ -68,21 +68,12 @@ void main(void) {
 // startSmot(pasteMotor, +1, 200, 65535);
 // while(1);
           
-//  lcdOn();
-//  logoShowLogo();
+  uint8 swIdx = 0;
   
-  uint8 swCtr = 0;
-  
-  // main event loop
+  // main foreground loop
   while(1) {
     panelChkSwitches();
-    
-    if(swHoldWaiting[swCtr] && 
-      (timer() - swDownTimestamp[swCtr]) > optHoldTime) {
-      swHoldWaiting[swCtr] = false;
-      handleSwHoldStart(swCtr);
-    }
-    if(++swCtr == 6)
-      swCtr = 0;
+    actionChk(swIdx);
+    if(++swIdx == 6) swIdx = 0;
   }
 }

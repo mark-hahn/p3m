@@ -10,6 +10,8 @@
 
 volatile uint8 DBG;
 
+volatile uint16 time;
+
 void utilInit() {
   T0ASYNC             =  0;   // sync clock
   T016BIT             =  0;   // 8-bit counter
@@ -22,8 +24,6 @@ void utilInit() {
   PEIE                =  1;   // enable peripheral ints
   GIE                 =  1;   // enable all ints
 }
-
-volatile uint16 time;
 
 // each tick is 1 ms
 uint16 timer() {

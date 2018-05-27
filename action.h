@@ -10,25 +10,23 @@
 enum actions {
   noOp,
   pwrOffAction,
-  menuUpAction,
-  menuDownAction,
+  startLogoAction,
+  cursorUpAction,
+  cursorDownAction,
   settingsUpAction,
   settingsDownAction,
-  escAtion,
-  okAction,
+  escMenuAction,
+  okMenuAction,
   
   actionCount  // go to screen actions start here
 };
 
 #define scrOfs actionCount
 
-extern uint8 actionTable[screenCnt][3][switchesCount];
-extern volatile bool swHoldWaiting[6];
-extern volatile uint16 swDownTimestamp[6];
-   
-void doAction(uint8 action);
+void actionChk(uint8 switchMask);
 void handleSwUpDown(uint8 switchMask, bool swUp);
-void handleSwHoldStart(uint8 switchMask);
+void doAction(uint8 action);
+void poweredUp();
 
 #endif	/* STATE_H */
 

@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include "util.h"
 
+#define LOGO_DUR 3000
+
 void initLogo();
 void logoShowLogo();
 
