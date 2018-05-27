@@ -1,7 +1,7 @@
 
 #include <xc.h>
 #include "util.h"
-#include "exp-panel.h"
+#include "panel.h"
 #include "bmotor.h"
 
 void bmotorInit() {

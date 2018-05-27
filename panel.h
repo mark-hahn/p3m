@@ -40,12 +40,12 @@ extern uint8 swMask[switchesCount];
 #define swAllSwMask  (swTopLftMask|swBotLftMask|swTopRgtMask|  \
                         swBotRgtMask|swHomeMask|swPwrMask)
 
-void  expPanelInit();
-uint8 expReadA();
-void  expWriteA(uint8 data);
-uint8 expSwIntFlags();
-uint8 expSwPinValues();
-void  expChkSwitches();
+void  panelInit();
+uint8 panelReadA();
+void  panelWriteA(uint8 data);
+uint8 panelSwIntFlags();
+uint8 panelSwPinValues();
+void  panelChkSwitches();
 
 #endif	/* EXPANDER_H */
 

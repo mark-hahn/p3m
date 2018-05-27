@@ -4,7 +4,7 @@
 #include "smot.h"
 #include "bmotor.h"
 #include "lcd.h"
-#include "exp-panel.h"
+#include "panel.h"
 #include "options.h"
 #include "action.h"
 
@@ -68,9 +68,9 @@ uint16 getRomWord(uint16 addr) {
 
 void beep(uint8 count) {
   for(int i=0; i<count; i++) {
-    expWriteA(~buzzMask);
+    panelWriteA(~buzzMask);
     delayMs(beepMs);
-    expWriteA(buzzMask);
+    panelWriteA(buzzMask);
     delayMs(100);
   };
   delayMs(400);

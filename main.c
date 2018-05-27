@@ -33,7 +33,7 @@
 #include "options.h"
 #include "main.h"
 #include "i2c.h"
-#include "exp-panel.h"
+#include "panel.h"
 #include "lcd.h"
 //#include "logo.h"
 #include "font708.h"
@@ -59,14 +59,14 @@ void main(void) {
   initFont708();
   initStringsRom();
   initScreens();
-  expPanelInit();
+  panelInit();
   lgtsInit();
   loadOptions();
   smotInit();
   bmotorInit();
   
-//startSmot(pasteMotor, +1, 200, 65535);
-//while(1);
+// startSmot(pasteMotor, +1, 200, 65535);
+// while(1);
           
 //  lcdOn();
 //  logoShowLogo();
@@ -75,7 +75,7 @@ void main(void) {
   
   // main event loop
   while(1) {
-    expChkSwitches();
+    panelChkSwitches();
     
     if(swHoldWaiting[swCtr] && 
       (timer() - swDownTimestamp[swCtr]) > optHoldTime) {

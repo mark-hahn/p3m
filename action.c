@@ -1,7 +1,7 @@
 
 #include "action.h"
 #include "util.h"
-#include "exp-panel.h"
+#include "panel.h"
 #include "lcd.h"
 #include "logo.h"
 #include "screens.h"

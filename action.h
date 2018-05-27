@@ -2,7 +2,7 @@
 #define	STATE_H
 
 #include "util.h"
-#include "exp-panel.h"
+#include "panel.h"
 #include "screens.h"
 
 #define logoMs 2000
