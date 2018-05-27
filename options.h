@@ -4,8 +4,7 @@
 #include "util.h"
 
 // temporary until put in settings
-#define optHoldTime 70 // ms
-
+#define optHoldTime 2000 // ms
 
 #define RESET_OPTIONS     false
 #define DONT_SAVE_OPTIONS false

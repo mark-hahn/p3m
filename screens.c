@@ -28,10 +28,6 @@ uint8 menuLines[screenCnt][6] = {
     pasteHoldOption,
    },
    
-   {0}, // pwrOffScrn
-   
-   {0}, // logoScrn
-
    {helpMenuStr,
     hm1Str,
     hm2Str,
@@ -88,7 +84,7 @@ void initCursor() {
   curCursor = 1;
   lastCursor = 1;
   for(int i=0; i<menuCnt; i++)
-    cursorByMenu[i] = 1;
+    defCursByMenu[i] = 1;
 }
 void initScreens() {
   initCursor();
@@ -173,7 +169,7 @@ const uint8 menuSelScreen[menuCnt][menuLineCnt] = {
   {pasteSettingsMenu},                                    // settingsMenu
 };
 
-uint8 cursorByMenu[menuCnt];
+uint8 defCursByMenu[menuCnt];
 
 bool scrCursorUp(bool oneOnly) {
   uint8 dist = (oneOnly ? 1 : cursorDist[curScreen]);
@@ -181,7 +177,7 @@ bool scrCursorUp(bool oneOnly) {
     curCursor -= dist;
     drawScreen(true);
     lastCursor = curCursor;
-    cursorByMenu[curScreen] = curCursor;
+    defCursByMenu[curScreen] = curCursor;
     return true;
   } else
     return false;
@@ -193,7 +189,7 @@ bool scrCursorDown(bool oneOnly) {
     curCursor += dist;
     drawScreen(true);
     lastCursor = curCursor;
-    cursorByMenu[curScreen] = curCursor;
+    defCursByMenu[curScreen] = curCursor;
     return true;
   } else
     return false;

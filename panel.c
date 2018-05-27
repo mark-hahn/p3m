@@ -39,7 +39,7 @@ uint8 panelSwPinValues() {
   return (i2cReadByte(i2cExpAddr, INTCAP) & swAllSwMask); 
 }
 
-void panelChkSwitches() {
+void switchChk() {
   uint8 swPinValues = panelReadA();
   for(uint8 swIdx = 0; swIdx < switchesCount; swIdx++) {
     uint8 mask = swMask[swIdx];
@@ -51,6 +51,7 @@ void panelChkSwitches() {
       handleSwUpDown(swIdx, (newval != 0));
     }
   }
-  if((curScreen == pwrOffScrn) && (curSwitches & swPwrMask) == 0)
+  if((curScreen == pwrOffScrn) && (curSwitches & swPwrMask) == 0) {
     doAction(pwrOnAction);
+  }
 }

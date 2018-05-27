@@ -24,7 +24,9 @@ enum actions {
 
 #define scrOfs actionCount
 
-void actionChk(uint8 switchMask);
+extern uint16 logoStartTimeStamp;
+
+void timeoutChk(uint8 switchMask);
 void handleSwUpDown(uint8 switchMask, bool swUp);
 void doAction(uint8 action);
 

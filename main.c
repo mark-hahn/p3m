@@ -68,12 +68,10 @@ void main(void) {
 // startSmot(pasteMotor, +1, 200, 65535);
 // while(1);
           
-  uint8 swIdx = 0;
-  
   // main foreground loop
   while(1) {
-    panelChkSwitches();
-    actionChk(swIdx);
-    if(++swIdx == 6) swIdx = 0;
+    switchChk();
+    for(uint8 swIdx = 0; swIdx < 6; swIdx++)
+      timeoutChk(swIdx);
   }
 }

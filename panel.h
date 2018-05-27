@@ -46,7 +46,7 @@ void  panelInit();
 uint8 panelReadA();
 void  panelWriteA(uint8 data);
 uint8 panelSwPinValues();
-void  panelChkSwitches();
+void  switchChk();
 
 #endif	/* EXPANDER_H */
 

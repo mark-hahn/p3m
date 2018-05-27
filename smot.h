@@ -42,6 +42,8 @@ void smotInt(uint8 motor);
 
 #endif	/* SMOT_H */
 
+// power is red
+
 // -------- phases ----------
 // schematic     3  2  1  0
 // pin idx       0  1  2  3

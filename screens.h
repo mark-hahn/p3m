@@ -10,37 +10,37 @@
 #define menuIdxEnd       3
 #define screenIdxStart   3
 
+#define pwrOffScrn 254
+#define logoScrn   255
+
 enum menusAndScreens {
   // menuIdxStart
-  mainMenu,           // 0
-  settingsMenu,       // 1
-  pasteSettingsMenu,  // 2
+  mainMenu,          
+  settingsMenu,      
+  pasteSettingsMenu, 
 
   // screenIdxStart
-  pwrOffScrn,         // 3
-  logoScrn,           // 4
-  menuHelp,           // 5
-  menuHelp2,          // 6
-  menuHelp3,          // 7
+  menuHelp,          
+  menuHelp2,         
+  menuHelp3,         
 
-  pasteScreen,        // 8
-  pickScreen ,        // 9
-  inspectScreen,      // 10
-    
+  pasteScreen,       
+  pickScreen ,       
+  inspectScreen,     
+  
   screenIdxEnd
 };
 
-#define menuCnt        ( menuIdxEnd   -     menuIdxStart)
-#define screenIdxLen   ( screenIdxEnd -   screenIdxStart)
+#define menuCnt      (  menuIdxEnd -   menuIdxStart)
+#define screenIdxLen (screenIdxEnd - screenIdxStart)
 #define screenCnt screenIdxEnd
 
 extern       uint8 curScreen;
-extern       uint8 lastCursor;
 extern       uint8 curCursor;
+extern       uint8 defCursByMenu[menuCnt];
 extern       uint8 editingOption;
 extern const uint8 parentMenu[menuCnt];
 extern const uint8 menuSelScreen[menuCnt][5];
-extern uint8 cursorByMenu[menuCnt];
 
 void initScreens();
 void initCursor();
