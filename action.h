@@ -9,6 +9,7 @@
 
 enum actions {
   noOp,
+  pwrOnAction,
   pwrOffAction,
   startLogoAction,
   cursorUpAction,
@@ -26,7 +27,6 @@ enum actions {
 void actionChk(uint8 switchMask);
 void handleSwUpDown(uint8 switchMask, bool swUp);
 void doAction(uint8 action);
-void poweredUp();
 
 #endif	/* STATE_H */
 

@@ -5,69 +5,70 @@
 #include "lcd.h"
 #include "logo.h"
 #include "screens.h"
-#include "options.h"
+#include "options.h"s
 #include "bmotor.h"
 #include "smot.h"
 
-// [cur state], [switch down=0, hold=1, up=2], [switch idx]
-// {home,pwr, topLft,botLft, topRgt,botRgt}
-const uint8 actionTable[screenCnt][3][switchesCount] = {
+// [cur screen], [switch down=0, hold=1, up=2], [switch idx - 2]
+// {topLft,botLft, topRgt,botRgt}
+const uint8 actionTable[screenCnt][3][rockerCount] = {
   // 0: mainMenu
-  {{scrOfs+menuHelp,0, cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 1: settingsMenu
-  {{scrOfs+mainMenu,0, cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 2: pasteSettingsMenu
-  {{scrOfs+mainMenu,0, cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 3: pwrOffScrn
-  {{0,scrOfs+logoScrn, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,0, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 4: logoScrn
-  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 5: menuHelp
   {{scrOfs+menuHelp2,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 6: menuHelp2
-  {{scrOfs+menuHelp3,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 7: menuHelp3
-  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 8: pasteScreen
-  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 9: pickScreen
-  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
   
   // 10: inspectScreen
-  {{scrOfs+mainMenu,0, 0,0, 0,0}, 
-   {0,0, 0,0, 0,0},
-   {0,pwrOffAction, 0,0, 0,0}},
+  {{0,0, 0,0}, 
+   {0,0, 0,0},
+   {0,0, 0,0}},
 };
-  
+
 void doAction(uint8 action) {
 chkAction:
   if(action >= scrOfs) {
@@ -79,6 +80,13 @@ chkAction:
     return;
   }
   switch (action) {
+    case pwrOnAction:
+      curScreen = logoScrn;
+      //  beep(beepMs);  // BREAKS STARTUP ???
+      initCursor();
+      logoStartTimeStamp = timer();
+      logoShowLogo();
+
     case pwrOffAction:
       lcdOff(); 
       bmotAllPwrOff();
@@ -102,40 +110,36 @@ const uint8 screenByMenuAndLine[menuCnt][menuLineCnt] = {
   {pasteSettingsMenu},  
 };
 
+void handleHomeSw(bool swUp) {
+  
+}
+
 volatile bool   swHoldWaiting[6];
 volatile uint16 swDownTimestamp[6];
 
-void handleSwUpDown(uint8 switchMask, bool swUp) {
-  for(uint8 swIdx=0; swIdx < switchesCount; swIdx++) {
-    if(switchMask == swMask[swIdx]) {
-      if(!swUp) {
-        swDownTimestamp[swIdx] = timer();
-        swHoldWaiting[swIdx]   = true;
-      } else {
-        swHoldWaiting[swIdx] = false;
-      }
-      doAction(actionTable[curScreen][swUp ? 2 : 0][swIdx]);
-      break;
-    }
+void handleSwUpDown(uint8 swIdx, bool swUp) {
+  if(!swUp) {
+    swDownTimestamp[swIdx] = timer();
+    swHoldWaiting[swIdx]   = true;
+  } else {
+    swHoldWaiting[swIdx] = false;
   }
+  if(swIdx == swHomeIdx) handleHomeSw(swUp);
+  else if(swIdx == swPwrIdx) { 
+    if(swUp) doAction(pwrOnAction);
+    else doAction(pwrOffAction);
+  } 
+  else doAction(actionTable[curScreen][swUp ? 2 : 0][swIdx-2]);
 }
 
 uint16 logoStartTimeStamp;
 
 void actionChk(uint8 swIdx) {
-  if(swHoldWaiting[swIdx] && 
-        (timer() - swDownTimestamp[swIdx]) > optHoldTime) {
-    swHoldWaiting[swIdx] = false;
-    doAction(actionTable[curScreen][1][swIdx]);
-  }
   if((curScreen == logoScrn) && (timer() - logoStartTimeStamp) > LOGO_DUR)
     doAction(scrOfs + mainMenu);
-}
-
-void poweredUp() {
-  curScreen = logoScrn;
-//  beep(beepMs);  // BREAKS STARTUP ???
-  initCursor();
-  logoStartTimeStamp = timer();
-  logoShowLogo();
+  else if(swHoldWaiting[swIdx] && 
+          (timer() - swDownTimestamp[swIdx]) > optHoldTime) {
+    swHoldWaiting[swIdx] = false;
+    doAction(actionTable[curScreen][1][swIdx-2]);
+  }
 }

@@ -26,6 +26,8 @@ enum swIdx {
     switchesCount
 };
 
+#define rockerCount 4
+extern uint8 curSwitches;
 extern uint8 swMask[switchesCount];
 
 // switches

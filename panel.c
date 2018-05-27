@@ -12,7 +12,7 @@ uint8 swMask[switchesCount] = {
   swTopRgtMask, swBotRgtMask
 };
 
-uint8 switches;
+uint8 curSwitches;
 uint8 debounceCount[switchesCount];
 
 
@@ -24,7 +24,7 @@ void panelInit() {
     i2cSendTwoBytes(i2cExpAddr, GPINTEN, swAllSwMask); // enable switch pin ints
     i2cSendTwoBytes(i2cExpAddr, expINTCON, 0);         // pin ints on any change
     
-    switches = swAllSwMask;
+    curSwitches = swAllSwMask;
 }
 
 uint8 panelReadA() {
@@ -41,16 +41,16 @@ uint8 panelSwPinValues() {
 
 void panelChkSwitches() {
   uint8 swPinValues = panelReadA();
-  for(uint8 i = 0; i < switchesCount; i++) {
-    uint8 mask = swMask[i];
+  for(uint8 swIdx = 0; swIdx < switchesCount; swIdx++) {
+    uint8 mask = swMask[swIdx];
     uint8 newval = swPinValues & mask;
-    if(newval == (switches & mask)) 
-      debounceCount[i] = 0;
-    else if(++debounceCount[i] == 5) {
-      switches = (switches & ~mask) | newval;
-      handleSwUpDown(mask, (newval != 0));
+    if(newval == (curSwitches & mask)) 
+      debounceCount[swIdx] = 0;
+    else if(++debounceCount[swIdx] == 5) {
+      curSwitches = (curSwitches & ~mask) | newval;
+      handleSwUpDown(swIdx, (newval != 0));
     }
   }
-  if((curScreen == pwrOffScrn) && (swPinValues & swPwrMask) == 0)
-    poweredUp();
+  if((curScreen == pwrOffScrn) && (curSwitches & swPwrMask) == 0)
+    doAction(pwrOnAction);
 }
