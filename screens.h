@@ -7,8 +7,8 @@
 #define menuLineCnt 5
 #define splashScreenIdx 255
 #define menuIdxStart     0
-#define menuIdxEnd       3
-#define screenIdxStart   3
+#define menuIdxEnd       7
+#define screenIdxStart   7
 
 #define pwrOffScrn 254
 #define logoScrn   255
@@ -16,17 +16,26 @@
 enum menusAndScreens {
   // menuIdxStart
   mainMenu,          
-  settingsMenu,      
-  pasteSettingsMenu, 
+  settingsMenu,  
+  calMenu,
+  pasteSetMenu, 
+  pickSetMenu,
+  turboSetMenu,
+  btnSetMenu,
 
   // screenIdxStart
-  menuHelp,          
-  menuHelp2,         
-  menuHelp3,         
+  helpMenuScrn,          
+  helpMenu2Scrn,         
+  menuNavScrn,         
+  camCtrlScrn,
 
   pasteScreen,       
   pickScreen ,       
-  inspectScreen,     
+  inspectScreen, 
+  
+  calCamScrn,
+  calPasteScrn,
+  calRotScrn,
   
   screenIdxEnd
 };

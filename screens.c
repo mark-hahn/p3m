@@ -17,64 +17,127 @@ uint8 menuLines[screenCnt][6] = {
    },
     
    {settingsMenuStr,
+    calibrateStr,
     pasteStr,
-    sm1Str,
+    rotateStr,
+    turboStr,
+    buttonStr,
    },
    
-   {pasteSettingsMenuStr,
-    ps1Str,
+   {calMenuStr,
+    camHomeStr,
+    pasteHomeStr,
+    rotHomeStr,
+    pinchHomeStr,
+    homeStr,
+   },
+   
+   {pasteSetMenuStr,
+    extClickStr,
     pasteClickOption,
-    ps2Str,
+    extHoldStr,
     pasteHoldOption,
    },
    
+   {pickSetMenuStr,
+    rotClickStr,		 
+    rotClickOption,
+    rotHoldStr,		 
+    rotHoldOption,
+   },
+
+   {turboSetMenuStr,
+    pasteTurboStr,	
+    pasteTurboOption,
+    rotateTurboStr,
+    rotateTurboOption,
+   },
+    
+   {btnSetMenuStr,
+    holdDelayStr,
+    holdDelayOption,
+   },
+
    {helpMenuStr,
     hm1Str,
     hm2Str,
     hm3Str,
     hm4Str,
-    hm5Str,
+    pressSqrStr,
    },
     
    {helpMenu2Str, 
+    hm5Str,
     hm6Str,
     hm7Str,
     hm8Str,
-    hm9Str,
-    hm5Str,
+    pressSqrStr,
    },
     
-   {helpMenu2Str, 
-    hm10Str,
-    hm11Str,
-    hm12Str,
-    hm13Str,
-    hm5Str,
+   {menuNavStr, 
+    mn1Str,
+    mn2Str,
+    mn3Str,
+    mn4Str,
+    pressSqrStr,
     },
-    
+
+   {camCtrlScrn,
+    cc1Str,
+    lightsStr,
+    focusStr,
+    zoomStr,      
+    pressSqrStr,
+    },
+
+
    {pasteScreenStr, 
-    paste1Str,
-    paste2Str,
+    posSyrStr,
+    extRetStr,
     lightsStr,
     focusStr,
     zoomStr,
     },
     
    {pickScreenStr, 
-    pick1Str,
-    pick2Str,
+    pickRotStr,
+    pickPinchStr,
     lightsStr,
     focusStr,
     zoomStr,
     },
     
    {inspectScreenStr, 
-    inspect1Str,
-    inspect2Str,
+    syringeOutStr,
+    pinchOpenStr,
     lightsStr,
     focusStr,
-    inspect3Str,
+    zoomStr,
     },
+    
+   {calCamScrnStr,
+    raiseStr,	     
+    cc2Str,	       
+    noiseStr,	     
+    cancelStr,	     
+    saveStr,
+    },
+
+   {calPasteScrnStr,
+    cp1Str,	       
+    cp2Str,	       
+    cp3Str,	       
+    cancelStr,	   
+    saveStr,
+    },	     
+
+   {calRotScrnStr,  
+    cr1Str,	       
+    cr2Str,	       
+    cr3Str,	       
+    cancelStr,	   
+    saveStr,
+    },	     
 };
 
 uint8 curCursor, lastCursor;
@@ -166,7 +229,7 @@ const uint8 parentMenu[menuCnt] = {
 
 const uint8 menuSelScreen[menuCnt][menuLineCnt] = {
   {pasteScreen, pickScreen, inspectScreen, settingsMenu}, // mainMenu
-  {pasteSettingsMenu},                                    // settingsMenu
+  {pasteSetMenuStr},                                    // settingsMenu
 };
 
 uint8 defCursByMenu[menuCnt];

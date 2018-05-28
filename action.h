@@ -32,6 +32,11 @@ enum actions {
   extrudeAction,
   retractAction,
   
+  rotateFwdAction, 
+  rotateBakAction, 
+  pinchInAction,
+  pinchOutAction,
+  
   actionCount  // go to screen actions start here
 };
 #define scrOfs actionCount

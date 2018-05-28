@@ -13,9 +13,20 @@
 #include "smot.h"
 #include "lights.h"
 
+#define cameraAction 200
+#define menuAction   201
+
+uint8 actionTable[5][5] = {
+  {cameraAction,  lightsAction,focusAction,         zoomInAction,zoomOutAction},
+  {menuAction,    cursorUpAction,cursorDownAction,  escMenuAction,okMenuAction},
+  {pasteScreen,   syringeInAction,syringeOutAction, extrudeAction,retractAction},
+  {pickScreen,    rotateFwdAction, rotateBakAction, pinchInAction,pinchOutAction},
+  {inspectScreen, 0,syringeOutAction,               0,pinchOutAction},
+};
+
 uint16 logoStartTimeStamp;
 int8 focusDir = 1;
-uint8 glblockerSwIdx;
+uint8 glblRockerSwIdx;
 
 void doAction(uint8 action) {
 chkAction:
@@ -59,17 +70,17 @@ chkAction:
     case focusAction:   
       startSmot(focusMotor, focusDir, 100, 65535);
       focusDir = -focusDir;
-      actionOnSwUp[glblockerSwIdx] = focusEndAction;
+      actionOnSwUp[glblRockerSwIdx] = focusEndAction;
       break;
     case focusEndAction: stopSmot(focusMotor); break;
       
     case zoomInAction:   
       startBmot(zoomMotor, 1, true, 500, 65535);
-      actionOnSwUp[glblockerSwIdx] = zoomEndAction;
+      actionOnSwUp[glblRockerSwIdx] = zoomEndAction;
       break;
     case zoomOutAction:   
       startBmot(zoomMotor, 1, false, 500, 65535);
-      actionOnSwUp[glblockerSwIdx] = zoomEndAction;
+      actionOnSwUp[glblRockerSwIdx] = zoomEndAction;
       break;
     case zoomEndAction: stopBmot(zoomMotor); break;
     
@@ -77,17 +88,22 @@ chkAction:
     case syringeOutAction: beep(1); break;
     case extrudeAction:    beep(1); break;
     case retractAction:    beep(1); break;
+    
+    case rotateFwdAction:  beep(1); break;
+    case rotateBakAction:  beep(1); break;
+    case pinchInAction:    beep(1); break;
+    case pinchOutAction:   beep(1); break;
   }
 }
 
 void doActionSw(uint8 action, uint8 swIdx) {
-  glblockerSwIdx = swIdx - 2;
+  glblRockerSwIdx = swIdx - 2;
   doAction(action);
 }
 
 const uint8 screenByMenuAndLine[menuCnt][menuLineCnt] = {
   {pasteScreen,pickScreen,inspectScreen,settingsMenu},
-  {pasteSettingsMenu},  
+  {pasteSetMenu},  
 };
 
 bool  cameraMode;
@@ -111,26 +127,15 @@ void handleHomeSwUpDwn(bool swUp) {
     }
     else if(!cameraMode) {
       switch (curScreen) {
-        case mainMenu:  doAction(scrOfs+menuHelp);  break;
-        case menuHelp:  doAction(scrOfs+menuHelp2); break;
-        case menuHelp2: doAction(scrOfs+menuHelp3); break;
+        case mainMenu:  doAction(scrOfs+helpMenuScrn);  break;
+        case helpMenuScrn:  doAction(scrOfs+helpMenu2Scrn); break;
+        case helpMenu2Scrn: doAction(scrOfs+menuNavScrn); break;
         default: doAction(scrOfs+mainMenu);
       }
     }
     cameraMode = turboMode = false;
   }
 }
-
-#define cameraAction 200
-#define menuAction   201
-
-uint8 actionTable[5][5] = {
-  {cameraAction,   lightsAction,focusAction, zoomInAction,zoomOutAction},
-  {menuAction,   cursorUpAction,cursorDownAction, escMenuAction,okMenuAction},
-  {pasteScreen, syringeInAction,syringeOutAction, extrudeAction,retractAction},
-  {pickScreen,    0,0,0,0},
-  {inspectScreen, 0,0,0,0},
-};
 
 void doRockerAction(uint8 actMode, uint8 swIdx) {
   for(int tblIdx=0; tblIdx < 5; tblIdx++) {

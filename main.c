@@ -45,6 +45,10 @@
 #include "smot.h"
 #include "bmotor.h"
 
+void clearWDT(void){
+  CLRWDT();
+}
+
 void main(void) {
   ANSELA = 0; // no analog inputs
   ANSELB = 0; // these &^%$&^ regs cause a lot of trouble
@@ -67,6 +71,7 @@ void main(void) {
   
   // main foreground loop
   while(1) {
+    clearWDT();
     switchChk();
     for(uint8 swIdx = 0; swIdx < 6; swIdx++)
       timeoutChk(swIdx);

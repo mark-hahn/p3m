@@ -19,6 +19,12 @@ enum optionCodes {
     magicOption = firstOptionCode,
     pasteClickOption,  // microns
     pasteHoldOption,   // microns/sec
+    pasteTurboOption,  // microns/sec
+    rotClickOption,    // degrees
+    rotHoldOption,     // degrees/sec
+    rotateTurboOption, // degrees/sec or NESW
+    holdDelayOption,   // seconds
+
     lastOptionCode
 };
 #define optionsCount (lastOptionCode - firstOptionCode)
