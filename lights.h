@@ -8,8 +8,7 @@
 #define lgtsDataCmd   0x01
 
 void lgtsInit();
-void lgtsSet(uint8 val);
-void lgtsDemo();
+void chgLights();
 
 #endif	/* LIGHTS_H */
 

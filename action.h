@@ -22,6 +22,7 @@ enum actions {
   
   lightsAction,
   focusAction,
+  focusEndAction,
   zoomInAction,
   zoomOutAction,
   
@@ -34,6 +35,7 @@ enum actions {
 };
 #define scrOfs actionCount
 
+extern uint8 actionOnSwUp[rockerCount];
 extern uint8 actionOnTurboStart;
 extern uint8 actionOnTurboEnd;
 extern uint8 actionOnHoldStart;

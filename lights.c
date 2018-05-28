@@ -8,23 +8,21 @@
 #define lgtsDataLat   0x01
 #define lgtsConfigCmd 0x03
 
+uint8 curLightsVal;
+
 void lgtsInit() {
   i2cSendTwoBytes(lgtsI2cAddr, lgtsConfigCmd, 0); // all outputs
+//  curLightsVal = 0;
+  curLightsVal = 0x08; // off for debug
+  chgLights();
 }
 
-void lgtsSet(uint8 val){
-  i2cSendTwoBytes(lgtsI2cAddr, lgtsDataCmd, ~val);
-}
-
-void lgtsDemo() {
-  lgtsSet(0x0f);
-  delayMs(1000);
-  lgtsSet(0x00);
-  delayMs(1000);
-  for(uint8 i=0; i<4; i++) {
-    lgtsSet(0x01 << i);
-    delayMs(300);
+void chgLights() {
+  switch (curLightsVal) {
+    case 0x00: curLightsVal = 0x0f; break;
+    case 0x0f: curLightsVal = 0x01;    break;
+    case 0x08: curLightsVal = 0x00;    break;
+    default: curLightsVal <<= 1;
   }
-  lgtsSet(0x00);
-  delayMs(1000);
+  i2cSendTwoBytes(lgtsI2cAddr, lgtsDataCmd, ~curLightsVal);
 }

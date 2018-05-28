@@ -8,8 +8,11 @@
 #include "options.h"
 #include "bmotor.h"
 #include "smot.h"
+#include "lights.h"
 
 uint16 logoStartTimeStamp;
+int8 focusDir = 1;
+uint8 glblSwIdx;
 
 void doAction(uint8 action) {
 chkAction:
@@ -48,16 +51,28 @@ chkAction:
       action = scrOfs + menuSelScreen[curScreen][curCursor-1];
       goto chkAction;
       
-    case lightsAction:  beep(1);
-    case focusAction:   beep(1);
-    case zoomInAction:  beep(1);
-    case zoomOutAction: beep(1);
+    case lightsAction:  chgLights(); break;
+    
+    case focusAction:   
+      startSmot(focusMotor, focusDir, 100, 65535);
+      focusDir = -focusDir;
+      actionOnSwUp[glblSwIdx-2] = focusEndAction;
+      break;
+    case focusEndAction: stopSmot(focusMotor); break;
+      
+    case zoomInAction:  beep(1);     break;
+    case zoomOutAction: beep(1);     break;
   
-    case syringeInAction:  beep(1);
-    case syringeOutAction: beep(1);
-    case extrudeAction:    beep(1);
+    case syringeInAction:  beep(1); break;
+    case syringeOutAction: beep(1); break;
+    case extrudeAction:    beep(1); break;
     case retractAction:    beep(1); break;
   }
+}
+
+void doActionSw(uint8 action, uint8 swIdx) {
+  glblSwIdx = swIdx;
+  doAction(action);
 }
 
 const uint8 screenByMenuAndLine[menuCnt][menuLineCnt] = {
@@ -70,6 +85,7 @@ bool  turboMode;
 uint8 actionOnTurboStart;
 uint8 actionOnTurboEnd;
 uint8 actionOnHoldStart;
+uint8 actionOnSwUp[rockerCount];
 
 void handleHomeSwUpDwn(bool swUp) {
   if(!swUp) {  // switch down
@@ -89,8 +105,8 @@ void handleHomeSwUpDwn(bool swUp) {
       if(actionOnTurboEnd) doAction(actionOnTurboEnd);
     }
     if(!cameraMode && curScreen != menuHelp  &&
-                        curScreen != menuHelp2 &&
-                        curScreen != menuHelp3) 
+                      curScreen != menuHelp2 &&
+                      curScreen != menuHelp3) 
       doAction(scrOfs+mainMenu);
     
     cameraMode = turboMode = false;
@@ -111,7 +127,7 @@ uint8 actionTable[5][5] = {
 void doRockerAction(uint8 actMode, uint8 swIdx) {
   for(int tblIdx=0; tblIdx < 5; tblIdx++) {
     if(actionTable[tblIdx][0] == actMode) {
-       doAction(actionTable[tblIdx][swIdx-2+1]);  
+       doActionSw(actionTable[tblIdx][swIdx-2+1], swIdx);  
        return;
     }
   }
@@ -121,11 +137,15 @@ volatile bool   swHoldWaiting[6];
 volatile uint16 swDownTimestamp[6];
 
 void handleSwUpDown(uint8 swIdx, bool swUp) {
-  if(!swUp) {
+  if(!swUp) {                   // switch down
     swDownTimestamp[swIdx] = timer();
     swHoldWaiting[swIdx]   = true;
-  } else {
+  } else {                      // switch up
     swHoldWaiting[swIdx] = false;
+    if(actionOnSwUp[swIdx-2]) {
+      doAction(actionOnSwUp[swIdx-2]);
+      actionOnSwUp[swIdx-2] = 0;
+    }
   }
   
   if(swIdx == swHomeIdx)        // home switch
