@@ -9,44 +9,14 @@
 #include "bmotor.h"
 #include "smot.h"
 
-// [cur screen], [switch down=0, hold=1, up=2], [switch idx - 2]
-// {topLft,botLft, topRgt,botRgt}
-const uint8 actionTable[screenCnt][3][rockerCount] = {
-  // 0: mainMenu
-  {{cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
-   {0,0, 0,0},
-   {0,0, 0,0}},
-  
-  // 1: settingsMenu
-  {{cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
-   {0,0, 0,0},
-   {0,0, 0,0}},
-  
-  // 2: pasteSettingsMenu
-  {{cursorUpAction,cursorDownAction, escMenuAction,okMenuAction}, 
-   {0,0, 0,0},
-   {0,0, 0,0}},
-  
-  // 8: pasteScreen
-  {{0,0, 0,0}, 
-   {0,0, 0,0},
-   {0,0, 0,0}},
-  
-  // 9: pickScreen
-  {{0,0, 0,0}, 
-   {0,0, 0,0},
-   {0,0, 0,0}},
-  
-  // 10: inspectScreen
-  {{0,0, 0,0}, 
-   {0,0, 0,0},
-   {0,0, 0,0}},
-};
+uint16 logoStartTimeStamp;
 
 void doAction(uint8 action) {
 chkAction:
   if(action >= scrOfs) {
-    curScreen = action - scrOfs;
+    uint8 scrnIdx = action - scrOfs;
+    if(scrnIdx == curScreen) return;
+    curScreen = scrnIdx;
     if(curScreen < menuCnt) 
       curCursor = defCursByMenu[curScreen];
     lcdClrAll();
@@ -56,7 +26,7 @@ chkAction:
   switch (action) {
     case pwrOnAction:
       curScreen = logoScrn;
-      //  beep(beepMs);  // BREAKS STARTUP ???
+      beep(1);
       initCursor();
       logoStartTimeStamp = timer();
       logoShowLogo();
@@ -77,6 +47,16 @@ chkAction:
     case okMenuAction:
       action = scrOfs + menuSelScreen[curScreen][curCursor-1];
       goto chkAction;
+      
+    case lightsAction:  beep(1);
+    case focusAction:   beep(1);
+    case zoomInAction:  beep(1);
+    case zoomOutAction: beep(1);
+  
+    case syringeInAction:  beep(1);
+    case syringeOutAction: beep(1);
+    case extrudeAction:    beep(1);
+    case retractAction:    beep(1); break;
   }
 }
 
@@ -85,19 +65,55 @@ const uint8 screenByMenuAndLine[menuCnt][menuLineCnt] = {
   {pasteSettingsMenu},  
 };
 
+bool  cameraMode;
+bool  turboMode;
+uint8 actionOnTurboStart;
+uint8 actionOnTurboEnd;
+uint8 actionOnHoldStart;
+
 void handleHomeSwUpDwn(bool swUp) {
-  if(!swUp) {
+  if(!swUp) {  // switch down
+    if(actionOnTurboStart) {
+      turboMode = true;
+      doAction(actionOnTurboStart); 
+      return;
+    }
     switch (curScreen) {
       case menuHelp:  doAction(scrOfs+menuHelp2); break;
       case menuHelp2: doAction(scrOfs+menuHelp3); break;
       case menuHelp3: doAction(scrOfs+mainMenu);  break;
     }
+  } else { // switch up
+    if(turboMode) {
+      turboMode = false;
+      if(actionOnTurboEnd) doAction(actionOnTurboEnd);
+    }
+    if(!cameraMode && curScreen != menuHelp  &&
+                        curScreen != menuHelp2 &&
+                        curScreen != menuHelp3) 
+      doAction(scrOfs+mainMenu);
+    
+    cameraMode = turboMode = false;
   }
 }
 
-void handleHomeSwHold(){
-  switch (curScreen) {
-    case mainMenu:  doAction(scrOfs+menuHelp);
+#define cameraAction 200
+#define menuAction   201
+
+uint8 actionTable[5][5] = {
+  {cameraAction,   lightsAction,      focusAction,  zoomInAction, zoomOutAction},
+  {menuAction,   cursorUpAction, cursorDownAction, escMenuAction,  okMenuAction},
+  {pasteScreen, syringeInAction, syringeOutAction, extrudeAction, retractAction},
+  {pickScreen,    0,0,0,0},
+  {inspectScreen, 0,0,0,0},
+};
+
+void doRockerAction(uint8 actMode, uint8 swIdx) {
+  for(int tblIdx=0; tblIdx < 5; tblIdx++) {
+    if(actionTable[tblIdx][0] == actMode) {
+       doAction(actionTable[tblIdx][swIdx-2+1]);  
+       return;
+    }
   }
 }
 
@@ -111,28 +127,48 @@ void handleSwUpDown(uint8 swIdx, bool swUp) {
   } else {
     swHoldWaiting[swIdx] = false;
   }
-  if(swIdx == swHomeIdx) handleHomeSwUpDwn(swUp);
-  else if(swIdx == swPwrIdx) { 
+  
+  if(swIdx == swHomeIdx)        // home switch
+    handleHomeSwUpDwn(swUp);
+  
+  else if(swIdx == swPwrIdx) {  // power switch
     if(swUp) doAction(pwrOffAction);
-    else doAction(pwrOnAction);
+    else     doAction(pwrOnAction);
   } 
-  else {
-    doAction(actionTable[curScreen][swUp ? 2 : 0][swIdx-2]);
+  else {                        // rocker switch
+    if(swUp) {
+      if(turboMode) {
+        turboMode = false;
+        if(actionOnTurboEnd) doAction(actionOnTurboEnd);
+      }
+      return;
+    }
+    if(cameraMode = ((curSwitches & swHomeMask) == 0)) {
+      doRockerAction(cameraAction, swIdx);
+      return;
+    } 
+    if(curScreen < menuCnt) {  // menu
+      doRockerAction(menuAction, swIdx); 
+      return;
+    }
+    else { // paste, pick, or inspect screen
+      doRockerAction(curScreen, swIdx); 
+      return;
+    }
   }
 }
-
-uint16 logoStartTimeStamp;
 
 void timeoutChk(uint8 swIdx) {
   if((curScreen == logoScrn) && 
           (timer() - logoStartTimeStamp) > LOGO_DUR)
     doAction(scrOfs + mainMenu);
+  
   else if(swHoldWaiting[swIdx] && 
           (timer() - swDownTimestamp[swIdx]) > optHoldTime) {
     swHoldWaiting[swIdx] = false;
-    if(swIdx == swHomeIdx) 
-      handleHomeSwHold();
-    else if (swIdx != swPwrIdx)
-      doAction(actionTable[curScreen][1][swIdx-2]);
+    if(swIdx == swHomeIdx) {
+      if (curScreen == mainMenu) doAction(scrOfs+menuHelp);
+    } 
+    if(actionOnHoldStart) doAction(actionOnHoldStart);
   }
 }

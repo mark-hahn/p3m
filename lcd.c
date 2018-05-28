@@ -97,7 +97,7 @@ void lcdClrPage(uint8 page) {
 }
 
 void lcdClrAll() {
-  for(uint8 page=0; page<8; page++) lcdClrPage(page);
+  for(uint8 page=0; page < 8; page++) lcdClrPage(page);
 }
 
 void lcdWriteStr(uint16 font, uint8 page, int8 rowOfs, uint8 col, 

@@ -12,6 +12,7 @@ enum actions {
   pwrOnAction,
   pwrOffAction,
   startLogoAction,
+  
   cursorUpAction,
   cursorDownAction,
   settingsUpAction,
@@ -19,12 +20,23 @@ enum actions {
   escMenuAction,
   okMenuAction,
   
+  lightsAction,
+  focusAction,
+  zoomInAction,
+  zoomOutAction,
+  
+  syringeInAction,
+  syringeOutAction, 
+  extrudeAction,
+  retractAction,
+  
   actionCount  // go to screen actions start here
 };
-
 #define scrOfs actionCount
 
-extern uint16 logoStartTimeStamp;
+extern uint8 actionOnTurboStart;
+extern uint8 actionOnTurboEnd;
+extern uint8 actionOnHoldStart;
 
 void timeoutChk(uint8 switchMask);
 void handleSwUpDown(uint8 switchMask, bool swUp);
