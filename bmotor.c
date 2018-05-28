@@ -34,7 +34,7 @@ void bmotAllPwrOff() {
   resetLAT = 0; // power down
 }
 
-uint8 delay;
+uint8 pulseDelay;
 
 // big motor interrupt routine
 void bmotInt(uint8 motor) {
@@ -44,11 +44,11 @@ void bmotInt(uint8 motor) {
     pState->intCtr = 0;
     if(pState->count < 65535) pState->count--;
     LATB = (LATB & 0xe6) | pState->ustep | pState->fwdDir;
-    delay = 2;
+    pulseDelay = 2;
     switch(motor) {
-      case 0: LATC5 = 0;  while(--delay > 0) NOP(); LATC5 = 1;  break;
-      case 1: LATC6 = 0;  while(--delay > 0) NOP(); LATC6 = 1;  break;
-      case 2: LATC7 = 0;  while(--delay > 0) NOP(); LATC7 = 1;  break;
+      case 0: LATC5 = 0;  while(--pulseDelay > 0) NOP(); LATC5 = 1;  break;
+      case 1: LATC6 = 0;  while(--pulseDelay > 0) NOP(); LATC6 = 1;  break;
+      case 2: LATC7 = 0;  while(--pulseDelay > 0) NOP(); LATC7 = 1;  break;
     }
   }
 }

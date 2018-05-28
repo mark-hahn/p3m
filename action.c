@@ -1,3 +1,6 @@
+/*
+ TODO: home camera should cancel home hold
+ */
 
 #include "action.h"
 #include "util.h"
@@ -12,7 +15,7 @@
 
 uint16 logoStartTimeStamp;
 int8 focusDir = 1;
-uint8 glblSwIdx;
+uint8 glblockerSwIdx;
 
 void doAction(uint8 action) {
 chkAction:
@@ -56,13 +59,20 @@ chkAction:
     case focusAction:   
       startSmot(focusMotor, focusDir, 100, 65535);
       focusDir = -focusDir;
-      actionOnSwUp[glblSwIdx-2] = focusEndAction;
+      actionOnSwUp[glblockerSwIdx] = focusEndAction;
       break;
     case focusEndAction: stopSmot(focusMotor); break;
       
-    case zoomInAction:  beep(1);     break;
-    case zoomOutAction: beep(1);     break;
-  
+    case zoomInAction:   
+      startBmot(zoomMotor, 1, true, 500, 65535);
+      actionOnSwUp[glblockerSwIdx] = zoomEndAction;
+      break;
+    case zoomOutAction:   
+      startBmot(zoomMotor, 1, false, 500, 65535);
+      actionOnSwUp[glblockerSwIdx] = zoomEndAction;
+      break;
+    case zoomEndAction: stopBmot(zoomMotor); break;
+    
     case syringeInAction:  beep(1); break;
     case syringeOutAction: beep(1); break;
     case extrudeAction:    beep(1); break;
@@ -71,7 +81,7 @@ chkAction:
 }
 
 void doActionSw(uint8 action, uint8 swIdx) {
-  glblSwIdx = swIdx;
+  glblockerSwIdx = swIdx - 2;
   doAction(action);
 }
 
@@ -94,21 +104,19 @@ void handleHomeSwUpDwn(bool swUp) {
       doAction(actionOnTurboStart); 
       return;
     }
-    switch (curScreen) {
-      case menuHelp:  doAction(scrOfs+menuHelp2); break;
-      case menuHelp2: doAction(scrOfs+menuHelp3); break;
-      case menuHelp3: doAction(scrOfs+mainMenu);  break;
-    }
   } else { // switch up
     if(turboMode) {
       turboMode = false;
       if(actionOnTurboEnd) doAction(actionOnTurboEnd);
     }
-    if(!cameraMode && curScreen != menuHelp  &&
-                      curScreen != menuHelp2 &&
-                      curScreen != menuHelp3) 
-      doAction(scrOfs+mainMenu);
-    
+    else if(!cameraMode) {
+      switch (curScreen) {
+        case mainMenu:  doAction(scrOfs+menuHelp);  break;
+        case menuHelp:  doAction(scrOfs+menuHelp2); break;
+        case menuHelp2: doAction(scrOfs+menuHelp3); break;
+        default: doAction(scrOfs+mainMenu);
+      }
+    }
     cameraMode = turboMode = false;
   }
 }
@@ -117,9 +125,9 @@ void handleHomeSwUpDwn(bool swUp) {
 #define menuAction   201
 
 uint8 actionTable[5][5] = {
-  {cameraAction,   lightsAction,      focusAction,  zoomInAction, zoomOutAction},
-  {menuAction,   cursorUpAction, cursorDownAction, escMenuAction,  okMenuAction},
-  {pasteScreen, syringeInAction, syringeOutAction, extrudeAction, retractAction},
+  {cameraAction,   lightsAction,focusAction, zoomInAction,zoomOutAction},
+  {menuAction,   cursorUpAction,cursorDownAction, escMenuAction,okMenuAction},
+  {pasteScreen, syringeInAction,syringeOutAction, extrudeAction,retractAction},
   {pickScreen,    0,0,0,0},
   {inspectScreen, 0,0,0,0},
 };
@@ -137,6 +145,8 @@ volatile bool   swHoldWaiting[6];
 volatile uint16 swDownTimestamp[6];
 
 void handleSwUpDown(uint8 swIdx, bool swUp) {
+  if(curScreen == pwrOffScrn && swIdx != swPwrIdx) return;
+  
   if(!swUp) {                   // switch down
     swDownTimestamp[swIdx] = timer();
     swHoldWaiting[swIdx]   = true;
@@ -186,9 +196,9 @@ void timeoutChk(uint8 swIdx) {
   else if(swHoldWaiting[swIdx] && 
           (timer() - swDownTimestamp[swIdx]) > optHoldTime) {
     swHoldWaiting[swIdx] = false;
-    if(swIdx == swHomeIdx) {
-      if (curScreen == mainMenu) doAction(scrOfs+menuHelp);
-    } 
+//    if(swIdx == swHomeIdx) {
+//      if (curScreen == mainMenu) doAction(scrOfs+menuHelp);
+//    } 
     if(actionOnHoldStart) doAction(actionOnHoldStart);
   }
 }

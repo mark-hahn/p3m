@@ -25,6 +25,7 @@ enum actions {
   focusEndAction,
   zoomInAction,
   zoomOutAction,
+  zoomEndAction,
   
   syringeInAction,
   syringeOutAction, 

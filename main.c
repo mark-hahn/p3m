@@ -65,13 +65,6 @@ void main(void) {
   smotInit();
   bmotorInit();
   
-// startSmot(pasteMotor, +1, 200, 65535);
-// while(1);
-        
-//  logoShowLogo();
-//  while(1);
-//  
-  
   // main foreground loop
   while(1) {
     switchChk();
