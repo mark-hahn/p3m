@@ -29,7 +29,7 @@ uint8 menuLines[screenCnt][6] = {
     pasteHomeStr,
     rotHomeStr,
     pinchHomeStr,
-    homeStr,
+    goHomeStr,
    },
    
    {pasteSetMenuStr,
@@ -65,7 +65,6 @@ uint8 menuLines[screenCnt][6] = {
     hm4Str,
     pressSqrStr,
    },
-    
    {helpMenu2Str, 
     hm5Str,
     hm6Str,
@@ -73,7 +72,6 @@ uint8 menuLines[screenCnt][6] = {
     hm8Str,
     pressSqrStr,
    },
-    
    {menuNavStr, 
     mn1Str,
     mn2Str,
@@ -81,7 +79,6 @@ uint8 menuLines[screenCnt][6] = {
     mn4Str,
     pressSqrStr,
     },
-
    {camCtrlScrn,
     cc1Str,
     lightsStr,
@@ -89,7 +86,6 @@ uint8 menuLines[screenCnt][6] = {
     zoomStr,      
     pressSqrStr,
     },
-
 
    {pasteScreenStr, 
     posSyrStr,
@@ -116,8 +112,8 @@ uint8 menuLines[screenCnt][6] = {
     },
     
    {calCamScrnStr,
-    raiseStr,	     
-    cc2Str,	       
+    ca1Str,	     
+    ca2Str,	       
     noiseStr,	     
     cancelStr,	     
     saveStr,
@@ -137,6 +133,22 @@ uint8 menuLines[screenCnt][6] = {
     cr3Str,	       
     cancelStr,	   
     saveStr,
+    },	    
+    
+   {calPinchScrnStr,  
+    ci1Str,	        
+    ci2Str,	        
+    noiseStr,	    
+    cancelStr,	    
+    saveStr,	    
+    },	     
+
+   {goHomeScrnStr,      
+    gh1Str,	         
+    gh2Str,	        
+    gh3Str,	        
+    gh4Str,	        
+    abortStr,	    
     },	     
 };
 

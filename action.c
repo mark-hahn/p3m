@@ -16,12 +16,18 @@
 #define cameraAction 200
 #define menuAction   201
 
-uint8 actionTable[5][5] = {
+uint8 actionTable[10][5] = {
   {cameraAction,  lightsAction,focusAction,         zoomInAction,zoomOutAction},
   {menuAction,    cursorUpAction,cursorDownAction,  escMenuAction,okMenuAction},
   {pasteScreen,   syringeInAction,syringeOutAction, extrudeAction,retractAction},
   {pickScreen,    rotateFwdAction, rotateBakAction, pinchInAction,pinchOutAction},
   {inspectScreen, 0,syringeOutAction,               0,pinchOutAction},
+  
+  {calCamScrn,    zoomOutAction,zoomOutAction,      escMenuAction,saveAction},
+  {calPasteScrn,  syringeInAction,syringeOutAction, escMenuAction,saveAction},
+  {calRotScrn,    rotateFwdAction, rotateBakAction, escMenuAction,saveAction},
+  {calPinchScrn,  pinchInAction,pinchOutAction,     escMenuAction,saveAction},
+  {goHomeScrn,    abortAction,abortAction,          abortAction,abortAction},
 };
 
 uint16 logoStartTimeStamp;
@@ -103,7 +109,8 @@ void doActionSw(uint8 action, uint8 swIdx) {
 
 const uint8 screenByMenuAndLine[menuCnt][menuLineCnt] = {
   {pasteScreen,pickScreen,inspectScreen,settingsMenu},
-  {pasteSetMenu},  
+  {calMenu,pasteSetMenu,pickSetMenu,turboSetMenu,btnSetMenu},
+  {calCamScrn,calPasteScrn,calRotScrn,calPinchScrn,goHomeScrn},
 };
 
 bool  cameraMode;

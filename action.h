@@ -36,6 +36,9 @@ enum actions {
   rotateBakAction, 
   pinchInAction,
   pinchOutAction,
+          
+  saveAction,
+  abortAction,
   
   actionCount  // go to screen actions start here
 };

@@ -36,6 +36,8 @@ enum menusAndScreens {
   calCamScrn,
   calPasteScrn,
   calRotScrn,
+  calPinchScrn,
+  goHomeScrn,
   
   screenIdxEnd
 };
