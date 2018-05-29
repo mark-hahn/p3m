@@ -71,7 +71,8 @@ void main(void) {
   
   // main foreground loop
   while(1) {
-    clearWDT();
+//    clearWDT();
+    DBG=1;
     switchChk();
     for(uint8 swIdx = 0; swIdx < 6; swIdx++)
       timeoutChk(swIdx);

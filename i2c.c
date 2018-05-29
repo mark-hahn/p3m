@@ -8,38 +8,38 @@
 #define SDA LATB2
 
 void dly() {
-  int x=1;
+    int x=1;
 }
 
 // bit bang a sequence to unlock slaves waiting for clock
 void i2cHardReset() {
-  int x;
-
-  SSP2CON1bits.SSPEN = 0; // disable serial module
-  CLK = 1;
-  SDA = 1;
-  ODCB1  = 1;
-  ODCB2  = 1;
-  TRISB1 = 0;
-  TRISB2 = 0;
-
-  CLK = 1;
-  SDA = 0;  // start bit
-  dly();
-  CLK = 0;
-  dly();
-  SDA = 1;
-  for(uint8 i=0; i<9; i++) {
+    int x;
+    
+    SSP2CON1bits.SSPEN = 0;
     CLK = 1;
+    SDA = 1;
+    ODCB1  = 1;
+    ODCB2  = 1;
+    TRISB1 = 0;
+    TRISB2 = 0;
+    
+    CLK = 1;
+    SDA = 0;  // start bit
     dly();
     CLK = 0;
-  }
-  dly();
-  SDA = 0;
-  dly();
-  CLK = 1;
-  dly();
-  SDA = 1;  // stop bit
+    dly();
+    SDA = 1;
+    for(uint8 i=0; i<9; i++) {
+        CLK = 1;
+        dly();
+        CLK = 0;
+    }
+    dly();
+    SDA = 0;
+    dly();
+    CLK = 1;
+    dly();
+    SDA = 1;  // stop bit
 }
 
 void i2cInit() {    
@@ -60,47 +60,64 @@ void i2cInit() {
     SSP2IF = 0;    
 }
 
-void waitSSP2IF() {
-  while(!SSP2IF);
-  SSP2IF = 0;
-}
-
 void i2cStartSending(uint8 chipAddr) {  
-  SSP2CON2bits.SEN = 1;        // send start bit
-  SSP2BUF = (uint8) (chipAddr << 1);
-  waitSSP2IF();
+    SSP2CON2bits.SEN = 1;        // send start bit
+    while(!SSP2IF);
+    SSP2IF = 0;
+    
+    SSP2BUF = (uint8) (chipAddr << 1);
+    while(!SSP2IF);
+    SSP2IF = 0;
 }
 void i2cSendByte(uint8 byte) {
-  SSP2BUF = byte;
-  waitSSP2IF();
+    SSP2BUF = byte;
+    while(!SSP2IF); 
+    SSP2IF = 0;
 }
 
 void i2cStopSending() {
-  SSP2CON2bits.PEN = 1;        // send stop bit
-  waitSSP2IF();
+    SSP2CON2bits.PEN = 1;        // send stop bit
+    while(!SSP2IF);      
+    SSP2IF = 0;
 }
 
 void i2cSendTwoBytes(uint8 chipAddr, uint8 byte1, uint8 byte2) {
-  i2cStartSending(chipAddr);
-  i2cSendByte(byte1);
-  i2cSendByte(byte2);
-  i2cStopSending();
+    i2cStartSending(chipAddr);
+    i2cSendByte(byte1);
+    i2cSendByte(byte2);
+    i2cStopSending();
 }
 
 uint8 i2cReadByte(uint8 chipAddr, uint8 regAddr) {
-  SSP2CON2bits.SEN = 1;        // send start bit
-  waitSSP2IF();
-  SSP2BUF = (uint8) (chipAddr << 1);
-  waitSSP2IF();
-  waitSSP2IF();
-  SSP2CON2bits.RSEN = 1;        // send restart bit
-  waitSSP2IF();
-  SSP2BUF = (uint8) ((chipAddr << 1) | 1); // with read bit set
-  waitSSP2IF();
-  SSP2CON2bits.RCEN = 1;        // receive enable
-  waitSSP2IF();
-  uint8 byt = SSP2BUF;          // byte from slave
-  SSP2CON2bits.PEN = 1;         // send stop bit
-  waitSSP2IF();
-  return byt;
+    SSP2CON2bits.SEN = 1;        // send start bit
+    while(!SSP2IF);
+    SSP2IF = 0;
+    
+    SSP2BUF = (uint8) (chipAddr << 1);
+    while(!SSP2IF);
+    SSP2IF = 0;
+
+    SSP2BUF = regAddr;
+    while(!SSP2IF);
+    SSP2IF = 0;
+
+    SSP2CON2bits.RSEN = 1;        // send restart bit
+    while(!SSP2IF);
+    SSP2IF = 0;
+ 
+    SSP2BUF = (uint8) ((chipAddr << 1) | 1); // with read bit set
+    while(!SSP2IF);
+    SSP2IF = 0;
+
+    SSP2CON2bits.RCEN = 1;        // receive enable
+    while(!SSP2IF);
+    SSP2IF = 0;
+ 
+    uint8 byt = SSP2BUF;          // byte from slave
+    
+    SSP2CON2bits.PEN = 1;         // send stop bit
+    while(!SSP2IF);      
+    SSP2IF = 0;
+    
+    return byt;
 }
