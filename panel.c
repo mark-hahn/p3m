@@ -40,10 +40,7 @@ uint8 panelSwPinValues() {
 }
 
 void switchChk() {
-    DBG=4;
-
   uint8 swPinValues = panelReadA();
-  DBG=3;
   for(uint8 swIdx = 0; swIdx < switchesCount; swIdx++) {
     uint8 mask = swMask[swIdx];
     uint8 newval = swPinValues & mask;

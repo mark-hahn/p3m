@@ -79,5 +79,4 @@ void logoShowLogo() {
       pixel = 1 - pixel;
     }
     lcdOn();
-    DBG=2;
 }

@@ -157,8 +157,6 @@ volatile bool   swHoldWaiting[6];
 volatile uint16 swDownTimestamp[6];
 
 void handleSwUpDown(uint8 swIdx, bool swUp) {
-      DBG=2;
-
   if(curScreen == pwrOffScrn && swIdx != swPwrIdx) return;
   
   if(!swUp) {                   // switch down
